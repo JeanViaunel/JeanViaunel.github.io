@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Compounded Interest Calculator</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <div class="calculator">
+      <h2>Compounded Interest Calculator</h2>
+      <div class="input-group">
+        <label for="principal">Principal Amount:</label>
+        <input
+          type="number"
+          id="principal"
+          placeholder="Enter principal amount"
+        />
+      </div>
+      <div class="input-group">
+        <label for="rate">Interest Rate (%):</label>
+        <input type="number" id="rate" placeholder="Enter interest rate" />
+      </div>
+      <div class="input-group">
+        <label for="interestType">Interest Rate Type:</label>
+        <select id="interestType">
+          <option value="percent">Interest Rate (%)</option>
+          <option value="daily">Daily Interest Rate</option>
+          <option value="monthly">Monthly Interest Rate</option>
+          <option value="yearly">Yearly Interest Rate</option>
+        </select>
+      </div>
+      <div id="interestFields">
+        <div class="input-group">
+          <label for="dailyRate">Daily Interest Rate (%):</label>
+          <input
+            type="number"
+            id="dailyRate"
+            placeholder="Enter daily interest rate"
+          />
+        </div>
+        <div class="input-group">
+          <label for="monthlyRate">Monthly Interest Rate (%):</label>
+          <input
+            type="number"
+            id="monthlyRate"
+            placeholder="Enter monthly interest rate"
+          />
+        </div>
+        <div class="input-group">
+          <label for="yearlyRate">Yearly Interest Rate (%):</label>
+          <input
+            type="number"
+            id="yearlyRate"
+            placeholder="Enter yearly interest rate"
+          />
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="period">Investment Period (years):</label>
+        <input
+          type="number"
+          id="period"
+          placeholder="Enter investment period in years"
+        />
+      </div>
+      <div class="input-group">
+        <label for="compounding">Compounding Frequency:</label>
+        <select id="compounding">
+          <option value="daily">Daily</option>
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="semiannually">Semi-annually</option>
+          <option value="annually">Annually</option>
+        </select>
+      </div>
+      <button id="calculate">Calculate</button>
+      <div id="result"></div>
+    </div>
+
+    <script src="scripts.js"></script>
+  </body>
+</html>
