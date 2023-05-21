@@ -1,81 +1,85 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Compounded Interest Calculator</title>
+    <title>App Showcase</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
   <body>
-    <div class="calculator">
-      <h2>Compounded Interest Calculator</h2>
-      <div class="input-group">
-        <label for="principal">Principal Amount:</label>
-        <input
-          type="number"
-          id="principal"
-          placeholder="Enter principal amount"
-        />
-      </div>
-      <div class="input-group">
-        <label for="rate">Interest Rate (%):</label>
-        <input type="number" id="rate" placeholder="Enter interest rate" />
-      </div>
-      <div class="input-group">
-        <label for="interestType">Interest Rate Type:</label>
-        <select id="interestType">
-          <option value="percent">Interest Rate (%)</option>
-          <option value="daily">Daily Interest Rate</option>
-          <option value="monthly">Monthly Interest Rate</option>
-          <option value="yearly">Yearly Interest Rate</option>
-        </select>
-      </div>
-      <div id="interestFields">
-        <div class="input-group">
-          <label for="dailyRate">Daily Interest Rate (%):</label>
-          <input
-            type="number"
-            id="dailyRate"
-            placeholder="Enter daily interest rate"
-          />
+    <header>
+      <nav>
+        <div class="navbar-container">
+          <div class="logo">App Showcase</div>
+          <ul class="navbar-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#apps">Apps</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
         </div>
-        <div class="input-group">
-          <label for="monthlyRate">Monthly Interest Rate (%):</label>
-          <input
-            type="number"
-            id="monthlyRate"
-            placeholder="Enter monthly interest rate"
-          />
-        </div>
-        <div class="input-group">
-          <label for="yearlyRate">Yearly Interest Rate (%):</label>
-          <input
-            type="number"
-            id="yearlyRate"
-            placeholder="Enter yearly interest rate"
-          />
-        </div>
-      </div>
-      <div class="input-group">
-        <label for="period">Investment Period (years):</label>
-        <input
-          type="number"
-          id="period"
-          placeholder="Enter investment period in years"
-        />
-      </div>
-      <div class="input-group">
-        <label for="compounding">Compounding Frequency:</label>
-        <select id="compounding">
-          <option value="daily">Daily</option>
-          <option value="monthly">Monthly</option>
-          <option value="quarterly">Quarterly</option>
-          <option value="semiannually">Semi-annually</option>
-          <option value="annually">Annually</option>
-        </select>
-      </div>
-      <button id="calculate">Calculate</button>
-      <div id="result"></div>
-    </div>
+      </nav>
+    </header>
 
-    <script src="scripts.js"></script>
+    <!-- <section id="home" class="section">
+      <div class="container">
+        <h1>Welcome to App Showcase</h1>
+        <p>Showcasing the best apps for your needs.</p>
+      </div>
+    </section> -->
+
+    <!-- <section id="about" class="section">
+      <div class="container">
+        <h2>About Us</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida
+          ultrices mauris, in sagittis nulla interdum vel. Duis laoreet sem nec
+          fermentum congue.
+        </p>
+      </div>
+    </section> -->
+
+    <section id="apps" class="section">
+      <div class="container">
+        <h2>Our Apps</h2>
+        <div class="app-card">
+          <img src="app1.png" alt="App 1" />
+          <h3>VicShelator</h3>
+          <!-- <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida
+            ultrices mauris, in sagittis nulla interdum vel.
+          </p> -->
+          <a href="calculator1.html" class="btn">Learn More</a>
+        </div>
+        <div class="app-card">
+          <img src="app2.png" alt="App 2" />
+          <h3>Compounded Interest</h3>
+          <!-- <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida
+            ultrices mauris, in sagittis nulla interdum vel.
+          </p> -->
+          <a href="calculator.html" class="btn">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Contact Us</h2>
+        <p>Have a question or want to get in touch? Fill out the form below.</p>
+        <form>
+          <input type="text" placeholder="Your Name" />
+          <input type="email" placeholder="Your Email" />
+          <textarea placeholder="Message"></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2023 App Showcase. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
   </body>
 </html>
