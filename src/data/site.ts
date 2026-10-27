@@ -8,6 +8,8 @@ export const site = {
   description:
     'Civil engineer who writes software. Scan-to-BIM, IFC and language models for BIM at the NTU H-Team lab.',
   updated: 'October 2026',
+  /** Google Search Console ownership token (HTML tag method). */
+  googleVerification: 'f4ZfnsPQxpk9m5fOcIrk6kj3okrNVuNj01YGJb_VPLE',
   email: 'viocitovictor@caece.net',
   links: {
     linkedin: 'https://www.linkedin.com/in/victor-jean-viaunel-8abaa320b',
