@@ -32,6 +32,8 @@ export interface Publication {
 
 // Newest first. BibTeX for the ISARC paper is IAARC's own entry. The ICCCBE
 // entry is built from the conference programme (Session 8B, 25 March 2026).
+// The i3CE entry comes from the co-authors' announcement; ASCE proceedings
+// are forthcoming, so it has no DOI or page numbers yet.
 export const publications: Publication[] = [
   {
     key: 'isarc2026',
@@ -63,6 +65,27 @@ export const publications: Publication[] = [
 	editor = {Chen, Qian and Lee, Gaang and Liang, Ci-Jyun and Zhang, Jiansong and Kamat, Vineet},
 	pages = {2410-2414},
 	address = {Singapore}
+}`,
+  },
+  {
+    key: 'i3ce2026',
+    title: 'From Scan to Field: AR Visualization of TLS-Based As-Laid Utility Geometry',
+    authors: ['V. P. Vignesh', SELF, 'V. Senthilkumar', 'S.-H. Hsieh'],
+    authorsFull: ['Vignesh V P', 'Jean Viaunel Victor', 'Senthilkumar V', 'Shang-Hsien Hsieh'],
+    year: 2026,
+    date: '2026-06',
+    venue: 'i3CE 2026, ASCE International Conference on Computing in Civil Engineering, Incheon (proceedings forthcoming)',
+    summary:
+      'Bringing terrestrial laser scans of as-laid underground utilities into the field with augmented reality. Part of an Indo–Taiwan research project supported by DST–GITA.',
+    links: [],
+    bibtex: `@inproceedings{vignesh2026scantofield,
+	year = 2026,
+	month = {June},
+	author = {Vignesh, V. P. and Victor, Jean Viaunel and Senthilkumar, V. and Hsieh, Shang-Hsien},
+	title = {From Scan to Field: AR Visualization of TLS-Based As-Laid Utility Geometry},
+	booktitle = {ASCE International Conference on Computing in Civil Engineering (i3CE 2026)},
+	address = {Incheon, South Korea},
+	note = {Proceedings forthcoming}
 }`,
   },
   {

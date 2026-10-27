@@ -22,7 +22,7 @@ const cards: Record<string, { kicker: string; title: string; sub: string }> = {
   research: {
     kicker: 'Research',
     title: 'Papers and talks',
-    sub: 'Scan-to-BIM with mobile LiDAR and LLM-assisted BIM generation, ISARC and ICCCBE 2026.',
+    sub: 'Scan-to-BIM, LLM-assisted BIM generation and AR for utilities, at ISARC, i3CE and ICCCBE 2026.',
   },
   about: { kicker: 'About', title: 'Two trades, one desk', sub: 'Civil engineer and full-stack developer at National Taiwan University.' },
   now: { kicker: 'Now', title: 'What I’m doing now', sub: 'Research at NTU, MaiSchool, PhotoForge, and helping Haitian students apply in Taiwan.' },
