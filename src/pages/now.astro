@@ -3,7 +3,15 @@ import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 ---
 
-<Base title="Now" current="now" sheet={5} description="What Victor Jean Viaunel is working on right now.">
+<Base
+  title="Now"
+  seoTitle="Now — what Victor Jean Viaunel is working on"
+  current="now"
+  sheet={5}
+  og="now"
+  crumbs={[{ name: 'Now', path: 'now/' }]}
+  description="What Victor Jean Viaunel is working on in October 2026: research at the NTU H-Team lab, MaiSchool, PhotoForge, and helping Haitian students apply in Taiwan."
+>
   <div class="grid-paper">
     <div class="container page page--narrow">
       <div class="page-head">

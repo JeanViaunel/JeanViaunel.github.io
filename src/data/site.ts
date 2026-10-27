@@ -1,6 +1,10 @@
 export const site = {
   name: 'Victor Jean Viaunel',
   nameZh: '韋將',
+  /** How the name appears in publications (family name Victor) and elsewhere. */
+  givenName: 'Jean Viaunel',
+  familyName: 'Victor',
+  altNames: ['Jean Viaunel Victor', 'J. V. Victor', '韋將'],
   description:
     'Civil engineer who writes software. Scan-to-BIM, IFC and language models for BIM at the NTU H-Team lab.',
   updated: 'October 2026',

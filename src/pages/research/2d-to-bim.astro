@@ -6,12 +6,27 @@ import DxfPipeline from '../../components/figures/DxfPipeline.astro';
 import { layerMap } from '../../data/dxf-demo';
 import { publications } from '../../data/publications';
 import { url } from '../../lib/url';
+import { personRef, scholarlyArticle } from '../../lib/seo';
 
 const paper = publications.find((p) => p.key === 'isarc2026')!;
 ---
 
 <Base
   title="From 2D drawings to BIM"
+  og="2d-to-bim"
+  crumbs={[{ name: 'Research', path: 'research/' }, { name: 'From 2D drawings to BIM', path: 'research/2d-to-bim/' }]}
+  schema={[
+    {
+      '@type': 'TechArticle',
+      headline: 'From 2D drawings to BIM: how an LLM turns a DXF floor plan into a multi-storey IFC model',
+      author: personRef(Astro.site),
+      datePublished: '2026-10-27',
+      proficiencyLevel: 'Expert',
+      isBasedOn: scholarlyArticle(paper, Astro.site),
+      mainEntityOfPage: new URL(url('research/2d-to-bim/'), Astro.site).href,
+      image: new URL(url('og/2d-to-bim.png'), Astro.site).href,
+    },
+  ]}
   current="research"
   description="How an LLM orchestrates four tools through MCP to turn a layered DXF floor plan into a multi-storey IFC model. ISARC 2026."
 >

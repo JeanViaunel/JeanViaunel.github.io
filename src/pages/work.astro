@@ -10,7 +10,15 @@ const filters = ['All', ...domains].map((label) => ({
 const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
 ---
 
-<Base title="Work" current="work" sheet={2} description="Projects in reality capture and BIM, computer vision, AI and data, web products and ventures.">
+<Base
+  title="Work"
+  seoTitle="Work: BIM, vision and web projects — Victor Jean Viaunel"
+  current="work"
+  sheet={2}
+  og="work"
+  crumbs={[{ name: 'Work', path: 'work/' }]}
+  description="Projects by Victor Jean Viaunel in scan-to-BIM, computer vision, AI datasets and web products, including MaiSchool and a 15th-place marine debris detector."
+>
   <div class="grid-paper">
     <div class="container page" style="padding-bottom: 0">
       <div class="page-head">

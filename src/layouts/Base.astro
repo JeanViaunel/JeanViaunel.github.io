@@ -5,19 +5,48 @@ import TitleBlock from '../components/TitleBlock.astro';
 import ContactFooter from '../components/ContactFooter.astro';
 import { site } from '../data/site';
 import { url } from '../lib/url';
+import { breadcrumbs, graph, person, website } from '../lib/seo';
 
 interface Props {
+  /** Short page name: nav, title block and breadcrumbs. */
   title?: string;
+  /** Full <title> when it should say more than "title — name". */
+  seoTitle?: string;
   description?: string;
   current?: string;
   sheet?: number;
   contactFooter?: boolean;
+  /** Share image slug, served from /og/<slug>.png. */
+  og?: string;
+  /** Breadcrumb trail after Home, e.g. [{ name: 'Work', path: 'work/' }]. */
+  crumbs?: { name: string; path: string }[];
+  /** Extra schema.org nodes for this page. */
+  schema?: object[];
+  noindex?: boolean;
 }
 
-const { title, description = site.description, current, sheet, contactFooter = false } = Astro.props;
-const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — Civil engineer who writes software`;
+const {
+  title,
+  seoTitle,
+  description = site.description,
+  current,
+  sheet,
+  contactFooter = false,
+  og = 'home',
+  crumbs = [],
+  schema = [],
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = seoTitle ?? (title ? `${title} — ${site.name}` : `${site.name} — Civil engineer who writes software`);
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL(url('images/victor.jpg'), Astro.site);
+const ogImage = new URL(url(`og/${og}.png`), Astro.site);
+const ld = graph(
+  website(Astro.site),
+  person(Astro.site),
+  ...(crumbs.length ? [breadcrumbs(Astro.site, [{ name: 'Home', path: '' }, ...crumbs])] : []),
+  ...schema,
+);
 ---
 
 <!doctype html>
@@ -27,18 +56,30 @@ const ogImage = new URL(url('images/victor.jpg'), Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+    <meta name="author" content={site.name} />
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="icon" type="image/png" sizes="48x48" href={url('favicon-48.png')} />
+    <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
     <meta name="theme-color" content="#FAFAF7" />
+    <link rel="sitemap" href={url('sitemap.xml')} />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={schema.length ? 'article' : 'website'} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta name="twitter:card" content="summary" />
-    <link rel="sitemap" href={url('sitemap.xml')} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${title ?? site.name}: ${description}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <slot name="head" />
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

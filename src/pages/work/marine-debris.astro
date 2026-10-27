@@ -6,6 +6,7 @@ import LeaderboardChart from '../../components/charts/LeaderboardChart.astro';
 import { facts, leaderboard, submissions } from '../../data/marine-debris';
 import { fmtDelta, fmtScore } from '../../lib/format';
 import { url } from '../../lib/url';
+import { personRef } from '../../lib/seo';
 
 // Every number in the prose is derived here from the data, so text and charts agree.
 const bestBy = (iso: string) => Math.max(...submissions.filter((s) => s.at <= iso).map((s) => s.score));
@@ -37,6 +38,19 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
 
 <Base
   title="Marine debris detection"
+  og="marine-debris"
+  crumbs={[{ name: 'Work', path: 'work/' }, { name: 'Marine debris detection', path: 'work/marine-debris/' }]}
+  schema={[
+    {
+      '@type': 'Article',
+      headline: 'Marine debris detection: 37 submissions to 15th of 69 teams',
+      author: personRef(Astro.site),
+      datePublished: '2026-10-27',
+      about: 'International AI Challenge on Marine Debris Image Recognition 2026',
+      mainEntityOfPage: new URL(url('work/marine-debris/'), Astro.site).href,
+      image: new URL(url('og/marine-debris.png'), Astro.site).href,
+    },
+  ]}
   current="work"
   description={`Case study: ${submissions.length} submissions took our marine debris detector from ${fmtScore(first, 3)} to ${fmtScore(best, 3)} mAP@0.5, finishing ${us.privateRank}th of ${facts.teamsEntered} teams.`}
 >

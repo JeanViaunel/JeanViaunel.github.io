@@ -6,7 +6,11 @@ export interface Publication {
   title: string;
   /** Full author list in published order; include SELF where I appear. */
   authors: string[];
+  /** Full names for structured data, in published order. */
+  authorsFull: string[];
   year: number;
+  /** ISO date (or year-month) of publication or presentation. */
+  date: string;
   venue?: string;
   summary: string;
   /** Internal page explaining the work, if there is one. */
@@ -22,7 +26,9 @@ export const publications: Publication[] = [
     key: 'isarc2026',
     title: 'From 2D Drawings to BIM Models: An LLM-Assisted Approach',
     authors: [SELF, 'P. Kumar', 'S.-H. Hsieh'],
+    authorsFull: ['Jean Viaunel Victor', 'Pavan Kumar', 'Shang-Hsien Hsieh'],
     year: 2026,
+    date: '2026-06',
     venue: 'Proceedings of the 43rd ISARC, Singapore, 2026, pp. 2410–2414',
     summary:
       'An LLM orchestrates four tools through the Model Context Protocol to turn a layered DXF floor plan and a plain-language request into a multi-storey IFC model.',
@@ -50,7 +56,9 @@ export const publications: Publication[] = [
     key: 'icccbe2026',
     title: 'A Review on Scan-to-BIM for Building Energy Retrofit',
     authors: [SELF, 'Y.-T. Chang', 'S.-H. Hsieh'],
+    authorsFull: ['Jean Viaunel Victor', 'Yun-Tsui Chang', 'Shang-Hsien Hsieh'],
     year: 2026,
+    date: '2026-03-25',
     venue: 'ICCCBE 2026, International Conference on Computing in Civil and Building Engineering',
     summary:
       'A systematic review of scan-to-BIM methods, read through one question: what does a team retrofitting an older building for energy performance need from the model?',
@@ -70,7 +78,9 @@ export const publications: Publication[] = [
     title:
       'Revisit Public Housing Design in Taiwan: Automated Design and Evaluation Workflow Integrating Shape Machine and Local Data',
     authors: ['J.-C. Chang', 'C.-T. Yang', SELF, 'et al.'],
+    authorsFull: ['J.-C. Chang', 'C.-T. Yang', 'Jean Viaunel Victor'],
     year: 2025,
+    date: '2025',
     summary:
       'An automated workflow that generates public housing designs with Shape Machine and evaluates them against local data.',
     links: [],

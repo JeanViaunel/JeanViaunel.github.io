@@ -5,6 +5,7 @@ import SectionHead from '../components/SectionHead.astro';
 import { publications } from '../data/publications';
 import { site } from '../data/site';
 import { url } from '../lib/url';
+import { scholarlyArticle } from '../lib/seo';
 
 const areas = [
   {
@@ -16,7 +17,16 @@ const areas = [
 ];
 ---
 
-<Base title="Research" current="research" sheet={3} description="Papers and talks on scan-to-BIM, IFC and language models for BIM, from the NTU H-Team lab.">
+<Base
+  title="Research"
+  seoTitle="Scan-to-BIM and LLM research — Victor Jean Viaunel"
+  current="research"
+  sheet={3}
+  og="research"
+  crumbs={[{ name: 'Research', path: 'research/' }]}
+  schema={publications.map((p) => scholarlyArticle(p, Astro.site))}
+  description="Papers by Jean Viaunel Victor (NTU H-Team lab) on scan-to-BIM with mobile LiDAR, IFC and LLM-assisted BIM generation, at ISARC and ICCCBE 2026."
+>
   <div class="grid-paper">
     <div class="container page" style="padding-bottom: clamp(32px, 4vw, 48px)">
       <div class="page-head">
@@ -25,7 +35,7 @@ const areas = [
         <p class="lede" style="max-width: 40rem">
           I'm an assistant researcher in Prof. Shang-Hsien (Patrick) Hsieh's H-Team lab at National
           Taiwan University. My work is on scan-to-BIM, IFC and using language models to build BIM
-          models faster.
+          models faster. My papers list me as Jean Viaunel Victor.
         </p>
         <div class="chip-row" style="margin-top: 26px">
           <a href={url('publications.bib')} download="victor-jean-viaunel.bib" class="btn btn--sm">Download all as BibTeX <span class="arrow" aria-hidden="true">↓</span></a>

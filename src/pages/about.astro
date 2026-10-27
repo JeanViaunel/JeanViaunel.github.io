@@ -5,6 +5,7 @@ import Base from '../layouts/Base.astro';
 import SectionHead from '../components/SectionHead.astro';
 import { site } from '../data/site';
 import { url } from '../lib/url';
+import { personRef } from '../lib/seo';
 
 // Only show a CV button once its PDF is actually in public/cv/.
 const hasFile = (p: string) => fs.existsSync(path.join(process.cwd(), 'public', p));
@@ -76,7 +77,16 @@ const tools = [
 ];
 ---
 
-<Base title="About" current="about" sheet={4} description="Civil engineer and software developer: structures, BIM, reality capture and the software that connects them.">
+<Base
+  title="About"
+  seoTitle="About Victor Jean Viaunel, civil engineer and developer"
+  current="about"
+  sheet={4}
+  og="about"
+  crumbs={[{ name: 'About', path: 'about/' }]}
+  schema={[{ '@type': 'ProfilePage', url: new URL(url('about/'), Astro.site).href, mainEntity: personRef(Astro.site) }]}
+  description="Victor Jean Viaunel (韋將) is a civil engineer and full-stack developer at National Taiwan University. Experience, education, toolbox and CV downloads."
+>
   <div class="grid-paper">
     <div class="container page">
       <section class="intro">
@@ -95,6 +105,7 @@ const tools = [
         <div class="intro-copy page-head">
           <p class="eyebrow">About</p>
           <h1 class="page-title">Two trades, one desk</h1>
+          <p class="aka">Published as Jean Viaunel Victor. In Chinese, <span lang="zh-Hant">韋將</span>.</p>
           <div class="prose">
             <p>I came to engineering through structures: ETABS, SAP2000, SAFE, Revit and AutoCAD during my civil engineering degree at NYCU, then as a structural engineering intern at Envision. I came to software through stubbornness, working through Andrew Ng's deep learning courses on the side until I could build things on my own.</p>
             <p>The work I enjoy most needs both. My master's at NTU was about getting usable BIM out of messy scans, and I stayed on in the H-Team lab as an assistant researcher, where I also assist in Prof. Hsieh's BIM course.</p>
