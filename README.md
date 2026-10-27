@@ -1,9 +1,11 @@
 # Victor Jean Viaunel — portfolio
 
-Personal site built with [Astro](https://astro.build) as a fully static build and deployed to GitHub Pages.
+Personal site at **https://jeanviaunel.github.io**, built with [Astro](https://astro.build) as a fully
+static site and deployed to GitHub Pages.
 
-Pages: Home, Work (filterable), Research, About (with CV), Now, plus a 404 page and a generated
-`publications.bib`.
+Pages: Home, Work (filterable), Research, About (with CV downloads), Now, two case studies
+(`/work/marine-debris/` and `/research/2d-to-bim/`), and a 404 page. The build also generates
+`publications.bib`, `sitemap.xml`, `robots.txt`, share images under `/og/` and the favicons.
 
 ## Develop
 
@@ -19,41 +21,94 @@ npm run check    # type check
 
 ## Edit content
 
+Every project, paper and news item is written **once**, in `src/data/`. Home, Work, Research, the
+case studies and the share images all read from those files, so a change there shows up everywhere.
+
 | What | Where |
 | --- | --- |
-| Name, email, social links, "last updated" | `src/data/site.ts` |
-| Work page projects and filter categories | `src/data/projects.ts` |
-| Publications and BibTeX | `src/data/publications.ts` |
+| Name, name variants, email, links, "last updated", Search Console token | `src/data/site.ts` |
+| Projects (Work page, Home cards, filter categories) | `src/data/projects.ts` |
+| Papers (Research page, Home research list, BibTeX, structured data) | `src/data/publications.ts` |
+| News list on Home | `src/data/news.ts` |
+| Marine debris case study: submissions and both leaderboards | `src/data/marine-debris.ts` |
+| 2D-to-BIM figure: the floor plan, request and layer table | `src/data/dxf-demo.ts` |
 | Experience, education, toolbox | `src/pages/about.astro` |
 | Now page | `src/pages/now.astro` |
-| Colours, type, spacing | `src/styles/global.css` (tokens at the top) |
+| Share image text per page | `src/pages/og/[slug].png.ts` |
 
-**CV downloads:** put the PDFs at `public/cv/victor-jean-viaunel-resume.pdf` and
-`public/cv/victor-jean-viaunel-academic-cv.pdf`. The download buttons on the About page appear for
-each file that exists. Until then the page shows a "Request my CV" email button.
+### Fields that control what appears where
 
-**Project links:** a project in `projects.ts` with an `href` renders as a clickable card. Without one
-it renders as a plain card, which suits projects with no write-up yet.
+**Projects** (`projects.ts`)
+
+| Field | Effect |
+| --- | --- |
+| `text` | Full description, shown on the Work page. |
+| `short` | Optional teaser for Home. Keep it a shortened `text`, never a different claim. Without it, Home shows `text`. |
+| `featured` | `1`, `2` or `3` puts the project on Home in that position. Featured projects also need an illustration in `src/components/ProjectArt.astro`, matched by `id`. |
+| `results` / `stack` | Orange outcome tags and grey tool tags. |
+| `href` + `cta` | Makes the card clickable. Without `href` it renders as a plain card, which suits projects with no write-up yet. |
+| `vt` | Shared-element name: the card title morphs into the page heading. Use the same value on that page's `<h1 data-vt style="--vt: …">`. |
+
+**Papers** (`publications.ts`)
+
+| Field | Effect |
+| --- | --- |
+| `summary` | Shown on the Research page. |
+| `short` | Optional teaser for Home, a shortened `summary`. |
+| `featured` + `meta` | `featured: true` lists the paper under Selected research on Home; `meta` gives its margin lines (venue, kind, place or date). |
+| `authors` / `authorsFull` | Short names for display (your name in bold) and full names for search engines. |
+| `page` | An internal explainer page, shown as a "How it works" link. |
+| `bibtex` | Used by "Copy BibTeX" and the generated `publications.bib`. |
+
+**CV downloads:** the PDFs live at `public/cv/victor-jean-viaunel-resume.pdf` and
+`public/cv/victor-jean-viaunel-academic-cv.pdf`. Each About-page download button appears only if its
+file exists. With neither, the page shows a "Request my CV" email button.
+
+## Styles
+
+`src/styles/global.css` imports one file per concern, in cascade order:
+
+| File | Covers |
+| --- | --- |
+| `base.css` | Design tokens (colours, fonts, motion timings), reset, base elements |
+| `layout.css` | Containers, type, page heads, numbered section heads |
+| `components.css` | Buttons, tags, viewfinder frame, header, title-block footer, contact band |
+| `pages.css` | Page-specific styles: Home, Work, Research, About, Now, phone tweaks |
+| `motion.css` | All animation, plus the reduced-motion overrides |
+| `charts.css` | Case-study pages and the build-time SVG charts |
+| `pipeline.css` | The 2D-to-BIM figure, in tab mode and pinned scroll mode |
 
 ## Design and motion
 
-The site reads as an engineering drawing set: numbered sections, a drafting grid behind page
-headers, and a title-block footer with a sheet number on every page.
+The site reads as an engineering drawing set: numbered sections, a drafting grid behind page headers,
+and a title-block footer with a sheet number on every page.
+
+Motion uses one system, defined in `base.css`. There are three UI durations: `--dur-fast` (180 ms),
+`--dur-base` (320 ms) and `--dur-slow` (640 ms). `--dur-draw` (1200 ms) is for illustrations that draw
+themselves. There are two curves: `--ease` for things arriving and `--ease-std` for things changing.
+
+| Behaviour | How to use it |
+| --- | --- |
+| Fade in on scroll | `data-reveal`, plus `style="--d: 1"` to stagger. Reserved for section heads, figures and card grids; body text should simply appear. |
+| Trigger without a fade | `data-inview` adds `.is-in` when the element scrolls into view (used by drawings and timeline dots). |
+| Heading rises line by line | `data-lines` on a heading. |
+| Number counts up | `<span data-count="0.7917" data-decimals="4">0.7917</span>` |
+| Card-to-page morph | `data-vt` with `--vt` (see Projects above). |
 
 | Piece | Where |
 | --- | --- |
-| Hero scan-to-model figure (canvas points, SVG model, draggable divider) | `src/components/ScanFigure.astro` |
-| Scroll reveals, header progress line, About timeline, copy buttons | `src/scripts/motion.ts` |
-| All animations | the `prefers-reduced-motion: no-preference` block at the end of `src/styles/global.css` |
+| Hero scan-to-model figure | `src/components/ScanFigure.astro` |
+| 2D-to-BIM pipeline (pinned scroll on large screens, tabs elsewhere) | `src/components/figures/DxfPipeline.astro` |
+| Case-study charts | `src/components/charts/` |
+| Reveals, line headings, count-ups, header progress, copy buttons | `src/scripts/motion.ts` |
 
-Add `data-reveal` to any element to fade it in on scroll, and `style="--d: 1"` to stagger it.
-Visitors who ask their system for reduced motion get a fully static site.
+Visitors who ask their system for reduced motion get a static site. Append `?pin` to the 2D-to-BIM
+page to force pinned mode on a small screen when testing.
 
 ## Deploy to GitHub Pages
 
-1. Push this repo to GitHub on the `main` branch.
-2. In the repo, open **Settings → Pages** and set **Source** to **GitHub Actions**.
-3. Every push to `main` runs `.github/workflows/deploy.yml`, which builds and publishes the site.
+Every push to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes it. In
+the repo's **Settings → Pages**, the source must be **GitHub Actions**.
 
 The workflow reads the Pages URL from GitHub, so links work either way:
 

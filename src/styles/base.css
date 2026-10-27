@@ -1,0 +1,108 @@
+/* Tokens, reset and base elements. */
+
+/* The site as a drawing set: paper, graphite and one accent, IBM Plex Sans and Mono. */
+:root {
+  --paper: #fafaf7;
+  --surface: #ffffff;
+  --sunk: #f1f2ee;
+  --graphite: #1a1d21;
+  --body: #3a3f46;
+  --muted: #5a6068;
+  --rule: #dedfda;
+  --tick: #9aa0a6;
+  --grid: rgba(26, 29, 33, 0.055);
+  --accent: #c2410c;
+  --accent-ink: #9a3412;
+  --accent-wash: #fbede6;
+  --accent-soft: #f4a37c;
+
+  --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --content: 1152px;
+  --gutter: clamp(16px, 4vw, 32px);
+  --header-h: 64px;
+
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 640ms;
+  --dur-draw: 1200ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-std: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in-out: var(--ease-std);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: calc(var(--header-h) + 24px);
+  /* A constant viewport width, so page transitions never abort on a scrollbar change */
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--graphite);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body > main {
+  flex: 1;
+}
+
+::selection {
+  background: var(--accent-wash);
+  color: var(--accent-ink);
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+a {
+  color: var(--graphite);
+}
+a:hover {
+  color: var(--accent);
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 30;
+  background: var(--graphite);
+  color: var(--paper);
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+.skip-link:focus {
+  top: 12px;
+  color: var(--paper);
+}

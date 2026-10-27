@@ -1,0 +1,530 @@
+/* The 2D-to-BIM pipeline figure: tab mode and pinned scroll mode. */
+
+/* =========================================================
+   Pipeline figure (2D drawings to BIM)
+   ========================================================= */
+.stats .stats-text {
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  letter-spacing: -0.02em;
+}
+.pipe {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.pipe-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  margin-bottom: 12px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+}
+.pipe-head > div {
+  padding: 16px 20px;
+}
+.pipe-head > div + div {
+  border-left: 1px solid var(--rule);
+}
+.pipe-head p {
+  margin: 8px 0 0;
+  line-height: 1.55;
+}
+.pipe-request p {
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  color: var(--graphite);
+}
+.pipe-llm p {
+  font-size: 0.95rem;
+  color: var(--body);
+}
+@media (max-width: 760px) {
+  .pipe-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pipe-head > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+  }
+}
+
+.pipe-controls {
+  display: none;
+  align-items: stretch;
+  border-bottom: 1px solid var(--rule);
+}
+.pipe.is-interactive .pipe-controls {
+  display: flex;
+}
+.pipe-tabs {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.pipe-tabs [role='tab'] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 10px 14px;
+  border: 0;
+  border-right: 1px solid var(--rule);
+  background: transparent;
+  font: 500 0.9rem var(--sans);
+  color: var(--muted);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color var(--dur-fast),
+    background var(--dur-fast);
+}
+.pipe-tabs [role='tab']:hover {
+  color: var(--graphite);
+  background: #fbfbf9;
+}
+.pipe-tabs [role='tab'][aria-selected='true'] {
+  color: var(--graphite);
+  background: #fbfbf9;
+}
+.pipe-tabs [role='tab']:focus-visible {
+  outline-offset: -3px;
+}
+.pipe-tabs .n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  font: 500 0.75rem var(--mono);
+  transition:
+    background var(--dur-fast),
+    color var(--dur-fast),
+    border-color var(--dur-fast);
+}
+.pipe-tabs [aria-selected='true'] .n,
+.pipe-tabs .is-done .n {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.pipe-tabs .bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.pipe-tabs .is-done .bar {
+  transform: scaleX(1);
+  opacity: 0.35;
+}
+.pipe-tabs [aria-selected='true'] .bar {
+  transform: scaleX(1);
+}
+.pipe-play {
+  flex: none;
+  min-width: 76px;
+  border: 0;
+  background: transparent;
+  font: 500 0.82rem var(--mono);
+  color: var(--muted);
+  cursor: pointer;
+}
+.pipe-play:hover {
+  color: var(--accent);
+}
+@media (max-width: 760px) {
+  .pipe-tabs .t {
+    display: none;
+  }
+  .pipe-tabs [role='tab'] {
+    justify-content: center;
+  }
+}
+
+.pipe-step {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  border-bottom: 1px solid var(--rule);
+}
+.pipe.is-interactive .pipe-step {
+  display: none;
+  border-bottom: 0;
+}
+.pipe.is-interactive .pipe-step.is-active {
+  display: grid;
+}
+@media (max-width: 860px) {
+  .pipe-step {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.pipe-art {
+  padding: 12px;
+  border-right: 1px solid var(--rule);
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+@media (max-width: 860px) {
+  .pipe-art {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+}
+.pipe-art svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.pipe-notes {
+  padding: 22px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pipe-notes h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+.pipe-sub {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  counter-reset: sub;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pipe-sub li {
+  counter-increment: sub;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+}
+.pipe-sub li::before {
+  content: counter(sub);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: var(--sunk);
+  font: 500 0.7rem var(--mono);
+  color: var(--body);
+}
+.pipe-passes {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pipe-passes li {
+  font: 0.78rem var(--mono);
+  padding: 4px 9px;
+  border-radius: 4px;
+  background: var(--sunk);
+  color: var(--muted);
+  transition:
+    background var(--dur-base),
+    color var(--dur-base);
+}
+.pipe-passes li.is-on {
+  background: var(--accent-wash);
+  color: var(--accent-ink);
+}
+.pipe-out {
+  margin: auto 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.pipe-out .kicker {
+  display: block;
+  margin-bottom: 4px;
+}
+.pipe figcaption {
+  margin: 0;
+  padding: 10px 16px 12px;
+  border-top: 1px solid var(--rule);
+}
+
+/* Drawing styles: CAD plan */
+.cad-grid line {
+  stroke: var(--accent);
+  stroke-width: 0.6;
+  stroke-dasharray: 8 3 2 3;
+  opacity: 0.55;
+}
+.cad-grid circle {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+.cad-grid text {
+  font: 500 10px var(--mono);
+  fill: var(--accent-ink);
+  text-anchor: middle;
+}
+.cad-wall rect {
+  fill: var(--graphite);
+}
+.cad-wind rect {
+  fill: var(--surface);
+  stroke: #5a6068;
+  stroke-width: 0.8;
+}
+.cad-wind line {
+  stroke: #5a6068;
+  stroke-width: 0.8;
+}
+.cad-door path {
+  fill: none;
+  stroke: #5a6068;
+  stroke-width: 0.9;
+}
+.cad-cols rect {
+  fill: var(--graphite);
+}
+.cad-stair rect,
+.cad-stair line,
+.cad-furn rect,
+.cad-furn line {
+  fill: none;
+  stroke: #a3a8ae;
+  stroke-width: 0.7;
+}
+
+/* Rooms */
+.rm-walls rect {
+  fill: #c9cbc4;
+}
+.rm-rooms rect {
+  fill: var(--accent-wash);
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+.rm-rooms text {
+  font: 500 11px var(--mono);
+  fill: var(--accent-ink);
+  text-anchor: middle;
+}
+.rm-close line {
+  stroke: var(--accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+/* Isometric */
+.iso-footprint {
+  fill: none;
+  stroke: #c9cbc4;
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+.f-top {
+  fill: #ffffff;
+}
+.f-front {
+  fill: #e6e7e2;
+}
+.f-right {
+  fill: #cfd1cb;
+}
+.f-top,
+.f-front,
+.f-right {
+  stroke: var(--graphite);
+  stroke-width: 0.5;
+  stroke-linejoin: round;
+}
+.iso-cols .f-top {
+  fill: #f1f2ee;
+}
+.iso-open path {
+  fill: #2c3138;
+  stroke: var(--graphite);
+  stroke-width: 0.5;
+}
+.iso-roof .f-top {
+  fill: #5a6068;
+}
+.lvl-lead {
+  stroke: var(--tick);
+  stroke-width: 1;
+}
+.lvl {
+  font-size: 11px;
+}
+.lvl-name {
+  font-weight: 600;
+  fill: var(--graphite);
+}
+.lvl-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  fill: var(--muted);
+}
+
+/* Generate IFC passes in tab mode: (a) columns, (b) walls, (c) openings */
+.pipe:not(.is-pinned)[data-pass='0'] .iso-walls,
+.pipe:not(.is-pinned)[data-pass='0'] .iso-open,
+.pipe:not(.is-pinned)[data-pass='1'] .iso-open {
+  opacity: 0;
+}
+.pipe:not(.is-pinned)[data-pass='1'] .iso-cols,
+.pipe:not(.is-pinned)[data-pass='2'] .iso-cols {
+  opacity: 0;
+}
+
+/* ---------- Pinned, scroll-driven mode (large screens) ----------
+   The figure sticks below the header while the page scrolls through
+   a tall wrapper. --sp (0 to 1) is how far the current stage has run. */
+.pipe-scroll.is-pinned {
+  height: calc(4 * 85vh + 100vh);
+}
+.pipe-scroll.is-pinned .pipe {
+  position: sticky;
+  top: calc(var(--header-h) + 12px);
+}
+.pipe.is-pinned .pipe-art svg {
+  max-height: calc(100vh - var(--header-h) - 150px);
+  margin: 0 auto;
+}
+.pipe.is-pinned .pipe-notes {
+  max-height: calc(100vh - var(--header-h) - 130px);
+  overflow: auto;
+}
+.pipe.is-pinned .pipe-play {
+  display: none;
+}
+.pipe.is-pinned .pipe-tabs [aria-selected='true'] .bar {
+  transform: scaleX(var(--sp, 1));
+}
+.pipe.is-pinned .pipe-sub li {
+  opacity: clamp(0.35, calc((var(--sp, 1) * 4 - var(--k)) * 1.5), 1);
+}
+/* 1 Parse DXF: layers arrive in the order the parser reads them */
+.pipe.is-pinned .cad-grid {
+  opacity: clamp(0, calc(var(--sp, 1) * 6), 1);
+}
+.pipe.is-pinned .cad-wall {
+  opacity: clamp(0, calc((var(--sp, 1) - 0.12) * 6), 1);
+}
+.pipe.is-pinned .cad-wind,
+.pipe.is-pinned .cad-door {
+  opacity: clamp(0, calc((var(--sp, 1) - 0.32) * 6), 1);
+}
+.pipe.is-pinned .cad-cols {
+  opacity: clamp(0, calc((var(--sp, 1) - 0.5) * 6), 1);
+}
+.pipe.is-pinned .cad-stair,
+.pipe.is-pinned .cad-furn {
+  opacity: clamp(0, calc((var(--sp, 1) - 0.68) * 6), 1);
+}
+/* 2 Detect rooms: gaps close, then rooms fill one by one */
+.pipe.is-pinned .rm-close {
+  opacity: clamp(0, calc(var(--sp, 1) * 5), 1);
+}
+.pipe.is-pinned .rm-rooms g {
+  opacity: clamp(0, calc((var(--sp, 1) - 0.18 - var(--k) * 0.075) * 7), 1);
+}
+/* 3 Generate IFC: columns rise, walls rise as columns hand over, openings cut */
+.pipe.is-pinned .iso-cols,
+.pipe.is-pinned .iso-walls {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.pipe.is-pinned .iso-cols {
+  transform: scaleY(clamp(0.04, calc(var(--sp, 1) * 3.5), 1));
+  opacity: calc(1 - clamp(0, calc((var(--sp, 1) - 0.42) * 6), 1));
+}
+.pipe.is-pinned .iso-walls {
+  transform: scaleY(clamp(0.04, calc((var(--sp, 1) - 0.3) * 3), 1));
+  opacity: clamp(0, calc((var(--sp, 1) - 0.3) * 10), 1);
+}
+.pipe.is-pinned .iso-open {
+  opacity: clamp(0, calc((var(--sp, 1) - 0.68) * 5), 1);
+}
+/* 4 Multi-storey: each floor drops into place in turn */
+.pipe.is-pinned .iso-storey {
+  --t: clamp(0, calc((var(--sp, 1) - var(--i) * 0.14) * 6), 1);
+  opacity: var(--t);
+  transform: translateY(calc((1 - var(--t)) * -18px));
+}
+
+/* ---------- Tab mode: each stage plays when shown ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .pipe.is-ticking .pipe-tabs [aria-selected='true'] .bar {
+    animation: tick var(--step-ms, 6500ms) linear both;
+  }
+  @keyframes tick {
+    from {
+      transform: scaleX(0);
+    }
+  }
+  .pipe.is-interactive:not(.is-pinned) .pipe-step.is-active .pipe-art svg,
+  .pipe.is-interactive .pipe-step.is-active .pipe-notes > * {
+    animation: rise-in var(--dur-base) var(--ease) both;
+  }
+  .pipe.is-interactive .pipe-step.is-active .pipe-notes > :nth-child(2) {
+    animation-delay: 40ms;
+  }
+  .pipe.is-interactive .pipe-step.is-active .pipe-notes > :nth-child(n + 3) {
+    animation-delay: 80ms;
+  }
+  .pipe:not(.is-pinned) .pipe-step.is-active .pipe-sub li {
+    animation: rise-in var(--dur-base) var(--ease) both;
+    animation-delay: calc(200ms + var(--k) * 100ms);
+  }
+  .pipe:not(.is-pinned) .pipe-step.is-active .rm-close line {
+    animation: fade-in var(--dur-base) var(--ease) 150ms both;
+  }
+  .pipe:not(.is-pinned) .pipe-step.is-active .rm-rooms g {
+    animation: fade-in var(--dur-base) var(--ease) both;
+    animation-delay: calc(450ms + var(--k) * 100ms);
+  }
+  .pipe:not(.is-pinned) .iso-cols,
+  .pipe:not(.is-pinned) .iso-walls,
+  .pipe:not(.is-pinned) .iso-open {
+    transition: opacity var(--dur-slow) var(--ease);
+  }
+  .pipe:not(.is-pinned) .pipe-step.is-active .iso-cols,
+  .pipe:not(.is-pinned) .pipe-step.is-active .iso-walls {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: extrude var(--dur-slow) var(--ease) both;
+  }
+  @keyframes extrude {
+    from {
+      transform: scaleY(0.08);
+    }
+  }
+  .pipe:not(.is-pinned) .pipe-step.is-active .iso-storey {
+    animation: storey-in var(--dur-slow) var(--ease) both;
+    animation-delay: calc(150ms + var(--i) * 220ms);
+  }
+  @keyframes storey-in {
+    from {
+      opacity: 0;
+      transform: translateY(-18px);
+    }
+  }
+}

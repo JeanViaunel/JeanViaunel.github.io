@@ -1,0 +1,329 @@
+/* The motion system and the reduced-motion overrides. */
+
+/* =========================================================
+   Motion. One system for the whole site:
+     --dur-fast  180ms   state changes: hover, press, toggles
+     --dur-base  320ms   small entrances and UI responses
+     --dur-slow  640ms   section, heading and figure entrances
+     --dur-draw  1200ms  illustrations that draw themselves
+     --ease      emphasised (expo out): things arriving
+     --ease-std  standard: things changing state
+   Only section headings, figures and card grids reveal on scroll;
+   body text simply appears. Everything here is skipped when the
+   visitor asks for reduced motion.
+   ========================================================= */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* ---------- Page transitions ----------
+     A quiet crossfade, while shared elements (a project's title)
+     morph from the card into the page heading. */
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root) {
+    animation: vt-out var(--dur-fast) var(--ease-std) both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-in var(--dur-base) var(--ease) both;
+  }
+  ::view-transition-group(*) {
+    animation-duration: var(--dur-slow);
+    animation-timing-function: var(--ease);
+  }
+  html:not(.vt-filter) [data-vt] {
+    view-transition-name: var(--vt);
+  }
+  /* Work filters: only the cards move; the page itself stays put */
+  html.vt-filter::view-transition-old(root),
+  html.vt-filter::view-transition-new(root) {
+    animation: none;
+  }
+  html.vt-filter .project-card {
+    view-transition-name: var(--vtn);
+  }
+  @keyframes vt-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes vt-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+
+  /* ---------- Headings rise line by line ---------- */
+  .js [data-lines]:not(.is-split) {
+    opacity: 0;
+    animation: unhide 0s 1.5s forwards; /* never leave a heading hidden if the script fails */
+  }
+  @keyframes unhide {
+    to {
+      opacity: 1;
+    }
+  }
+  .is-split .h-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+  .is-split .h-word > span {
+    animation: line-up var(--dur-slow) var(--ease) both;
+    animation-delay: calc(var(--line, 0) * 110ms + var(--lines-delay, 0ms));
+  }
+  @keyframes line-up {
+    from {
+      transform: translateY(105%);
+    }
+  }
+  .hero h1 {
+    --lines-delay: 120ms;
+  }
+  .hl::after {
+    animation: underline var(--dur-slow) var(--ease) 760ms both;
+  }
+  @keyframes underline {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  /* ---------- Page openings ---------- */
+  .page-head > :not(h1) {
+    animation: rise-in var(--dur-slow) var(--ease) 260ms both;
+  }
+  .page-head > .eyebrow:first-child {
+    animation-delay: 0ms;
+  }
+  .pills > li {
+    animation: rise-in var(--dur-base) var(--ease) both;
+    animation-delay: calc(var(--d) * 60ms);
+  }
+  .hero .lede {
+    animation: rise-in var(--dur-slow) var(--ease) 420ms both;
+  }
+  .hero .btn-row {
+    animation: rise-in var(--dur-slow) var(--ease) 500ms both;
+  }
+  .scan-fig {
+    animation: rise-in var(--dur-slow) var(--ease) 200ms both;
+  }
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  /* ---------- Scroll reveals ----------
+     They move with `translate`, leaving `transform` to hover effects. */
+  .js [data-reveal] {
+    opacity: 0;
+    translate: 0 12px;
+    transition:
+      opacity var(--dur-slow) var(--ease) calc(var(--d, 0) * var(--dur-fast)),
+      translate var(--dur-slow) var(--ease) calc(var(--d, 0) * var(--dur-fast));
+  }
+  .js [data-reveal].is-in {
+    opacity: 1;
+    translate: none;
+  }
+  .js .feature-card[data-reveal],
+  .js .project-card[data-reveal] {
+    transition:
+      opacity var(--dur-slow) var(--ease) calc(var(--d, 0) * var(--dur-fast)),
+      translate var(--dur-slow) var(--ease) calc(var(--d, 0) * var(--dur-fast)),
+      border-color var(--dur-fast) var(--ease-std);
+  }
+
+  /* Section rules draw left to right; the heading fades in on top */
+  .js .sec-head[data-reveal] {
+    translate: none;
+  }
+  .js .sec-head::before {
+    transform: scaleX(0);
+    transition: transform var(--dur-slow) var(--ease);
+  }
+  .js .sec-head.is-in::before {
+    transform: scaleX(1);
+  }
+  .js .sec-head > * {
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-std) 120ms;
+  }
+  .js .sec-head.is-in > * {
+    opacity: 1;
+  }
+
+  /* Numbers count up once; fixed-width digits only while counting */
+  [data-count].is-counting {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Card illustrations act out their project on hover ---------- */
+  .art-beam {
+    opacity: 0;
+  }
+  .feature-card:hover .art-beam {
+    animation: art-sweep var(--dur-draw) var(--ease-std) both;
+  }
+  @keyframes art-sweep {
+    0% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+    12% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(280px);
+    }
+  }
+  .art-cell {
+    transition: transform var(--dur-slow) var(--ease);
+  }
+  .feature-card:hover .art-cell {
+    transform: translate(44px, 20px);
+  }
+  .art-cta {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform var(--dur-base) var(--ease) 120ms;
+  }
+  .feature-card:hover .art-cta {
+    transform: scale(1.06);
+  }
+  .feature-card:hover .art-wave {
+    animation: wave 2.4s linear infinite;
+  }
+  @keyframes wave {
+    to {
+      transform: translateX(-80px);
+    }
+  }
+  .feature-card:hover .art-box {
+    animation: draw var(--dur-slow) var(--ease) both;
+    animation-delay: calc(var(--d) * 120ms);
+  }
+  .feature-card:hover .art-tag {
+    animation: rise-in var(--dur-base) var(--ease) both;
+    animation-delay: calc(var(--d) * 120ms + 300ms);
+  }
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* ---------- Drawings that run when they come into view ---------- */
+  .js .paper .draw {
+    stroke-dashoffset: 1;
+  }
+  .js .paper.is-in .draw {
+    animation: draw var(--dur-draw) var(--ease) both;
+    animation-delay: calc(var(--d, 0) * 100ms + 150ms);
+  }
+  .js .paper .fade {
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-std) 900ms;
+  }
+  .js .paper.is-in .fade {
+    opacity: 1;
+  }
+  .js .portrait-wrap.is-in .portrait-scan {
+    animation: portrait-scan var(--dur-draw) var(--ease-std) 300ms both;
+  }
+  @keyframes portrait-scan {
+    0% {
+      opacity: 1;
+      transform: translateY(-100%);
+    }
+    85% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(250%);
+    }
+  }
+  .js .entry[data-inview]::before {
+    transform: scale(0);
+    transition: transform var(--dur-base) var(--ease) 150ms;
+  }
+  .js .entry[data-inview].is-in::before {
+    transform: scale(1);
+  }
+
+  /* ---------- Ambient ---------- */
+  .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2.2s var(--ease) infinite;
+  }
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(3);
+      opacity: 0;
+    }
+  }
+  .contact::before {
+    animation: drift 40s linear infinite;
+  }
+  @keyframes drift {
+    to {
+      transform: translate(36px, 18px);
+    }
+  }
+  .contact-email:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+
+  /* ---------- Mobile menu ---------- */
+  .js .nav-links.is-open > * {
+    animation: rise-in var(--dur-base) var(--ease) both;
+  }
+  .js .nav-links.is-open > :nth-child(2) {
+    animation-delay: 30ms;
+  }
+  .js .nav-links.is-open > :nth-child(3) {
+    animation-delay: 60ms;
+  }
+  .js .nav-links.is-open > :nth-child(4) {
+    animation-delay: 90ms;
+  }
+  .js .nav-links.is-open > :nth-child(5) {
+    animation-delay: 120ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+  .timeline::after {
+    transform: none;
+  }
+}
