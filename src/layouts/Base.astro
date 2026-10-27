@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import TitleBlock from '../components/TitleBlock.astro';
 import ContactFooter from '../components/ContactFooter.astro';
 import { site } from '../data/site';
 import { url } from '../lib/url';
@@ -10,11 +10,12 @@ interface Props {
   title?: string;
   description?: string;
   current?: string;
+  sheet?: number;
   contactFooter?: boolean;
 }
 
-const { title, description = site.description, current, contactFooter = false } = Astro.props;
-const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · Civil engineer who writes software`;
+const { title, description = site.description, current, sheet, contactFooter = false } = Astro.props;
+const fullTitle = title ? `${title} — ${site.name}` : `${site.name} — Civil engineer who writes software`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(url('images/victor.jpg'), Astro.site);
 ---
@@ -45,12 +46,16 @@ const ogImage = new URL(url('images/victor.jpg'), Astro.site);
     />
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
-  <body>
+  <body id="top">
     <a class="skip-link" href="#content">Skip to content</a>
     <Header current={current} />
     <main id="content">
       <slot />
     </main>
-    {contactFooter ? <ContactFooter /> : <Footer />}
+    {contactFooter && <ContactFooter />}
+    <TitleBlock title={title ?? 'Home'} sheet={sheet} />
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>

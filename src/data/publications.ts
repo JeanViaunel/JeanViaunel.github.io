@@ -27,10 +27,6 @@ export const publications: Publication[] = [
     links: [
       { label: 'DOI', href: 'https://doi.org/10.22260/ISARC2026/0307' },
       { label: 'PDF', href: 'https://www.iaarc.org/publications/fulltext/ISARC2026_1432.pdf' },
-      {
-        label: 'BibTeX',
-        href: 'https://www.iaarc.org/publications/2026_proceedings_of_the_43rd_isarc_singapore/from_2d_drawings_to_bim_models-an_llm_assisted_approach.bib',
-      },
     ],
     bibtex: `@inproceedings{10.22260/ISARC2026/0307,
 	doi = {10.22260/ISARC2026/0307},

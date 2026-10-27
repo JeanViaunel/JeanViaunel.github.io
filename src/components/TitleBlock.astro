@@ -1,0 +1,49 @@
+---
+// Footer drawn like the title block on an engineering drawing sheet.
+import { site, nav } from '../data/site';
+
+interface Props {
+  title: string;
+  sheet?: number;
+}
+
+const { title, sheet } = Astro.props;
+const total = nav.length + 1;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<footer class="title-block">
+  <div class="container">
+    <div class="tb-grid">
+      <div class="tb-cell">
+        <span class="tb-k">Sheet title</span>
+        <span class="tb-v">{title}</span>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-k">Drawn by</span>
+        <span class="tb-v">{site.name}</span>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-k">Sheet</span>
+        <span class="tb-v mono">{sheet ? `${pad(sheet)} of ${pad(total)}` : '—'}</span>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-k">Revised</span>
+        <span class="tb-v">{site.updated}</span>
+      </div>
+      <div class="tb-cell tb-cell--wide">
+        <span class="tb-k">Contact</span>
+        <span class="tb-v tb-links">
+          <a class="underline-link" href={`mailto:${site.email}`}>Email</a>
+          <a class="underline-link" href={site.links.linkedin}>LinkedIn</a>
+          <a class="underline-link" href={site.links.github}>GitHub</a>
+          <a class="underline-link" href={site.links.hteam}>H-Team</a>
+        </span>
+      </div>
+    </div>
+    <div class="tb-foot">
+      <p>© 2026 {site.name}</p>
+      <p><a href="#top" class="underline-link" style="color: inherit">Back to top <span class="arrow" aria-hidden="true">↑</span></a></p>
+    </div>
+  </div>
+</footer>

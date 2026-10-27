@@ -1,0 +1,355 @@
+---
+// Hero figure: a LiDAR sweep captures a facade as points, then a divider slides
+// across to reveal the IFC model. Visitors drag the divider to compare.
+// Drawing units: 660 × 360, 30 units = 1 m, ground at y = 300.
+const floor2 = [110, 220, 330, 450];
+const floor1 = [110, 330, 450];
+const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
+---
+
+<figure class="scan-fig" data-scan>
+  <div class="scan-bar">
+    <span>Fig. 1</span>
+    <span class="hint">Drag to compare</span>
+    <span data-count-wrap><span class="count" data-count>0</span> points</span>
+  </div>
+  <div class="scan-stage">
+    <canvas aria-hidden="true"></canvas>
+    <svg viewBox="0 0 660 360" role="img" aria-label="A two-storey facade shown on the left as scanned LiDAR points and on the right as an IFC model, with the wall, windows and floor slab labelled.">
+      <defs>
+        <clipPath id="scanModelClip"><rect data-clip x="330" y="0" width="660" height="360"></rect></clipPath>
+        <clipPath id="scanPointsClip"><rect x="0" y="0" width="330" height="360"></rect></clipPath>
+        <pattern id="scanDots" width="7" height="6" patternUnits="userSpaceOnUse">
+          <circle cx="1.5" cy="2" r="0.7" fill="#1A1D21"></circle><circle cx="5" cy="4.5" r="0.7" fill="#1A1D21" opacity="0.6"></circle>
+        </pattern>
+      </defs>
+
+      <g stroke="#9AA0A6" stroke-width="1">
+        <line x1="56" y1="90" x2="56" y2="300"></line>
+        {ticks.map((m) => <line x1={m % 2 ? 53 : 50} y1={300 - m * 30} x2="56" y2={300 - m * 30}></line>)}
+      </g>
+      <g class="nojs-points" clip-path="url(#scanPointsClip)">
+        <rect x="80" y="84" width="480" height="216" fill="url(#scanDots)" opacity="0.7"></rect>
+      </g>
+
+      <g class="fig-fine" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6068" text-anchor="end">
+        <text x="45" y="304">0</text><text x="45" y="244">2</text><text x="45" y="184">4</text><text x="45" y="124">6 m</text>
+      </g>
+
+      <g data-model clip-path="url(#scanModelClip)">
+        <rect x="80" y="90" width="480" height="210" fill="#EEEFEA" stroke="#1A1D21" stroke-width="1.5"></rect>
+        <rect x="74" y="84" width="492" height="8" fill="#1A1D21"></rect>
+        <rect x="80" y="192" width="480" height="5" fill="#1A1D21"></rect>
+        <rect x="70" y="300" width="500" height="7" fill="#1A1D21"></rect>
+        <g fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.2">
+          {floor2.map((x) => <rect x={x} y="115" width="60" height="55"></rect>)}
+          {floor1.map((x) => <rect x={x} y="215" width="60" height="55"></rect>)}
+          <rect x="220" y="220" width="50" height="80"></rect>
+        </g>
+        <g stroke="#1A1D21" stroke-width="0.8">
+          {floor2.map((x) => <line x1={x + 30} y1="115" x2={x + 30} y2="170"></line>)}
+          {floor1.map((x) => <line x1={x + 30} y1="215" x2={x + 30} y2="270"></line>)}
+        </g>
+        <circle cx="262" cy="262" r="2" fill="#1A1D21"></circle>
+        <g stroke="#5A6068" stroke-width="1">
+          <line x1="80" y1="62" x2="560" y2="62"></line>
+          <line x1="80" y1="54" x2="80" y2="80"></line>
+          <line x1="560" y1="54" x2="560" y2="80"></line>
+          <line x1="75" y1="67" x2="85" y2="57"></line>
+          <line x1="555" y1="67" x2="565" y2="57"></line>
+        </g>
+        <text class="fig-fine" x="320" y="56" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6068">16.00 m</text>
+      </g>
+
+      <g class="scan-labels fig-fine" data-labels>
+        <g stroke="#C2410C" stroke-width="1.2" fill="none">
+          <polyline points="500,142 578,142"></polyline>
+          <polyline points="548,194 578,194"></polyline>
+          <polyline points="540,250 578,250"></polyline>
+        </g>
+        <g fill="#C2410C">
+          <circle cx="500" cy="142" r="3"></circle><circle cx="548" cy="194" r="3"></circle><circle cx="540" cy="250" r="3"></circle>
+        </g>
+        <g font-family="IBM Plex Mono, monospace" font-size="11.5" fill="#1A1D21">
+          <text x="583" y="146">IfcWindow</text><text x="583" y="198">IfcSlab</text><text x="583" y="254">IfcWall</text>
+        </g>
+      </g>
+
+      <g font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6068" letter-spacing="1.5">
+        <text class="scan-side" data-lbl-scan x="320" y="40" text-anchor="end">SCAN</text>
+        <text class="scan-side" data-lbl-model x="340" y="40">IFC MODEL</text>
+      </g>
+    </svg>
+    <div class="scan-cross" aria-hidden="true">
+      <span class="cx"></span><span class="cy"></span>
+      <span class="scan-coord"><span data-cx>x 0.00 m</span><span data-cy>y 0.00 m</span></span>
+    </div>
+    <input class="scan-range" type="range" min="0" max="1000" value="1000" aria-label="Compare the scan with the model" />
+    <div class="scan-divider" aria-hidden="true">
+      <span class="scan-handle">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,6 3,12 9,18"></polyline><polyline points="15,6 21,12 15,18"></polyline></svg>
+      </span>
+    </div>
+  </div>
+  <figcaption>The same facade as scanned points and as a BIM model. Most of my work happens on that dashed line.</figcaption>
+</figure>
+
+<script>
+  const W = 660;
+  const H = 360;
+  const THUMB = 44; // must match .scan-range thumb width
+  const LEVELS = [0.22, 0.42, 0.62, 0.84];
+
+  const fig = document.querySelector<HTMLElement>('[data-scan]');
+  if (fig) init(fig);
+
+  function init(fig: HTMLElement) {
+    const stage = fig.querySelector<HTMLElement>('.scan-stage')!;
+    const canvas = fig.querySelector('canvas')!;
+    const ctx = canvas.getContext('2d');
+    const range = fig.querySelector<HTMLInputElement>('.scan-range')!;
+    const divider = fig.querySelector<HTMLElement>('.scan-divider')!;
+    const clip = fig.querySelector<SVGRectElement>('[data-clip]')!;
+    const labels = fig.querySelector<SVGGElement>('[data-labels]')!;
+    const lblScan = fig.querySelector<SVGTextElement>('[data-lbl-scan]')!;
+    const lblModel = fig.querySelector<SVGTextElement>('[data-lbl-model]')!;
+    const countEl = fig.querySelector<HTMLElement>('[data-count]')!;
+    const cross = fig.querySelector<HTMLElement>('.scan-cross')!;
+    const cxEl = fig.querySelector<HTMLElement>('[data-cx]')!;
+    const cyEl = fig.querySelector<HTMLElement>('[data-cy]')!;
+    if (!ctx) return;
+
+    const buckets = makePoints();
+    const total = buckets.reduce((n, b) => n + b.xs.length, 0);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let u = W; // divider position in drawing units
+    let beam = reduced ? W + 1 : 60; // scan beam position; > W means finished
+    let wpx = 1;
+    let hpx = 1;
+    let intro = !reduced;
+
+    function resize() {
+      // Layout size, not getBoundingClientRect: the entrance animation scales the figure.
+      wpx = Math.max(1, stage.clientWidth);
+      hpx = Math.max(1, stage.clientHeight);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(wpx * dpr);
+      canvas.height = Math.round(hpx * dpr);
+      ctx!.setTransform((wpx / W) * dpr, 0, 0, (hpx / H) * dpr, 0, 0);
+      syncRange();
+      render();
+    }
+
+    function syncRange() {
+      const px = (u / W) * wpx;
+      const v = (px - THUMB / 2) / Math.max(1, wpx - THUMB);
+      range.value = String(Math.round(Math.max(0, Math.min(1, v)) * 1000));
+    }
+
+    function render() {
+      const limit = Math.min(u, beam);
+      ctx!.clearRect(0, 0, W, H);
+
+      let captured = 0;
+      buckets.forEach((b, i) => {
+        ctx!.fillStyle = `rgba(26, 29, 33, ${LEVELS[i]})`;
+        const end = lowerBound(b.xs, limit);
+        if (beam <= W) captured += lowerBound(b.xs, beam);
+        for (let k = 0; k < end; k++) ctx!.fillRect(b.xs[k] - 0.65, b.ys[k] - 0.65, 1.3, 1.3);
+      });
+
+      if (beam <= W) {
+        // Freshly captured points glow orange just behind the beam.
+        ctx!.fillStyle = 'rgba(194, 65, 12, 0.9)';
+        for (const b of buckets) {
+          const from = lowerBound(b.xs, beam - 26);
+          const to = lowerBound(b.xs, Math.min(beam, u));
+          for (let k = from; k < to; k++) ctx!.fillRect(b.xs[k] - 0.75, b.ys[k] - 0.75, 1.5, 1.5);
+        }
+        const g = ctx!.createLinearGradient(beam - 80, 0, beam, 0);
+        g.addColorStop(0, 'rgba(194, 65, 12, 0)');
+        g.addColorStop(1, 'rgba(194, 65, 12, 0.12)');
+        ctx!.fillStyle = g;
+        ctx!.fillRect(beam - 80, 48, 80, 284);
+        ctx!.fillStyle = '#C2410C';
+        ctx!.fillRect(beam - 0.75, 48, 1.5, 284);
+        countEl.textContent = captured.toLocaleString('en-US');
+      } else {
+        countEl.textContent = total.toLocaleString('en-US');
+      }
+
+      clip.setAttribute('x', String(u));
+      lblScan.setAttribute('x', String(u - 10));
+      lblModel.setAttribute('x', String(u + 10));
+      lblScan.style.opacity = u > 100 ? '1' : '0';
+      lblModel.style.opacity = u < 560 ? '1' : '0';
+      labels.style.opacity = u < 470 ? '1' : '0';
+      divider.style.setProperty('--x', `${(u / W) * wpx}px`);
+      range.setAttribute('aria-valuetext', `${Math.round((u / W) * 100)}% scan, ${100 - Math.round((u / W) * 100)}% model`);
+    }
+
+    function finishIntro() {
+      intro = false;
+      beam = W + 1;
+      fig.classList.add('is-ready');
+    }
+
+    range.addEventListener('input', () => {
+      if (intro) finishIntro();
+      const v = Number(range.value) / 1000;
+      const px = THUMB / 2 + v * (wpx - THUMB);
+      u = (px / wpx) * W;
+      render();
+    });
+
+    // Arrow keys move the divider in 5% steps (the native step is 0.1%).
+    range.addEventListener('keydown', (e) => {
+      const step = { ArrowLeft: -50, ArrowDown: -50, ArrowRight: 50, ArrowUp: 50 }[e.key];
+      if (!step) return;
+      e.preventDefault();
+      range.value = String(Math.max(0, Math.min(1000, Number(range.value) + step)));
+      range.dispatchEvent(new Event('input'));
+    });
+
+    // Crosshair with coordinates in metres, for mouse users.
+    range.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = stage.getBoundingClientRect();
+      const px = e.clientX - r.left;
+      const py = e.clientY - r.top;
+      const ux = (px / r.width) * W;
+      const uy = (py / r.height) * H;
+      const inside = ux > 60 && ux < 600 && uy > 50 && uy < 320;
+      cross.classList.toggle('is-on', inside);
+      cross.classList.toggle('flip', px > r.width * 0.68);
+      if (!inside) return;
+      cross.style.setProperty('--cx', `${px}px`);
+      cross.style.setProperty('--cy', `${py}px`);
+      cxEl.textContent = `x ${((ux - 80) / 30).toFixed(2)} m`;
+      cyEl.textContent = `y ${((300 - uy) / 30).toFixed(2)} m`;
+    });
+    range.addEventListener('pointerleave', () => cross.classList.remove('is-on'));
+
+    new ResizeObserver(resize).observe(stage);
+    resize();
+    fig.classList.add('is-live');
+
+    if (reduced) {
+      u = W / 2;
+      finishIntro();
+      syncRange();
+      render();
+      return;
+    }
+
+    // Intro: sweep the scan, then slide the divider to the middle.
+    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+    const SWEEP = 1800;
+    const SLIDE = 1000;
+    let start = 0;
+
+    const tick = (now: number) => {
+      if (!intro) return;
+      if (!start) start = now;
+      const t = now - start;
+      if (t < SWEEP) {
+        beam = 60 + (W - 40 - 60) * ease(t / SWEEP);
+      } else {
+        beam = W + 1;
+        fig.classList.add('is-ready');
+        const s = Math.min(1, (t - SWEEP - 100) / SLIDE);
+        u = W - (W - W / 2) * easeOut(Math.max(0, s));
+        syncRange();
+        if (s >= 1) {
+          finishIntro();
+          render();
+          return;
+        }
+      }
+      render();
+      requestAnimationFrame(tick);
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          setTimeout(() => requestAnimationFrame(tick), 650);
+        }
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(fig);
+  }
+
+  function lowerBound(xs: Float32Array, v: number) {
+    let lo = 0;
+    let hi = xs.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (xs[mid] < v) lo = mid + 1;
+      else hi = mid;
+    }
+    return lo;
+  }
+
+  // A deterministic point cloud of the facade: denser near the scanner,
+  // sparse returns through the glass, a ground strip and a few stray points.
+  function makePoints() {
+    let seed = 20260327;
+    const rnd = () => {
+      seed = (seed + 0x6d2b79f5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    const openings = [
+      ...[110, 220, 330, 450].map((x) => ({ x, y: 115, w: 60, h: 55 })),
+      ...[110, 330, 450].map((x) => ({ x, y: 215, w: 60, h: 55 })),
+      { x: 220, y: 220, w: 50, h: 80 },
+    ];
+    const inOpening = (x: number, y: number) =>
+      openings.some((o) => x > o.x && x < o.x + o.w && y > o.y && y < o.y + o.h);
+
+    const raw: number[][] = [[], [], [], []];
+    const add = (x: number, y: number, a: number) => {
+      const level = a < 0.32 ? 0 : a < 0.52 ? 1 : a < 0.72 ? 2 : 3;
+      raw[level].push(x, y);
+    };
+
+    for (let y = 84; y <= 300; y += 2.2) {
+      for (let i = 0; i < 84; i++) {
+        const x = 80 + rnd() * 480;
+        const yy = y + (rnd() - 0.5) * 1.1;
+        const far = Math.abs(x - 320) / 240;
+        if (rnd() < far * 0.38) continue;
+        const glass = inOpening(x, yy);
+        if (glass && rnd() > 0.07) continue;
+        let a = 0.42 + rnd() * 0.48 - far * 0.18;
+        if (glass) a *= 0.5;
+        if (yy < 92 || (yy > 191 && yy < 198)) a += 0.15;
+        add(x, yy, a);
+      }
+    }
+    for (let y = 301; y <= 318; y += 2.4) {
+      for (let i = 0; i < 46; i++) {
+        const x = 30 + rnd() * 600;
+        if (rnd() < (Math.abs(x - 320) / 290) * 0.6) continue;
+        add(x, y + (rnd() - 0.5) * 1.2, 0.2 + rnd() * 0.35);
+      }
+    }
+    for (let i = 0; i < 160; i++) add(60 + rnd() * 560, 56 + rnd() * 270, 0.15 + rnd() * 0.2);
+
+    return raw.map((flat) => {
+      const pairs: [number, number][] = [];
+      for (let i = 0; i < flat.length; i += 2) pairs.push([flat[i], flat[i + 1]]);
+      pairs.sort((a, b) => a[0] - b[0]);
+      return {
+        xs: Float32Array.from(pairs, (p) => p[0]),
+        ys: Float32Array.from(pairs, (p) => p[1]),
+      };
+    });
+  }
+</script>

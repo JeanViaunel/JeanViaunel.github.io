@@ -12,6 +12,11 @@ const { current } = Astro.props;
 <header class="site-header">
   <nav class="site-nav container" aria-label="Main">
     <a href={url('')} class="brand" aria-current={current === 'home' ? 'page' : undefined}>
+      <svg class="brand-mark" viewBox="0 0 26 26" aria-hidden="true">
+        <rect x="0.75" y="0.75" width="24.5" height="24.5" rx="5" fill="#1A1D21"></rect>
+        <path d="M7 7.5l6 11 6-11" fill="none" stroke="#FAFAF7" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"></path>
+        <circle class="bm-dot" cx="19.5" cy="19" r="2" fill="#C2410C"></circle>
+      </svg>
       <span class="brand-name">{site.name}</span>
       <span class="brand-zh" lang="zh-Hant">{site.nameZh}</span>
     </a>
@@ -22,11 +27,10 @@ const { current } = Astro.props;
       aria-controls="nav-links"
       aria-label="Open menu"
     >
-      <svg class="icon-open" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line>
-      </svg>
-      <svg class="icon-close" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line class="bar bar-1" x1="4" y1="7" x2="20" y2="7"></line>
+        <line class="bar bar-2" x1="4" y1="12" x2="20" y2="12"></line>
+        <line class="bar bar-3" x1="4" y1="17" x2="20" y2="17"></line>
       </svg>
     </button>
     <div class="nav-links" id="nav-links">
@@ -40,9 +44,10 @@ const { current } = Astro.props;
           </a>
         ))
       }
-      <a href={url('about/#cv')} class="nav-cv">CV ↓</a>
+      <a href={url('about/#cv')} class="btn btn--sm nav-cv">CV <span class="arrow" aria-hidden="true">↓</span></a>
     </div>
   </nav>
+  <div class="scan-progress" aria-hidden="true"></div>
 </header>
 
 <script>
@@ -58,8 +63,11 @@ const { current } = Astro.props;
     links.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).closest('a')) setOpen(false);
     });
-    toggle.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') setOpen(false);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
     });
   }
 </script>

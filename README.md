@@ -35,6 +35,20 @@ each file that exists. Until then the page shows a "Request my CV" email button.
 **Project links:** a project in `projects.ts` with an `href` renders as a clickable card. Without one
 it renders as a plain card, which suits projects with no write-up yet.
 
+## Design and motion
+
+The site reads as an engineering drawing set: numbered sections, a drafting grid behind page
+headers, and a title-block footer with a sheet number on every page.
+
+| Piece | Where |
+| --- | --- |
+| Hero scan-to-model figure (canvas points, SVG model, draggable divider) | `src/components/ScanFigure.astro` |
+| Scroll reveals, header progress line, About timeline, copy buttons | `src/scripts/motion.ts` |
+| All animations | the `prefers-reduced-motion: no-preference` block at the end of `src/styles/global.css` |
+
+Add `data-reveal` to any element to fade it in on scroll, and `style="--d: 1"` to stagger it.
+Visitors who ask their system for reduced motion get a fully static site.
+
 ## Deploy to GitHub Pages
 
 1. Push this repo to GitHub on the `main` branch.

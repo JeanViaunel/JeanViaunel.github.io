@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
 import { site } from '../data/site';
 import { url } from '../lib/url';
 
@@ -15,111 +16,145 @@ const cvLinks = [
 const experience = [
   {
     when: 'Now',
-    title: 'Assistant Researcher · H-Team lab, National Taiwan University',
+    role: 'Assistant Researcher',
+    org: 'H-Team lab, National Taiwan University',
     text: "Research on BIM and digital construction. Teaching assistant for Prof. Hsieh's BIM course, supporting students with practical topics and their implementation ideas.",
   },
   {
     when: '2024 – now',
-    title: 'Lead Full-Stack Developer · Legend Castle',
+    role: 'Lead Full-Stack Developer',
+    org: 'Legend Castle',
     html: 'Main developer of <a href="https://maischool.legendcastle.org">MaiSchool</a>, a live online tutoring platform for families, from design to implementation: course and teacher browsing, class booking, progress tracking and parent messages. Built with Next.js, Convex, Clerk and Zod.',
   },
   {
-    when: 'Now · second term',
-    title: 'Academic Committee Lead · Haitian student community in Taiwan',
+    when: 'Now',
+    role: 'Academic Committee Lead (second term)',
+    org: 'Haitian student community in Taiwan',
     text: "Help bachelor's to graduate students apply to Taiwanese universities: study plans, autobiographies, application documents, and the workshops I coordinate.",
   },
   {
     when: 'Ongoing',
-    title: 'Founder · GUANIN (Guanin Co., Ltd.)',
+    role: 'Founder',
+    org: 'GUANIN (Guanin Co., Ltd.)',
     text: 'A Taiwan-registered sourcing marketplace I run end to end: the platform, the suppliers, the buyers and the paperwork.',
   },
   {
     when: 'Feb – Jun 2023',
-    title: 'Structural Engineering Intern · Envision',
+    role: 'Structural Engineering Intern',
+    org: 'Envision',
     text: 'Worked as an assistant structural engineer, modelling and analysing structures in ETABS and SAP2000.',
   },
   {
     when: 'Jun – Aug 2022',
-    title: 'Research Intern, Computer-Aided Engineering · National Taiwan University',
+    role: 'Research Intern, Computer-Aided Engineering',
+    org: 'National Taiwan University',
     text: 'A computer vision project in OpenCV and PyTorch, plus sequence models with LSTMs and GRUs.',
   },
 ];
 
+const education = [
+  {
+    when: '2024 – 2026',
+    role: 'M.S. Civil Engineering',
+    org: 'National Taiwan University',
+    research: true,
+  },
+  { when: '2019 – 2023', role: 'B.S. Civil Engineering', org: 'National Yang Ming Chiao Tung University' },
+];
+
 const tools = [
-  { name: 'Structures', list: 'ETABS, SAP2000, SAFE', used: 'Envision internship, NYCU' },
-  { name: 'BIM', list: 'Revit, IFC, AutoCAD', used: "Master's research, BIM course (TA), ISARC paper" },
-  { name: 'Reality capture', list: 'Mobile LiDAR, point clouds, photogrammetry', used: "Master's research, PhotoForge" },
-  { name: 'Vision models', list: 'PyTorch, OpenCV, YOLO', used: 'Marine debris, solar panels, NTU CAE' },
-  { name: 'Language models and automation', list: 'LLMs, agents, n8n', used: 'ISARC paper, Kreyòl dataset, GUANIN' },
+  { name: 'Structures', list: ['ETABS', 'SAP2000', 'SAFE'], used: 'Used at Envision and at NYCU.' },
+  { name: 'BIM', list: ['Revit', 'IFC', 'AutoCAD'], used: "Used in my master's research, the BIM course I assist and the ISARC paper." },
+  { name: 'Reality capture', list: ['Mobile LiDAR', 'Point clouds', 'Photogrammetry'], used: "Used in my master's research and in PhotoForge." },
+  { name: 'Vision models', list: ['PyTorch', 'OpenCV', 'YOLO'], used: 'Used for marine debris, solar panels and at NTU CAE.' },
+  { name: 'Language models and automation', list: ['LLMs', 'Agents', 'n8n'], used: 'Used in the ISARC paper, the Kreyòl dataset and GUANIN.' },
   {
     name: 'Software',
-    list: 'Python, Next.js, Convex, Clerk, Zod, FastAPI, Django, Three.js, MongoDB, Docker',
-    used: 'MaiSchool, GUANIN, PhotoForge',
+    list: ['Python', 'Next.js', 'Convex', 'Clerk', 'Zod', 'FastAPI', 'Django', 'Three.js', 'MongoDB', 'Docker'],
+    used: 'Used in MaiSchool, GUANIN and PhotoForge.',
   },
 ];
 ---
 
-<Base title="About" current="about" description="Civil engineer and software developer: structures, BIM, reality capture and the software that connects them.">
-  <div class="container page">
-    <section class="intro">
-      <img
-        src={url('images/victor.jpg')}
-        alt="Victor Jean Viaunel smiling outdoors"
-        class="portrait"
-        width="260"
-        height="260"
-      />
-      <div class="intro-copy">
-        <p class="eyebrow">About</p>
-        <h1 class="page-title">Two trades, one desk</h1>
-        <div class="prose">
-          <p>I came to engineering through structures: ETABS, SAP2000, SAFE, Revit and AutoCAD during my civil engineering degree at NYCU, then as a structural engineering intern at Envision. I came to software through stubbornness, working through Andrew Ng's deep learning courses on the side until I could build things on my own.</p>
-          <p>The work I enjoy most needs both. My master's at NTU was about getting usable BIM out of messy scans, and I stayed on in the H-Team lab as an assistant researcher, where I also assist in Prof. Hsieh's BIM course.</p>
-          <p>I have close ties to Haiti and the Caribbean. That's why some of my side work points that way, and why I spend a good part of my free time helping Haitian students find their feet in Taiwan.</p>
+<Base title="About" current="about" sheet={4} description="Civil engineer and software developer: structures, BIM, reality capture and the software that connects them.">
+  <div class="grid-paper">
+    <div class="container page">
+      <section class="intro">
+        <div class="portrait-wrap frame is-framed" data-reveal>
+          <div class="portrait-inner">
+            <img
+              src={url('images/victor.jpg')}
+              alt="Victor Jean Viaunel smiling outdoors"
+              class="portrait"
+              width="280"
+              height="280"
+            />
+            <span class="portrait-scan" aria-hidden="true"></span>
+          </div>
         </div>
+        <div class="intro-copy page-head">
+          <p class="eyebrow">About</p>
+          <h1 class="page-title">Two trades, one desk</h1>
+          <div class="prose">
+            <p>I came to engineering through structures: ETABS, SAP2000, SAFE, Revit and AutoCAD during my civil engineering degree at NYCU, then as a structural engineering intern at Envision. I came to software through stubbornness, working through Andrew Ng's deep learning courses on the side until I could build things on my own.</p>
+            <p>The work I enjoy most needs both. My master's at NTU was about getting usable BIM out of messy scans, and I stayed on in the H-Team lab as an assistant researcher, where I also assist in Prof. Hsieh's BIM course.</p>
+            <p>I have close ties to Haiti and the Caribbean. That's why some of my side work points that way, and why I spend a good part of my free time helping Haitian students find their feet in Taiwan.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="container page" style="padding-top: 0">
+    <section aria-labelledby="exp">
+      <SectionHead no={1} id="exp" title="Experience" />
+      <div class="timeline">
+        {
+          experience.map((e) => (
+            <div class="entry" data-reveal>
+              <p class="when">{e.when}</p>
+              <div>
+                <h3>{e.role}</h3>
+                <p class="org">{e.org}</p>
+                {e.html ? <p class="body-text" set:html={e.html} /> : <p class="body-text">{e.text}</p>}
+              </div>
+            </div>
+          ))
+        }
       </div>
     </section>
 
-    <section aria-labelledby="exp" style="margin-top: 80px">
-      <div class="rule-head"><h2 id="exp">Experience</h2></div>
+    <section aria-labelledby="edu" style="margin-top: 72px">
+      <SectionHead no={2} id="edu" title="Education" />
       {
-        experience.map((e) => (
-          <div class="entry">
+        education.map((e) => (
+          <div class="entry entry--plain" data-reveal>
             <p class="when">{e.when}</p>
-            <div class="what">
-              <h3>{e.title}</h3>
-              {e.html ? <p class="body-text" set:html={e.html} /> : <p class="body-text">{e.text}</p>}
+            <div>
+              <h3>{e.role}</h3>
+              <p class="org">{e.org}</p>
+              {e.research && (
+                <p class="body-text">
+                  Research in scan-to-BIM with mobile LiDAR, H-Team lab.{' '}
+                  <a href={url('research/')}>See my research</a>
+                </p>
+              )}
             </div>
           </div>
         ))
       }
     </section>
 
-    <section aria-labelledby="edu" style="margin-top: 56px">
-      <div class="rule-head"><h2 id="edu">Education</h2></div>
-      <div class="entry">
-        <p class="when">2024 – 2026</p>
-        <div class="what">
-          <h3>M.S. Civil Engineering · National Taiwan University</h3>
-          <p class="body-text">Research in scan-to-BIM with mobile LiDAR, H-Team lab. <a href={url('research/')}>See my research</a></p>
-        </div>
-      </div>
-      <div class="entry">
-        <p class="when">2019 – 2023</p>
-        <div class="what">
-          <h3>B.S. Civil Engineering · National Yang Ming Chiao Tung University</h3>
-        </div>
-      </div>
-    </section>
-
-    <section aria-labelledby="tools" style="margin-top: 56px">
-      <div class="rule-head"><h2 id="tools">Toolbox, and where I've used it</h2></div>
+    <section aria-labelledby="tools" style="margin-top: 72px">
+      <SectionHead no={3} id="tools" title="Toolbox, and where I've used it" />
       <div class="tool-grid">
         {
-          tools.map((t) => (
-            <div>
+          tools.map((t, i) => (
+            <div data-reveal style={`--d: ${i % 2}`}>
               <p class="tool-name">{t.name}</p>
-              <p class="body-text">{t.list}</p>
+              <div class="chip-row">
+                {t.list.map((x) => <span class="tag">{x}</span>)}
+              </div>
               <p class="used">{t.used}</p>
             </div>
           ))
@@ -127,7 +162,7 @@ const tools = [
       </div>
     </section>
 
-    <section id="cv" aria-labelledby="cvh" class="cv-box">
+    <section id="cv" aria-labelledby="cvh" class="cv-box frame" data-reveal>
       <div>
         <h2 id="cvh">Curriculum vitae</h2>
         {
@@ -147,12 +182,12 @@ const tools = [
           cvLinks.length > 0 ? (
             cvLinks.map((c) => (
               <a href={url(c.file)} class:list={['btn', { 'btn--primary': c.primary }]} download>
-                {c.label}
+                {c.label} <span class="arrow" aria-hidden="true">↓</span>
               </a>
             ))
           ) : (
             <a href={`mailto:${site.email}?subject=CV%20request`} class="btn btn--primary">
-              Request my CV
+              Request my CV <span class="arrow" aria-hidden="true">→</span>
             </a>
           )
         }

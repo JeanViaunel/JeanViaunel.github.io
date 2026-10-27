@@ -3,58 +3,72 @@ import Base from '../layouts/Base.astro';
 import { domains, projects } from '../data/projects';
 import { href, isExternal } from '../lib/url';
 
-const filters = ['All', ...domains];
+const filters = ['All', ...domains].map((label) => ({
+  label,
+  n: label === 'All' ? projects.length : projects.filter((p) => p.domain === label).length,
+}));
 const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
 ---
 
-<Base title="Work" current="work" description="Projects in reality capture and BIM, computer vision, AI and data, web products and ventures.">
-  <div class="container page">
-    <p class="eyebrow">Work</p>
-    <h1 class="page-title">Things I've built</h1>
-    <p class="lede">
-      Most of it is about getting usable information out of sensor data. The rest is what I build
-      when a problem in my own life needs solving.
-    </p>
-
-    <div class="filters" role="group" aria-label="Filter projects" hidden data-filters>
-      {
-        filters.map((label, i) => (
-          <button type="button" class="filter" data-filter={label} aria-pressed={i === 0 ? 'true' : 'false'}>
-            {label}
-          </button>
-        ))
-      }
+<Base title="Work" current="work" sheet={2} description="Projects in reality capture and BIM, computer vision, AI and data, web products and ventures.">
+  <div class="grid-paper">
+    <div class="container page" style="padding-bottom: 0">
+      <div class="page-head">
+        <p class="eyebrow">Work</p>
+        <h1 class="page-title">Things I've built</h1>
+        <p class="lede">
+          Most of it is about getting usable information out of sensor data. The rest is what I build
+          when a problem in my own life needs solving.
+        </p>
+        <div class="filters" role="group" aria-label="Filter projects" hidden data-filters>
+          {
+            filters.map((f, i) => (
+              <button type="button" class="filter" data-filter={f.label} aria-pressed={i === 0 ? 'true' : 'false'}>
+                {f.label}<span class="n" aria-hidden="true">{f.n}</span>
+              </button>
+            ))
+          }
+        </div>
+      </div>
     </div>
-    <p class="project-count" aria-live="polite" data-count>{countLabel(projects.length)}</p>
+  </div>
 
+  <div class="container page" style="padding-top: 0">
+    <p class="project-count" aria-live="polite" data-count>{countLabel(projects.length)}</p>
     <div class="project-grid">
       {
-        projects.map((p) => {
+        projects.map((p, i) => {
           const inner = (
             <>
-              <div class="card-top">
+              <div class="card-meta">
                 <span class="kicker kicker--accent">{p.domain}</span>
                 <span class="kicker">{p.status}</span>
               </div>
               <h2>{p.title}</h2>
               <p class="body-text">{p.text}</p>
               <div class="chip-row">
-                {p.metrics.map((m) => <span class="tag">{m}</span>)}
+                {p.results.map((m) => <span class="tag tag--accent">{m}</span>)}
+                {p.stack.map((m) => <span class="tag">{m}</span>)}
               </div>
-              {p.cta && <span class="cta">{p.cta}</span>}
+              {p.cta && p.href && (
+                <span class="cta">
+                  {p.cta}{' '}
+                  {isExternal(p.href) ? (
+                    <span class="arrow arrow--ne" aria-hidden="true">↗</span>
+                  ) : (
+                    <span class="arrow" aria-hidden="true">→</span>
+                  )}
+                </span>
+              )}
             </>
           );
+          const style = `--d: ${i % 3}; --vtn: project-${i}`;
           return p.href ? (
-            <a
-              class="project-card"
-              href={href(p.href)}
-              data-domain={p.domain}
-              rel={isExternal(p.href) ? 'noopener' : undefined}
-            >
+            <a class="project-card frame" href={href(p.href)} data-domain={p.domain} data-reveal style={style}>
               {inner}
             </a>
           ) : (
-            <article class="project-card" data-domain={p.domain}>
+            <article class="project-card" data-domain={p.domain} data-reveal style={style}>
               {inner}
             </article>
           );
@@ -68,6 +82,9 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
   const group = document.querySelector<HTMLElement>('[data-filters]');
   const count = document.querySelector<HTMLElement>('[data-count]');
   const cards = Array.from(document.querySelectorAll<HTMLElement>('.project-card'));
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let current: ViewTransition | undefined;
 
   if (group && count) {
     group.hidden = false;
@@ -78,7 +95,10 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
       for (const card of cards) {
         const visible = filter === 'All' || card.dataset.domain === filter;
         card.hidden = !visible;
-        if (visible) shown++;
+        if (visible) {
+          shown++;
+          card.classList.add('is-in');
+        }
       }
       for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.filter === filter));
       count.textContent = shown === 1 ? '1 project' : `${shown} projects`;
@@ -86,7 +106,21 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
 
     group.addEventListener('click', (e) => {
       const button = (e.target as HTMLElement).closest('button');
-      if (button?.dataset.filter) apply(button.dataset.filter);
+      const filter = button?.dataset.filter;
+      if (!filter || button.getAttribute('aria-pressed') === 'true') return;
+      // Let cards glide to their new places where the browser supports it.
+      if (!reduced && 'startViewTransition' in document) {
+        const root = document.documentElement;
+        root.classList.add('vt-filter');
+        const vt = document.startViewTransition(() => apply(filter));
+        current = vt;
+        // A newer transition skips this one; only the latest may clear the class.
+        vt.finished.finally(() => {
+          if (current === vt) root.classList.remove('vt-filter');
+        });
+      } else {
+        apply(filter);
+      }
     });
   }
 </script>

@@ -3,30 +3,34 @@ import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 ---
 
-<Base title="Now" current="now" description="What Victor Jean Viaunel is working on right now.">
-  <div class="container page page--narrow">
-    <p class="eyebrow">Updated 27 October 2026 · Taiwan</p>
-    <h1 class="page-title">What I'm doing now</h1>
+<Base title="Now" current="now" sheet={5} description="What Victor Jean Viaunel is working on right now.">
+  <div class="grid-paper">
+    <div class="container page page--narrow">
+      <div class="page-head">
+        <p class="eyebrow eyebrow--live"><span class="live-dot" aria-hidden="true"></span>Updated 27 October 2026 in Taiwan</p>
+        <h1 class="page-title">What I'm doing now</h1>
+      </div>
 
-    <div class="now-list">
-      <div class="now-row">
-        <p class="label">Work</p>
-        <p class="text">Assistant researcher in the H-Team lab at NTU, and teaching assistant for Prof. Hsieh's BIM course. I'm also the lead full-stack developer of <a href="https://maischool.legendcastle.org">MaiSchool</a>, a live tutoring platform for families.</p>
+      <div class="now-list">
+        <div class="now-row" data-reveal>
+          <p class="label">Work</p>
+          <p class="text">Assistant researcher in the H-Team lab at NTU, and teaching assistant for Prof. Hsieh's BIM course. I'm also the lead full-stack developer of <a href="https://maischool.legendcastle.org">MaiSchool</a>, a live tutoring platform for families.</p>
+        </div>
+        <div class="now-row" data-reveal style="--d: 1">
+          <p class="label">Building</p>
+          <p class="text">PhotoForge, my local photogrammetry app, and the Kreyòl dataset pipeline.</p>
+        </div>
+        <div class="now-row" data-reveal style="--d: 2">
+          <p class="label">Helping</p>
+          <p class="text">My second term leading the academic committee, getting this year's Haitian students ready to apply to Taiwanese universities.</p>
+        </div>
+        <div class="now-row" data-reveal style="--d: 3">
+          <p class="label">Open to</p>
+          <p class="text">Research and engineering roles in digital construction and applied AI. <a href={`mailto:${site.email}`}>Write to me</a>.</p>
+        </div>
       </div>
-      <div class="now-row">
-        <p class="label">Building</p>
-        <p class="text">PhotoForge, my local photogrammetry app, and the Kreyòl dataset pipeline.</p>
-      </div>
-      <div class="now-row">
-        <p class="label">Helping</p>
-        <p class="text">My second term leading the academic committee, getting this year's Haitian students ready to apply to Taiwanese universities.</p>
-      </div>
-      <div class="now-row">
-        <p class="label">Open to</p>
-        <p class="text">Research and engineering roles in digital construction and applied AI. <a href={`mailto:${site.email}`}>Write to me</a>.</p>
-      </div>
+
+      <p class="footnote" data-reveal>This is a <a href="https://nownownow.com/about">now page</a>: what I'd tell a friend I hadn't seen in a year.</p>
     </div>
-
-    <p class="footnote">This is a <a href="https://nownownow.com/about">now page</a>: what I'd tell a friend I hadn't seen in a year.</p>
   </div>
 </Base>

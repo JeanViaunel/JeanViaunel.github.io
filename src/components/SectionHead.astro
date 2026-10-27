@@ -1,0 +1,27 @@
+---
+import { href as resolve } from '../lib/url';
+
+interface Props {
+  no: number;
+  id: string;
+  title: string;
+  link?: { href: string; label: string };
+  meta?: string;
+}
+
+const { no, id, title, link, meta } = Astro.props;
+---
+
+<div class="sec-head" data-reveal>
+  <span class="sec-no" aria-hidden="true">{String(no).padStart(2, '0')}</span>
+  <h2 id={id}>{title}</h2>
+  {
+    link ? (
+      <a class="sec-link" href={resolve(link.href)}>
+        {link.label} <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    ) : meta ? (
+      <span class="sec-meta">{meta}</span>
+    ) : null
+  }
+</div>
