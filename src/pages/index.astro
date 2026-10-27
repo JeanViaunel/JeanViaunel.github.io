@@ -162,8 +162,9 @@ const accent = ['read', 'buildings.'];
       <div>
         <h3 class="pub-title">{isarc.title}</h3>
         <Authors authors={isarc.authors} />
-        <p class="pub-summary">Language models can turn a single floor plan into a parametric BIM model and grow it into a multi-storey building.</p>
+        <p class="pub-summary">An LLM calls four tools to turn a layered DXF floor plan into a multi-storey IFC model.</p>
         <div class="chip-row pub-links">
+          <a class="link-chip" href={url('research/2d-to-bim/')}>How it works <span class="arrow" aria-hidden="true">→</span></a>
           {isarc.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}
         </div>
       </div>

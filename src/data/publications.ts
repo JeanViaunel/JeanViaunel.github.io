@@ -9,6 +9,8 @@ export interface Publication {
   year: number;
   venue?: string;
   summary: string;
+  /** Internal page explaining the work, if there is one. */
+  page?: string;
   links: { label: string; href: string }[];
   bibtex: string;
 }
@@ -23,7 +25,8 @@ export const publications: Publication[] = [
     year: 2026,
     venue: 'Proceedings of the 43rd ISARC, Singapore, 2026, pp. 2410–2414',
     summary:
-      'Language models can read a single floor plan, build a parametric BIM model from it, and scale that into a multi-storey building while keeping geometry and semantics consistent.',
+      'An LLM orchestrates four tools through the Model Context Protocol to turn a layered DXF floor plan and a plain-language request into a multi-storey IFC model.',
+    page: 'research/2d-to-bim/',
     links: [
       { label: 'DOI', href: 'https://doi.org/10.22260/ISARC2026/0307' },
       { label: 'PDF', href: 'https://www.iaarc.org/publications/fulltext/ISARC2026_1432.pdf' },

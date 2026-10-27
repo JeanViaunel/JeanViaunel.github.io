@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import Authors from '../../components/Authors.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import DxfPipeline from '../../components/figures/DxfPipeline.astro';
+import { layerMap } from '../../data/dxf-demo';
+import { publications } from '../../data/publications';
+import { url } from '../../lib/url';
+
+const paper = publications.find((p) => p.key === 'isarc2026')!;
+---
+
+<Base
+  title="From 2D drawings to BIM"
+  current="research"
+  description="How an LLM orchestrates four tools through MCP to turn a layered DXF floor plan into a multi-storey IFC model. ISARC 2026."
+>
+  <div class="grid-paper">
+    <div class="container page" style="padding-bottom: clamp(32px, 4vw, 56px)">
+      <div class="page-head">
+        <p class="eyebrow"><a href={url('research/')} class="underline-link" style="color: inherit">Research</a></p>
+        <h1 class="page-title">From 2D drawings to BIM</h1>
+        <p class="lede" style="max-width: 46rem">
+          A plain-language request and a layered DXF floor plan go in; a multi-storey IFC model comes out.
+          The LLM does not draw the geometry itself. It calls four tools in order, and the tools do the
+          parsing and the modelling.
+        </p>
+      </div>
+
+      <dl class="stats" data-reveal>
+        <div><dt>Input</dt><dd class="stats-text">DXF + request</dd></div>
+        <div><dt>Tools the LLM calls</dt><dd>4</dd></div>
+        <div><dt>Output</dt><dd class="stats-text">IFC4</dd></div>
+        <div><dt>Storeys in the demo</dt><dd>5</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="container page" style="padding-top: 24px">
+    <section aria-labelledby="how">
+      <SectionHead no={1} id="how" title="How it works" meta="Press a stage or let it play" />
+      <div class="case-figure" data-reveal>
+        <DxfPipeline />
+      </div>
+    </section>
+
+    <section aria-labelledby="layers" class="case-section">
+      <SectionHead no={2} id="layers" title="What each CAD layer becomes" />
+      <p class="case-lead" data-reveal>
+        The pipeline relies on standard AIA layer names. That is why a clean, layered drawing matters more
+        than a clever prompt.
+      </p>
+      <div class="layer-table" data-reveal>
+        <table>
+          <thead>
+            <tr><th scope="col">DXF layer</th><th scope="col">Element</th><th scope="col">IFC class generated</th></tr>
+          </thead>
+          <tbody>
+            {
+              layerMap.map((r) => (
+                <tr class:list={{ 'is-skipped': !r.ifc }}>
+                  <td class="mono">{r.layer}</td>
+                  <td>{r.element}</td>
+                  <td class="mono">{r.ifc ?? 'Not generated'}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <p class="footnote" style="margin-top: 12px">Table 1 of the paper.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="limits" class="case-section">
+      <SectionHead no={3} id="limits" title="Where it stops" />
+      <ul class="takeaways" data-reveal>
+        <li><strong>Orthogonal, layer-disciplined drawings.</strong> Accuracy depends on a structured drawing. Diagonal walls, irregular junctions and inconsistent gaps need more geometric reasoning than gap closing.</li>
+        <li><strong>Stairs and furniture stay 2D.</strong> They are read from the drawing but no IFC element is generated for them.</li>
+        <li><strong>Efficiency is qualitative so far.</strong> The gain is fewer manual modelling steps. Element detection precision and geometric deviation against non-LLM baselines are the next measurements.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="paper" class="case-section">
+      <SectionHead no={4} id="paper" title="The paper" />
+      <article class="paper" data-reveal style="border-bottom: 0">
+        <div class="paper-body">
+          <h3 class="pub-title">{paper.title}</h3>
+          <Authors authors={paper.authors} />
+          <p class="pub-venue">{paper.venue}</p>
+          <div class="chip-row pub-links">
+            {paper.links.map((l) => <a class="link-chip" href={l.href}>{l.label} <span class="arrow arrow--ne" aria-hidden="true">↗</span></a>)}
+            <button type="button" class="link-chip" data-copy-from="bib-isarc">Copy BibTeX</button>
+          </div>
+          <pre id="bib-isarc" hidden>{paper.bibtex}</pre>
+        </div>
+      </article>
+      <p style="margin-top: 32px">
+        <a href={url('research/')} class="underline-link"><span class="arrow" aria-hidden="true">←</span> All research</a>
+      </p>
+    </section>
+  </div>
+</Base>

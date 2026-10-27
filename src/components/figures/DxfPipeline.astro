@@ -1,0 +1,347 @@
+---
+// The paper's pipeline as one stepped figure. Every stage is drawn from the same
+// plan in src/data/dxf-demo.ts: DXF layers, room polygons, IFC extrusion, storeys.
+import { GX, GY, T, STOREY, walls, columns, rooms, stair, beds, counts, request, type Wall } from '../../data/dxf-demo';
+import { boxFaces, facePatch, projector, type Box } from '../../lib/iso';
+
+const VW = 520;
+const VH = 380;
+const fmt = (n: number) => n.toFixed(1);
+
+/* ---------- 2D plan ---------- */
+const s2 = 0.03;
+const o2 = { x: 76, y: 46 };
+const px = (x: number) => o2.x + x * s2;
+const py = (y: number) => o2.y + y * s2;
+
+/** Solid wall pieces between openings, as plan rectangles. */
+function pieces(w: Wall) {
+  const cuts = [...w.openings].sort((a, b) => a.at - b.at);
+  const out: [number, number][] = [];
+  let start = w.from - T / 2;
+  for (const o of cuts) {
+    out.push([start, o.at - o.width / 2]);
+    start = o.at + o.width / 2;
+  }
+  out.push([start, w.to + T / 2]);
+  return out.filter(([a, b]) => b > a);
+}
+const rectOf = (w: Wall, a: number, b: number) =>
+  w.axis === 'x'
+    ? { x: px(a), y: py(w.line - T / 2), w: (b - a) * s2, h: T * s2 }
+    : { x: px(w.line - T / 2), y: py(a), w: T * s2, h: (b - a) * s2 };
+
+const wallRects = walls.flatMap((w) => pieces(w).map(([a, b]) => rectOf(w, a, b)));
+const openings = walls.flatMap((w) => w.openings.map((o) => ({ w, o })));
+const windowRects = openings.filter(({ o }) => o.kind === 'window').map(({ w, o }) => ({ ...rectOf(w, o.at - o.width / 2, o.at + o.width / 2), axis: w.axis }));
+
+const doorPaths = openings
+  .filter(({ o }) => o.kind === 'door')
+  .map(({ w, o }) => {
+    const r = o.width * s2;
+    if (w.axis === 'x') {
+      const hx = px(o.at - o.width / 2);
+      const hy = py(w.line);
+      return `M${fmt(hx)},${fmt(hy)}V${fmt(hy - r)}A${fmt(r)},${fmt(r)} 0 0 1 ${fmt(hx + r)},${fmt(hy)}`;
+    }
+    const dir = w.line === GX['2'] ? -1 : 1;
+    const hx = px(w.line);
+    const hy = py(o.at - o.width / 2);
+    return `M${fmt(hx)},${fmt(hy)}H${fmt(hx + dir * r)}A${fmt(r)},${fmt(r)} 0 0 ${dir > 0 ? 1 : 0} ${fmt(hx)},${fmt(hy + r)}`;
+  });
+
+/** Gap closures drawn by Detect Rooms: the wall line carried across every opening. */
+const closures = openings.map(({ w, o }) =>
+  w.axis === 'x'
+    ? { x1: px(o.at - o.width / 2), y1: py(w.line), x2: px(o.at + o.width / 2), y2: py(w.line) }
+    : { x1: px(w.line), y1: py(o.at - o.width / 2), x2: px(w.line), y2: py(o.at + o.width / 2) },
+);
+
+const gridX = Object.entries(GX).map(([k, v]) => ({ k, x: px(v) }));
+const gridY = Object.entries(GY).map(([k, v]) => ({ k, y: py(v) }));
+const treads = Array.from({ length: stair.treads + 1 }, (_, i) => stair.x0 + ((stair.x1 - stair.x0) * i) / stair.treads);
+
+/* ---------- 3D: single storey (Generate IFC) ---------- */
+const wallBox = (w: Wall, z0: number, z1: number): Box =>
+  w.axis === 'x'
+    ? { x0: w.from - T / 2, x1: w.to + T / 2, y0: w.line - T / 2, y1: w.line + T / 2, z0, z1 }
+    : { x0: w.line - T / 2, x1: w.line + T / 2, y0: w.from - T / 2, y1: w.to + T / 2, z0, z1 };
+
+const p3 = projector(0.0228, 232, 92);
+const colFaces = boxFaces(columns.map((c) => ({ x0: c.x - 150, x1: c.x + 150, y0: c.y - 150, y1: c.y + 150, z0: 0, z1: STOREY })), p3);
+const wallFaces3 = boxFaces(walls.map((w) => wallBox(w, 0, STOREY)), p3);
+const footprint = [p3(0, 0, 0), p3(GX['5'], 0, 0), p3(GX['5'], GY.D, 0), p3(0, GY.D, 0)].map(([a, b]) => `${fmt(a)},${fmt(b)}`).join(' ');
+
+const front = walls.find((w) => w.axis === 'x' && w.line === GY.D)!;
+const right = walls.find((w) => w.axis === 'y' && w.line === GX['5'])!;
+const exteriorOpenings = (p: ReturnType<typeof projector>, z: number, ground: boolean) => [
+  ...front.openings
+    .filter((o) => o.kind === 'window' || ground)
+    .map((o) => facePatch(p, { y: GY.D + T / 2 }, o.at - o.width / 2, o.at + o.width / 2, z + (o.kind === 'door' ? 0 : 900), z + 2100)),
+  ...right.openings.map((o) => facePatch(p, { x: GX['5'] + T / 2 }, o.at - o.width / 2, o.at + o.width / 2, z + 900, z + 2100)),
+];
+const openings3 = exteriorOpenings(p3, 0, true);
+
+/* ---------- 3D: five storeys (Create Multi-storey Building) ---------- */
+const LEVELS = 5;
+const p4 = projector(0.0127, 132, 214);
+const exterior = walls.filter((w) => (w.axis === 'x' && (w.line === GY.A || w.line === GY.D)) || (w.axis === 'y' && (w.line === GX['1'] || w.line === GX['5'])));
+const storeys = Array.from({ length: LEVELS }, (_, i) => {
+  const z = i * STOREY;
+  const slab: Box = { x0: -T / 2, x1: GX['5'] + T / 2, y0: -T / 2, y1: GY.D + T / 2, z0: z, z1: z + 200 };
+  const faces = boxFaces([slab, ...exterior.map((w) => wallBox(w, z + 200, z + STOREY))], p4);
+  const [lx, ly] = p4(GX['5'] + T / 2, -T / 2, z + STOREY / 2);
+  return { i, z, faces, openings: exteriorOpenings(p4, z, i === 0), label: { x: lx, y: ly } };
+});
+const roof = boxFaces([{ x0: -T / 2, x1: GX['5'] + T / 2, y0: -T / 2, y1: GY.D + T / 2, z0: LEVELS * STOREY, z1: LEVELS * STOREY + 250 }], p4);
+
+const steps = [
+  {
+    id: 'parse',
+    tool: 'Parse DXF',
+    what: 'Reads the drawing with ezdxf, detects its units from $INSUNITS and scales them to millimetres, maps CAD layers to element types, and extracts walls, columns, doors, windows and slabs.',
+    sub: ['Read DXF file', 'Detect units', 'Normalize coordinates', 'Extract elements'],
+    out: `${counts.walls} walls, ${counts.columns} columns, ${counts.doors} doors, ${counts.windows} windows`,
+  },
+  {
+    id: 'rooms',
+    tool: 'Detect rooms',
+    what: 'Joins wall ends across the small gaps (under 100 mm) left at doors and windows, merges the walls and turns them into room polygons with Shapely, then returns wall endpoints and opening positions to the LLM.',
+    sub: ['Close gaps', 'Generate polygons', 'Calculate parameters'],
+    out: `${counts.rooms} closed room polygons`,
+  },
+  {
+    id: 'ifc',
+    tool: 'Generate IFC',
+    what: 'Builds the IFC4 hierarchy, IfcProject → IfcSite → IfcBuilding → IfcBuildingStorey. Walls are extruded to the storey height (3000 mm) as IfcWallStandardCase, and doors and windows become IfcOpeningElement voids in their host walls.',
+    sub: ['Create hierarchy', 'Extrude elements', 'Link elements'],
+    out: 'One IFC4 storey: columns, then walls, then openings',
+  },
+  {
+    id: 'storeys',
+    tool: 'Create multi-storey building',
+    what: 'Uses a reference floor as the template and places each copy at Zᵢ = i × H_f. In the paper’s demo the ground floor came from Level 0.dxf and the four typical floors from Level 1.dxf.',
+    sub: ['Duplicate floors', 'Calculate elevations', 'Apply transformation'],
+    out: `${LEVELS} storeys, an IFC file that opens in Revit and ArchiCAD`,
+  },
+];
+---
+
+<figure class="pipe" data-pipe>
+  <div class="pipe-head">
+    <div class="pipe-request">
+      <span class="kicker">The user’s request</span>
+      <p>“{request}”</p>
+    </div>
+    <div class="pipe-llm">
+      <span class="kicker">The LLM</span>
+      <p>Claude Code with Sonnet 4.5 reads the request and calls four tools in order, through the Model Context Protocol (MCP).</p>
+    </div>
+  </div>
+
+  <div class="pipe-controls">
+    <div class="pipe-tabs" role="tablist" aria-label="Pipeline stages">
+      {
+        steps.map((s, i) => (
+          <button type="button" role="tab" id={`tab-${s.id}`} aria-controls={`panel-${s.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-step={i}>
+            <span class="n">{i + 1}</span>
+            <span class="t">{s.tool}</span>
+            <span class="bar" aria-hidden="true"></span>
+          </button>
+        ))
+      }
+    </div>
+    <button type="button" class="pipe-play" data-play aria-label="Pause the walkthrough">Pause</button>
+  </div>
+
+  <div class="pipe-steps">
+    {
+      steps.map((s, i) => (
+        <section class:list={['pipe-step', { 'is-active': i === 0 }]} id={`panel-${s.id}`} role="tabpanel" aria-labelledby={`tab-${s.id}`} data-panel={i}>
+          <div class="pipe-art">
+            {s.id === 'parse' && (
+              <svg viewBox={`0 0 ${VW} ${VH}`} role="img" aria-label="The DXF floor plan on its 1 to 5 and A to D grid, with walls, columns, doors, windows, stairs and furniture on separate CAD layers.">
+                <g class="cad-grid">
+                  {gridX.map((g) => <line x1={g.x} x2={g.x} y1={o2.y - 24} y2={py(GY.D) + 14} />)}
+                  {gridY.map((g) => <line x1={o2.x - 24} x2={px(GX['5']) + 14} y1={g.y} y2={g.y} />)}
+                  {gridX.map((g) => <><circle cx={g.x} cy={o2.y - 33} r="9" /><text x={g.x} y={o2.y - 29}>{g.k}</text></>)}
+                  {gridY.map((g) => <><circle cx={o2.x - 33} cy={g.y} r="9" /><text x={o2.x - 33} y={g.y + 4}>{g.k}</text></>)}
+                </g>
+                <g class="cad-furn">
+                  {beds.map((b) => <><rect x={px(b.x)} y={py(b.y)} width={b.w * s2} height={b.h * s2} /><line x1={px(b.x)} x2={px(b.x + b.w)} y1={py(b.y + 500)} y2={py(b.y + 500)} /></>)}
+                </g>
+                <g class="cad-stair">
+                  <rect x={px(stair.x0)} y={py(stair.y0)} width={(stair.x1 - stair.x0) * s2} height={(stair.y1 - stair.y0) * s2} />
+                  {treads.map((t) => <line x1={px(t)} x2={px(t)} y1={py(stair.y0)} y2={py(stair.y1)} />)}
+                </g>
+                <g class="cad-wall">{wallRects.map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} />)}</g>
+                <g class="cad-wind">
+                  {windowRects.map((r) => <><rect x={r.x} y={r.y} width={r.w} height={r.h} /><line x1={r.axis === 'x' ? r.x : r.x + r.w / 2} x2={r.axis === 'x' ? r.x + r.w : r.x + r.w / 2} y1={r.axis === 'x' ? r.y + r.h / 2 : r.y} y2={r.axis === 'x' ? r.y + r.h / 2 : r.y + r.h} /></>)}
+                </g>
+                <g class="cad-door">{doorPaths.map((d) => <path d={d} />)}</g>
+                <g class="cad-cols">{columns.map((c) => <rect x={px(c.x) - 3.5} y={py(c.y) - 3.5} width="7" height="7" />)}</g>
+              </svg>
+            )}
+            {s.id === 'rooms' && (
+              <svg viewBox={`0 0 ${VW} ${VH}`} role="img" aria-label={`The same plan after Detect Rooms: wall gaps at openings are closed and ${counts.rooms} rooms are outlined as polygons.`}>
+                <g class="rm-rooms">
+                  {rooms.map((r, k) => (
+                    <g style={`--k: ${k}`}>
+                      <rect x={px(r.x0)} y={py(r.y0)} width={(r.x1 - r.x0) * s2} height={(r.y1 - r.y0) * s2} rx="2" />
+                      <text x={px((r.x0 + r.x1) / 2)} y={py((r.y0 + r.y1) / 2) + 4}>R{k + 1}</text>
+                    </g>
+                  ))}
+                </g>
+                <g class="rm-walls">{wallRects.map((r) => <rect x={r.x} y={r.y} width={r.w} height={r.h} />)}</g>
+                <g class="rm-close">{closures.map((c) => <line x1={c.x1} y1={c.y1} x2={c.x2} y2={c.y2} />)}</g>
+              </svg>
+            )}
+            {s.id === 'ifc' && (
+              <svg viewBox={`0 0 ${VW} ${VH}`} role="img" aria-label="The storey in 3D, built in three passes: columns at the grid points, then walls extruded to 3000 millimetres, then door and window openings cut into the walls.">
+                <polygon class="iso-footprint" points={footprint} />
+                <g class="iso-cols" data-sub="0">{colFaces.map((f) => <path class={`f-${f.side}`} d={f.d} />)}</g>
+                <g class="iso-walls" data-sub="1">{wallFaces3.map((f) => <path class={`f-${f.side}`} d={f.d} />)}</g>
+                <g class="iso-open" data-sub="2">{openings3.map((d) => <path d={d} />)}</g>
+              </svg>
+            )}
+            {s.id === 'storeys' && (
+              <svg viewBox={`0 0 ${VW} ${VH}`} role="img" aria-label={`A ${LEVELS}-storey building: the ground floor from Level 0 and four typical floors from Level 1, stacked every 3000 millimetres.`}>
+                {storeys.map((st) => (
+                  <g class="iso-storey" style={`--i: ${st.i}`}>
+                    {st.faces.map((f) => <path class={`f-${f.side}`} d={f.d} />)}
+                    <g class="iso-open">{st.openings.map((d) => <path d={d} />)}</g>
+                    <line class="lvl-lead" x1={st.label.x + 6} x2={st.label.x + 30} y1={st.label.y} y2={st.label.y} />
+                    <text class="lvl" x={st.label.x + 36} y={st.label.y + 4}>
+                      <tspan class="lvl-name">Level {st.i}</tspan>
+                      <tspan class="lvl-meta" dx="8">{st.i === 0 ? 'ground' : 'typical'}, Z = {st.z.toLocaleString('en-US')} mm</tspan>
+                    </text>
+                  </g>
+                ))}
+                <g class="iso-storey iso-roof" style={`--i: ${LEVELS}`}>{roof.map((f) => <path class={`f-${f.side}`} d={f.d} />)}</g>
+              </svg>
+            )}
+          </div>
+          <div class="pipe-notes">
+            <p class="kicker kicker--accent">Tool {i + 1} of {steps.length}</p>
+            <h3>{s.tool}</h3>
+            <p class="body-text">{s.what}</p>
+            <ol class="pipe-sub">
+              {s.sub.map((x, k) => <li style={`--k: ${k}`}>{x}</li>)}
+            </ol>
+            {s.id === 'ifc' && (
+              <ul class="pipe-passes">
+                <li data-pass="0">(a) Columns</li>
+                <li data-pass="1">(b) Walls</li>
+                <li data-pass="2">(c) Openings</li>
+              </ul>
+            )}
+            <p class="pipe-out"><span class="kicker">Returns</span>{s.out}</p>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+  <figcaption>
+    Floor plan redrawn and simplified from Floor plan 2 in the paper; element counts refer to this drawing. Stairs and furniture
+    stay in the 2D drawing only: the pipeline does not generate them.
+  </figcaption>
+</figure>
+
+<script>
+  const fig = document.querySelector<HTMLElement>('[data-pipe]');
+  if (fig) {
+    const tabs = Array.from(fig.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(fig.querySelectorAll<HTMLElement>('[data-panel]'));
+    const play = fig.querySelector<HTMLButtonElement>('[data-play]')!;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const STEP_MS = 6500;
+    let step = 0;
+    let timer = 0;
+    let subTimers: number[] = [];
+    let playing = !reduced;
+
+    const setPass = (n: number) => fig.style.setProperty('--pass', String(n));
+    const passes = Array.from(fig.querySelectorAll<HTMLElement>('[data-pass]'));
+    const markPass = (n: number) => {
+      fig.dataset.pass = String(n);
+      passes.forEach((p) => p.classList.toggle('is-on', Number(p.dataset.pass) <= n));
+      setPass(n);
+    };
+
+    const show = (i: number, focus = false) => {
+      step = (i + tabs.length) % tabs.length;
+      tabs.forEach((t, k) => {
+        const on = k === step;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        t.classList.toggle('is-done', k < step);
+      });
+      panels.forEach((p, k) => p.classList.toggle('is-active', k === step));
+      if (focus) tabs[step].focus();
+
+      subTimers.forEach(clearTimeout);
+      subTimers = [];
+      if (panels[step].id === 'panel-ifc' && playing) {
+        markPass(0);
+        subTimers.push(window.setTimeout(() => markPass(1), 1600), window.setTimeout(() => markPass(2), 3400));
+      } else {
+        markPass(2);
+      }
+      fig.style.setProperty('--step-ms', `${STEP_MS}ms`);
+      fig.classList.remove('is-ticking');
+      void fig.offsetWidth; // restart the progress bar animation
+      if (playing) fig.classList.add('is-ticking');
+    };
+
+    const schedule = () => {
+      clearInterval(timer);
+      if (playing) timer = window.setInterval(() => show(step + 1), STEP_MS);
+    };
+    const setPlaying = (on: boolean) => {
+      playing = on;
+      play.textContent = on ? 'Pause' : 'Play';
+      play.setAttribute('aria-label', on ? 'Pause the walkthrough' : 'Play the walkthrough');
+      fig.classList.toggle('is-ticking', on);
+      schedule();
+      if (on) show(step);
+    };
+
+    fig.classList.add('is-interactive');
+    tabs.forEach((t, k) =>
+      t.addEventListener('click', () => {
+        setPlaying(false);
+        show(k);
+      }),
+    );
+    fig.querySelector('[role="tablist"]')!.addEventListener('keydown', (e) => {
+      const ev = e as KeyboardEvent;
+      const d = ev.key === 'ArrowRight' ? 1 : ev.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      ev.preventDefault();
+      setPlaying(false);
+      show(step + d, true);
+    });
+    play.addEventListener('click', () => setPlaying(!playing));
+
+    if (reduced) {
+      setPlaying(false);
+      show(0);
+    } else {
+      // Start the walkthrough only once the figure is on screen.
+      play.textContent = 'Pause';
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io.disconnect();
+            setPlaying(true);
+          }
+        },
+        { threshold: 0.4 },
+      );
+      io.observe(fig);
+      playing = false;
+      show(0);
+      markPass(2);
+    }
+  }
+</script>

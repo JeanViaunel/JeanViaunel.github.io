@@ -94,6 +94,9 @@ const areas = [
               <p class="pub-venue">{p.venue ?? p.year}</p>
               <p class="pub-summary">{p.summary}</p>
               <div class="chip-row pub-links">
+                {p.page && (
+                  <a class="link-chip" href={url(p.page)}>How it works <span class="arrow" aria-hidden="true">→</span></a>
+                )}
                 {p.links.map((l) => (
                   <a class="link-chip" href={l.href}>
                     {l.label} <span class="arrow arrow--ne" aria-hidden="true">↗</span>

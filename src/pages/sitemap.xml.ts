@@ -3,7 +3,7 @@ import { nav } from '../data/site';
 import { url } from '../lib/url';
 
 export const GET: APIRoute = ({ site }) => {
-  const paths = ['', ...nav.map((n) => n.path), 'work/marine-debris/'];
+  const paths = ['', ...nav.map((n) => n.path), 'work/marine-debris/', 'research/2d-to-bim/'];
   const entries = paths
     .map((p) => `  <url><loc>${new URL(url(p), site)}</loc></url>`)
     .join('\n');
