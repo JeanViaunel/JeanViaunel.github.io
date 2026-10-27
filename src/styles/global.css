@@ -1251,7 +1251,10 @@ figcaption {
   font-family: var(--mono);
   font-size: 0.72rem;
   margin-left: 6px;
-  opacity: 0.6;
+  color: var(--muted);
+}
+.filter[aria-pressed='true'] .n {
+  color: #c9ccd0;
 }
 .project-count {
   margin: 18px 0 0;

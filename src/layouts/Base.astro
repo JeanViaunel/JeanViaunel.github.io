@@ -37,6 +37,8 @@ const ogImage = new URL(url('images/victor.jpg'), Astro.site);
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary" />
+    <link rel="sitemap" href={url('sitemap.xml')} />
+    <slot name="head" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

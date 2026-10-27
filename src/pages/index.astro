@@ -4,9 +4,29 @@ import Authors from '../components/Authors.astro';
 import ScanFigure from '../components/ScanFigure.astro';
 import SectionHead from '../components/SectionHead.astro';
 import { publications } from '../data/publications';
+import { site } from '../data/site';
 import { url } from '../lib/url';
 
 const [isarc, icccbe] = publications;
+
+// Structured data so a search for the name can surface this site and its profiles.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  alternateName: site.nameZh,
+  url: new URL(url(''), Astro.site).href,
+  image: new URL(url('images/victor.jpg'), Astro.site).href,
+  email: `mailto:${site.email}`,
+  jobTitle: 'Assistant Researcher',
+  worksFor: { '@type': 'Organization', name: 'H-Team lab, National Taiwan University', url: 'https://hteam.caece.net' },
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'National Taiwan University' },
+    { '@type': 'CollegeOrUniversity', name: 'National Yang Ming Chiao Tung University' },
+  ],
+  knowsAbout: ['Scan-to-BIM', 'Building Information Modeling', 'IFC', 'LiDAR', 'Computer vision', 'Full-stack development'],
+  sameAs: [site.links.linkedin, site.links.github, site.links.hteam],
+};
 
 const pills = ['Assistant Researcher', 'NTU H-Team lab', 'M.S. Civil Engineering 2026'];
 const lead = ['I', 'teach', 'computers', 'to'];
@@ -14,10 +34,11 @@ const accent = ['read', 'buildings.'];
 ---
 
 <Base current="home" sheet={1} contactFooter>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(person)} />
   <div class="grid-paper">
     <section class="hero container">
       <div>
-        <ul class="pills" aria-label="Current role">
+        <ul class="pills">
           {pills.map((p, i) => <li class="pill" style={`--d: ${i}`}>{p}</li>)}
         </ul>
         <h1>
