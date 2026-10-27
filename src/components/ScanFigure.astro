@@ -11,7 +11,7 @@ const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
   <div class="scan-bar">
     <span>Fig. 1</span>
     <span class="hint">Drag to compare</span>
-    <span data-count-wrap><span class="count" data-count>0</span> points</span>
+    <span data-count-wrap><span class="count" data-scan-count>0</span> sampled points</span>
   </div>
   <div class="scan-stage">
     <canvas aria-hidden="true"></canvas>
@@ -58,8 +58,9 @@ const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
           <line x1="75" y1="67" x2="85" y2="57"></line>
           <line x1="555" y1="67" x2="565" y2="57"></line>
         </g>
-        <text class="fig-fine" x="320" y="56" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6068">16.00 m</text>
       </g>
+      <!-- Outside the clip, so it stays readable: it centres on the visible part of the model. -->
+      <text class="fig-fine scan-side" data-dim x="445" y="56" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6068">16.00 m</text>
 
       <g class="scan-labels fig-fine" data-labels>
         <g stroke="#C2410C" stroke-width="1.2" fill="none">
@@ -113,7 +114,8 @@ const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
     const labels = fig.querySelector<SVGGElement>('[data-labels]')!;
     const lblScan = fig.querySelector<SVGTextElement>('[data-lbl-scan]')!;
     const lblModel = fig.querySelector<SVGTextElement>('[data-lbl-model]')!;
-    const countEl = fig.querySelector<HTMLElement>('[data-count]')!;
+    const dim = fig.querySelector<SVGTextElement>('[data-dim]')!;
+    const countEl = fig.querySelector<HTMLElement>('[data-scan-count]')!;
     const cross = fig.querySelector<HTMLElement>('.scan-cross')!;
     const cxEl = fig.querySelector<HTMLElement>('[data-cx]')!;
     const cyEl = fig.querySelector<HTMLElement>('[data-cy]')!;
@@ -180,6 +182,9 @@ const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
       }
 
       clip.setAttribute('x', String(u));
+      const visible0 = Math.max(u, 80);
+      dim.setAttribute('x', String((visible0 + 560) / 2));
+      dim.style.opacity = 560 - visible0 > 80 ? '1' : '0';
       lblScan.setAttribute('x', String(u - 10));
       lblModel.setAttribute('x', String(u + 10));
       lblScan.style.opacity = u > 100 ? '1' : '0';
@@ -235,7 +240,16 @@ const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
     resize();
     fig.classList.add('is-live');
 
-    if (reduced) {
+    // The intro plays once per visit; returning to Home shows the finished figure.
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem('scan-intro-seen') === '1';
+      sessionStorage.setItem('scan-intro-seen', '1');
+    } catch {
+      // storage blocked: play the intro
+    }
+
+    if (reduced || seen) {
       u = W / 2;
       finishIntro();
       syncRange();
@@ -276,7 +290,7 @@ const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
           io.disconnect();
-          setTimeout(() => requestAnimationFrame(tick), 650);
+          setTimeout(() => requestAnimationFrame(tick), 250);
         }
       },
       { threshold: 0.35 },
@@ -295,8 +309,11 @@ const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
     return lo;
   }
 
-  // A deterministic point cloud of the facade: denser near the scanner,
-  // sparse returns through the glass, a ground strip and a few stray points.
+  // A deterministic point cloud of the facade, shaped like a walked mobile
+  // LiDAR scan: the sensor moves left to right along the wall, laying down
+  // near-vertical scan profiles. Spacing varies with walking speed (faint
+  // stripes); returns thin out and dim with height (longer range, steeper
+  // angle); glass returns almost nothing; a ground strip and a few stray points.
   function makePoints() {
     let seed = 20260327;
     const rnd = () => {
@@ -319,26 +336,26 @@ const ticks = [0, 1, 2, 3, 4, 5, 6, 7];
       raw[level].push(x, y);
     };
 
-    for (let y = 84; y <= 300; y += 2.2) {
-      for (let i = 0; i < 84; i++) {
-        const x = 80 + rnd() * 480;
-        const yy = y + (rnd() - 0.5) * 1.1;
-        const far = Math.abs(x - 320) / 240;
-        if (rnd() < far * 0.38) continue;
-        const glass = inOpening(x, yy);
+    let x = 80;
+    while (x <= 560) {
+      const lean = (rnd() - 0.5) * 1.2; // profiles are never perfectly vertical
+      for (let y = 300; y >= 84; y -= 2 + rnd() * 1.2) {
+        const h = (300 - y) / 216; // 0 at the ground, 1 at the roof
+        if (rnd() < h * 0.55) continue;
+        const px = x + lean * h + (rnd() - 0.5) * 0.5;
+        const py = y + (rnd() - 0.5) * 0.6;
+        const glass = inOpening(px, py);
         if (glass && rnd() > 0.07) continue;
-        let a = 0.42 + rnd() * 0.48 - far * 0.18;
+        let a = 0.8 - h * 0.35 + (rnd() - 0.5) * 0.25;
         if (glass) a *= 0.5;
-        if (yy < 92 || (yy > 191 && yy < 198)) a += 0.15;
-        add(x, yy, a);
+        if (py < 92 || (py > 191 && py < 198)) a += 0.12;
+        add(px, py, a);
       }
-    }
-    for (let y = 301; y <= 318; y += 2.4) {
-      for (let i = 0; i < 46; i++) {
-        const x = 30 + rnd() * 600;
-        if (rnd() < (Math.abs(x - 320) / 290) * 0.6) continue;
-        add(x, y + (rnd() - 0.5) * 1.2, 0.2 + rnd() * 0.35);
+      for (let y = 302; y <= 318; y += 3) {
+        if (rnd() < 0.5) add(x + (rnd() - 0.5) * 2, y + (rnd() - 0.5), 0.2 + rnd() * 0.3);
       }
+      // Walking speed drifts, so profile spacing does too.
+      x += 3.4 + 1.4 * (0.5 + 0.5 * Math.sin(x / 41)) + rnd() * 0.6;
     }
     for (let i = 0; i < 160; i++) add(60 + rnd() * 560, 56 + rnd() * 270, 0.15 + rnd() * 0.2);
 
