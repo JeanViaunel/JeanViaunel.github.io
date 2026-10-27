@@ -20,6 +20,8 @@ export interface Project {
   /** Internal path or external URL. Projects without one render as a plain card. */
   href?: string;
   cta?: string;
+  /** Shared-element name: the card title morphs into the page heading. */
+  vt?: string;
 }
 
 export const projects: Project[] = [
@@ -52,6 +54,7 @@ export const projects: Project[] = [
     stack: ['MCP', 'IFC4', 'ezdxf'],
     href: 'research/2d-to-bim/',
     cta: 'See how it works',
+    vt: 'case-bim',
   },
   {
     domain: 'Computer vision',
@@ -70,6 +73,7 @@ export const projects: Project[] = [
     stack: [],
     href: 'work/marine-debris/',
     cta: 'Read the case study',
+    vt: 'case-marine',
   },
   {
     domain: 'Computer vision',

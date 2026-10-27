@@ -21,9 +21,9 @@ const accent = ['read', 'buildings.'];
         <ul class="pills">
           {pills.map((p, i) => <li class="pill" style={`--d: ${i}`}>{p}</li>)}
         </ul>
-        <h1>
-          {lead.map((w, i) => <><span class="h-word"><span style={`--d: ${i}`}>{w}</span></span>{' '}</>)}
-          <span class="hl">{accent.map((w, i) => <><span class="h-word"><span style={`--d: ${lead.length + i}`}>{w}</span></span>{i === 0 ? ' ' : ''}</>)}</span>
+        <h1 data-lines>
+          {lead.map((w) => <><span class="h-word"><span>{w}</span></span>{' '}</>)}
+          <span class="hl">{accent.map((w, i) => <><span class="h-word"><span>{w}</span></span>{i === 0 ? ' ' : ''}</>)}</span>
         </h1>
         <p class="lede">
           I'm Victor, a civil engineer who writes software. I build pipelines that turn LiDAR scans
@@ -123,7 +123,7 @@ const accent = ['read', 'buildings.'];
             <span class="kicker">Competition</span>
             <span class="kicker">2026</span>
           </div>
-          <h3>Marine debris detection</h3>
+          <h3 data-vt style="--vt: case-marine">Marine debris detection</h3>
           <p class="body-text">Finding 34 kinds of ocean waste in photos, in a two-person team. The error analysis taught me the most.</p>
           <div class="chip-row">
             <span class="tag tag--accent">15th of 69 teams</span>
@@ -137,7 +137,7 @@ const accent = ['read', 'buildings.'];
   <section aria-labelledby="research" class="section container">
     <SectionHead no={2} id="research" title="Selected research" link={{ href: 'research/', label: 'All publications' }} />
 
-    <article class="pub-row" data-reveal>
+    <article class="pub-row">
       <p class="pub-meta"><span>ISARC 2026</span><span>Proceedings</span><span>Singapore</span></p>
       <div>
         <h3 class="pub-title">{isarc.title}</h3>
@@ -150,7 +150,7 @@ const accent = ['read', 'buildings.'];
       </div>
     </article>
 
-    <article class="pub-row" data-reveal>
+    <article class="pub-row">
       <p class="pub-meta"><span>ICCCBE 2026</span><span>Talk</span><span>25 March 2026</span></p>
       <div>
         <h3 class="pub-title">{icccbe.title}</h3>
@@ -166,17 +166,17 @@ const accent = ['read', 'buildings.'];
   <section aria-labelledby="beyond" class="section container">
     <SectionHead no={3} id="beyond" title="Beyond the lab" />
     <div class="trio">
-      <div data-reveal style="--d: 0">
+      <div>
         <p class="kicker kicker--accent">Teaching assistant</p>
         <h3>Prof. Hsieh's BIM course, NTU</h3>
         <p class="body-text">I assist in my professor's course, supporting students as they work through practical topics and their own implementation ideas.</p>
       </div>
-      <div data-reveal style="--d: 1">
+      <div>
         <p class="kicker kicker--accent">Community</p>
         <h3>Academic Committee Lead, second term</h3>
         <p class="body-text">I help Haitian students apply to Taiwanese universities, from study plans and autobiographies to application workshops.</p>
       </div>
-      <div data-reveal style="--d: 2">
+      <div>
         <p class="kicker kicker--accent">Venture</p>
         <h3>GUANIN</h3>
         <p class="body-text">A marketplace I founded and built, connecting suppliers in Asia with buyers in the Caribbean and Latin America.</p>
@@ -187,7 +187,7 @@ const accent = ['read', 'buildings.'];
   <section aria-labelledby="now" class="section container">
     <SectionHead no={4} id="now" title="Now" meta="Updated October 2026" />
     <div class="split">
-      <div data-reveal>
+      <div>
         <p class="body-text" style="font-size: 1.1rem; line-height: 1.65; max-width: 34rem">
           Assistant researcher in the H-Team lab, teaching assistant for Prof. Hsieh's BIM course, and
           lead developer of MaiSchool. On the side I'm building PhotoForge and helping the next group of
@@ -195,7 +195,7 @@ const accent = ['read', 'buildings.'];
         </p>
         <a href={url('now/')} class="underline-link" style="display: inline-block; margin-top: 14px; padding: 6px 0; font-size: 0.95rem">More on what I'm doing <span class="arrow" aria-hidden="true">→</span></a>
       </div>
-      <div data-reveal style="--d: 1">
+      <div>
         <h3>News</h3>
         <ul class="dated-list">
           <li class="dated"><span class="date">Jun 2026</span><span class="what">ISARC 2026 paper published in the proceedings.</span></li>

@@ -127,8 +127,7 @@ const steps = [
 ];
 ---
 
-<figure class="pipe" data-pipe>
-  <div class="pipe-head">
+<div class="pipe-head">
     <div class="pipe-request">
       <span class="kicker">The user’s request</span>
       <p>“{request}”</p>
@@ -139,6 +138,8 @@ const steps = [
     </div>
   </div>
 
+<div class="pipe-scroll" data-pipe-scroll>
+<figure class="pipe" data-pipe>
   <div class="pipe-controls">
     <div class="pipe-tabs" role="tablist" aria-label="Pipeline stages">
       {
@@ -246,30 +247,43 @@ const steps = [
     stay in the 2D drawing only: the pipeline does not generate them.
   </figcaption>
 </figure>
+</div>
 
 <script>
+  // Two modes. On large screens the figure pins below the header and the
+  // scroll position drives the stages (--sp = progress through the current
+  // stage). Elsewhere, and with reduced motion, it is a tab set that can
+  // play on its own.
   const fig = document.querySelector<HTMLElement>('[data-pipe]');
-  if (fig) {
+  const wrap = document.querySelector<HTMLElement>('[data-pipe-scroll]');
+  if (fig && wrap) {
     const tabs = Array.from(fig.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
     const panels = Array.from(fig.querySelectorAll<HTMLElement>('[data-panel]'));
     const play = fig.querySelector<HTMLButtonElement>('[data-play]')!;
+    const passes = Array.from(fig.querySelectorAll<HTMLElement>('[data-pass]'));
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const STEP_MS = 6500;
+    const N = tabs.length;
     let step = 0;
+    let pass = 2;
     let timer = 0;
     let subTimers: number[] = [];
-    let playing = !reduced;
+    let playing = false;
+    let pinned = false;
+    let autoplayArmed = false;
 
-    const setPass = (n: number) => fig.style.setProperty('--pass', String(n));
-    const passes = Array.from(fig.querySelectorAll<HTMLElement>('[data-pass]'));
+    const clamp = (v: number, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, v));
     const markPass = (n: number) => {
+      if (n === pass && fig.dataset.pass) return;
+      pass = n;
       fig.dataset.pass = String(n);
       passes.forEach((p) => p.classList.toggle('is-on', Number(p.dataset.pass) <= n));
-      setPass(n);
     };
 
     const show = (i: number, focus = false) => {
-      step = (i + tabs.length) % tabs.length;
+      const next = (i + N) % N;
+      const changed = next !== step;
+      step = next;
       tabs.forEach((t, k) => {
         const on = k === step;
         t.setAttribute('aria-selected', String(on));
@@ -278,6 +292,7 @@ const steps = [
       });
       panels.forEach((p, k) => p.classList.toggle('is-active', k === step));
       if (focus) tabs[step].focus();
+      if (pinned) return;
 
       subTimers.forEach(clearTimeout);
       subTimers = [];
@@ -287,28 +302,91 @@ const steps = [
       } else {
         markPass(2);
       }
-      fig.style.setProperty('--step-ms', `${STEP_MS}ms`);
-      fig.classList.remove('is-ticking');
-      void fig.offsetWidth; // restart the progress bar animation
-      if (playing) fig.classList.add('is-ticking');
+      if (changed || playing) {
+        fig.classList.remove('is-ticking');
+        void fig.offsetWidth; // restart the progress bar
+        if (playing) fig.classList.add('is-ticking');
+      }
     };
 
-    const schedule = () => {
-      clearInterval(timer);
-      if (playing) timer = window.setInterval(() => show(step + 1), STEP_MS);
-    };
+    /* ----- Tab mode: optional autoplay ----- */
     const setPlaying = (on: boolean) => {
-      playing = on;
-      play.textContent = on ? 'Pause' : 'Play';
-      play.setAttribute('aria-label', on ? 'Pause the walkthrough' : 'Play the walkthrough');
-      fig.classList.toggle('is-ticking', on);
-      schedule();
-      if (on) show(step);
+      playing = on && !pinned;
+      play.textContent = playing ? 'Pause' : 'Play';
+      play.setAttribute('aria-label', playing ? 'Pause the walkthrough' : 'Play the walkthrough');
+      fig.classList.toggle('is-ticking', playing);
+      clearInterval(timer);
+      if (playing) {
+        timer = window.setInterval(() => show(step + 1), STEP_MS);
+        show(step);
+      }
+    };
+
+    /* ----- Pinned mode: scroll drives the stages ----- */
+    const stickyTop = () => parseFloat(getComputedStyle(fig).top) || 0;
+    const geometry = () => {
+      const top = wrap.getBoundingClientRect().top + window.scrollY - stickyTop();
+      const total = Math.max(1, wrap.offsetHeight - fig.offsetHeight);
+      return { top, total };
+    };
+    let ticking = false;
+    const onScroll = () => {
+      ticking = false;
+      if (!pinned) return;
+      const { top, total } = geometry();
+      const p = clamp((window.scrollY - top) / total);
+      const raw = p * N;
+      const s = Math.min(N - 1, Math.floor(raw));
+      // Each stage completes in the first 80% of its stretch, then holds.
+      const sp = s === N - 1 && p >= 1 ? 1 : clamp((raw - s) / 0.8);
+      if (s !== step) show(s);
+      fig.style.setProperty('--sp', sp.toFixed(3));
+      if (panels[step].id === 'panel-ifc') markPass(sp < 0.35 ? 0 : sp < 0.68 ? 1 : 2);
+    };
+    const scrollToStep = (i: number) => {
+      const { top, total } = geometry();
+      window.scrollTo({ top: top + total * (i / N) + 2, behavior: reduced ? 'auto' : 'smooth' });
+    };
+
+    // ?pin forces pinned mode, for checking it on small screens.
+    const forcePin = new URLSearchParams(location.search).has('pin');
+    const canPin = () => !reduced && (forcePin || (window.innerWidth >= 960 && window.innerHeight >= 640));
+    const setMode = () => {
+      const want = canPin();
+      if (want === pinned && fig.classList.contains('is-interactive')) return;
+      pinned = want;
+      wrap.classList.toggle('is-pinned', pinned);
+      fig.classList.toggle('is-pinned', pinned);
+      if (pinned) {
+        setPlaying(false);
+        fig.classList.remove('is-ticking');
+        onScroll();
+      } else {
+        fig.style.setProperty('--sp', '1');
+        show(step);
+        if (!reduced && !autoplayArmed) armAutoplay();
+      }
+    };
+
+    // In tab mode, start playing once the figure is on screen.
+    const armAutoplay = () => {
+      autoplayArmed = true;
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io.disconnect();
+            if (!pinned) setPlaying(true);
+          }
+        },
+        { threshold: 0.4 },
+      );
+      io.observe(fig);
     };
 
     fig.classList.add('is-interactive');
     tabs.forEach((t, k) =>
       t.addEventListener('click', () => {
+        if (pinned) return scrollToStep(k);
         setPlaying(false);
         show(k);
       }),
@@ -318,30 +396,33 @@ const steps = [
       const d = ev.key === 'ArrowRight' ? 1 : ev.key === 'ArrowLeft' ? -1 : 0;
       if (!d) return;
       ev.preventDefault();
-      setPlaying(false);
-      show(step + d, true);
+      const target = Math.max(0, Math.min(N - 1, step + d));
+      if (pinned) {
+        scrollToStep(target);
+        tabs[target].focus();
+      } else {
+        setPlaying(false);
+        show(target, true);
+      }
     });
     play.addEventListener('click', () => setPlaying(!playing));
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(onScroll);
+        }
+      },
+      { passive: true },
+    );
+    window.addEventListener('resize', () => {
+      setMode();
+      onScroll();
+    });
 
-    if (reduced) {
-      setPlaying(false);
-      show(0);
-    } else {
-      // Start the walkthrough only once the figure is on screen.
-      play.textContent = 'Pause';
-      const io = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((e) => e.isIntersecting)) {
-            io.disconnect();
-            setPlaying(true);
-          }
-        },
-        { threshold: 0.4 },
-      );
-      io.observe(fig);
-      playing = false;
-      show(0);
-      markPass(2);
-    }
+    markPass(2);
+    show(0);
+    setMode();
   }
 </script>

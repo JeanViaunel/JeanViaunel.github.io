@@ -4,17 +4,17 @@ import { site } from '../data/site';
 
 <section class="contact" aria-labelledby="contact-title">
   <div class="container">
-    <p class="kicker kicker--accent" data-reveal>Contact</p>
-    <h2 id="contact-title" data-reveal style="--d: 1; margin-top: 14px">Let's talk.</h2>
-    <p class="intro" data-reveal style="--d: 2">
+    <p class="kicker kicker--accent">Contact</p>
+    <h2 id="contact-title" data-reveal style="margin-top: 14px">Let's talk.</h2>
+    <p class="intro">
       I'm open to research and engineering roles in digital construction and applied AI. Students
       hoping to study in Taiwan are welcome to write too.
     </p>
-    <div class="email-row" data-reveal style="--d: 3">
+    <div class="email-row">
       <a class="contact-email" href={`mailto:${site.email}`}>{site.email}</a>
       <button type="button" class="copy-btn" data-copy={site.email}>Copy</button>
     </div>
-    <div class="contact-links" data-reveal style="--d: 4">
+    <div class="contact-links">
       <a href={site.links.linkedin}>LinkedIn <span class="arrow--ne arrow" aria-hidden="true">↗</span></a>
       <a href={site.links.github}>GitHub <span class="arrow--ne arrow" aria-hidden="true">↗</span></a>
       <a href={site.links.hteam}>H-Team <span class="arrow--ne arrow" aria-hidden="true">↗</span></a>

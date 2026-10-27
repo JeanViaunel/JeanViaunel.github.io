@@ -104,7 +104,7 @@ const tools = [
         </div>
         <div class="intro-copy page-head">
           <p class="eyebrow">About</p>
-          <h1 class="page-title">Two trades, one desk</h1>
+          <h1 class="page-title" data-lines>Two trades, one desk</h1>
           <p class="aka">Published as Jean Viaunel Victor. In Chinese, <span lang="zh-Hant">韋將</span>.</p>
           <div class="prose">
             <p>I came to engineering through structures: ETABS, SAP2000, SAFE, Revit and AutoCAD during my civil engineering degree at NYCU, then as a structural engineering intern at Envision. I came to software through stubbornness, working through Andrew Ng's deep learning courses on the side until I could build things on my own.</p>
@@ -122,7 +122,7 @@ const tools = [
       <div class="timeline">
         {
           experience.map((e) => (
-            <div class="entry" data-reveal>
+            <div class="entry" data-inview>
               <p class="when">{e.when}</p>
               <div>
                 <h3>{e.role}</h3>
@@ -139,7 +139,7 @@ const tools = [
       <SectionHead no={2} id="edu" title="Education" />
       {
         education.map((e) => (
-          <div class="entry entry--plain" data-reveal>
+          <div class="entry entry--plain">
             <p class="when">{e.when}</p>
             <div>
               <h3>{e.role}</h3>
@@ -160,8 +160,8 @@ const tools = [
       <SectionHead no={3} id="tools" title="Toolbox, and where I've used it" />
       <div class="tool-grid">
         {
-          tools.map((t, i) => (
-            <div data-reveal style={`--d: ${i % 2}`}>
+          tools.map((t) => (
+            <div>
               <p class="tool-name">{t.name}</p>
               <div class="chip-row">
                 {t.list.map((x) => <span class="tag">{x}</span>)}
@@ -173,7 +173,7 @@ const tools = [
       </div>
     </section>
 
-    <section id="cv" aria-labelledby="cvh" class="cv-box frame" data-reveal>
+    <section id="cv" aria-labelledby="cvh" class="cv-box frame">
       <div>
         <h2 id="cvh">Curriculum vitae</h2>
         {

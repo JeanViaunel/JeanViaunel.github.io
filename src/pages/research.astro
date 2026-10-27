@@ -31,7 +31,7 @@ const areas = [
     <div class="container page" style="padding-bottom: clamp(32px, 4vw, 48px)">
       <div class="page-head">
         <p class="eyebrow">Research</p>
-        <h1 class="page-title">Papers and talks</h1>
+        <h1 class="page-title" data-lines>Papers and talks</h1>
         <p class="lede" style="max-width: 40rem">
           I'm an assistant researcher in Prof. Shang-Hsien (Patrick) Hsieh's H-Team lab at National
           Taiwan University. My work is on scan-to-BIM, IFC and using language models to build BIM
@@ -51,7 +51,7 @@ const areas = [
 
       {
         publications.map((p) => (
-          <article class="paper" data-reveal>
+          <article class="paper" data-inview>
             <div class="paper-thumb">
               {p.key === 'isarc2026' ? (
                 <svg viewBox="0 0 160 100" aria-hidden="true">
@@ -126,7 +126,7 @@ const areas = [
       <div class="area-grid">
         {
           areas.map((a, i) => (
-            <div data-reveal style={`--d: ${i}`}>
+            <div>
               <span class="area-no">{String(i + 1).padStart(2, '0')}</span>
               <p class="area-title">{a.title}</p>
               <p class="body-text">{a.text}</p>
@@ -139,14 +139,14 @@ const areas = [
     <div class="two-col">
       <section aria-labelledby="talks">
         <SectionHead no={3} id="talks" title="Talks" />
-        <div class="timeline-row" data-reveal>
+        <div class="timeline-row">
           <span class="date">25 Mar 2026</span>
           <span class="what">Presented <em>A Review on Scan-to-BIM for Building Energy Retrofit</em> at ICCCBE 2026, Infrastructure Systems session.</span>
         </div>
       </section>
       <section aria-labelledby="teaching">
         <SectionHead no={4} id="teaching" title="Teaching assistance" />
-        <div class="timeline-row" data-reveal>
+        <div class="timeline-row">
           <span class="date">Now</span>
           <span class="what">Teaching assistant for Prof. Shang-Hsien (Patrick) Hsieh's BIM course at NTU, supporting students with practical topics and their implementation ideas.</span>
         </div>

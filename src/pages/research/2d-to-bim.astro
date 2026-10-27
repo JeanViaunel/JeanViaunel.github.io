@@ -34,7 +34,7 @@ const paper = publications.find((p) => p.key === 'isarc2026')!;
     <div class="container page" style="padding-bottom: clamp(32px, 4vw, 56px)">
       <div class="page-head">
         <p class="eyebrow"><a href={url('research/')} class="underline-link" style="color: inherit">Research</a></p>
-        <h1 class="page-title">From 2D drawings to BIM</h1>
+        <h1 class="page-title" data-vt style="--vt: case-bim">From 2D drawings to BIM</h1>
         <p class="lede" style="max-width: 46rem">
           A plain-language request and a layered DXF floor plan go in; a multi-storey IFC model comes out.
           The LLM does not draw the geometry itself. It calls four tools in order, and the tools do the
@@ -42,18 +42,18 @@ const paper = publications.find((p) => p.key === 'isarc2026')!;
         </p>
       </div>
 
-      <dl class="stats" data-reveal>
+      <dl class="stats">
         <div><dt>Input</dt><dd class="stats-text">DXF + request</dd></div>
-        <div><dt>Tools the LLM calls</dt><dd>4</dd></div>
+        <div><dt>Tools the LLM calls</dt><dd><span data-count="4">4</span></dd></div>
         <div><dt>Output</dt><dd class="stats-text">IFC4</dd></div>
-        <div><dt>Storeys in the demo</dt><dd>5</dd></div>
+        <div><dt>Storeys in the demo</dt><dd><span data-count="5">5</span></dd></div>
       </dl>
     </div>
   </div>
 
   <div class="container page" style="padding-top: 24px">
     <section aria-labelledby="how">
-      <SectionHead no={1} id="how" title="How it works" meta="Press a stage or let it play" />
+      <SectionHead no={1} id="how" title="How it works" meta="Scroll, or press a stage" />
       <div class="case-figure" data-reveal>
         <DxfPipeline />
       </div>
@@ -61,11 +61,11 @@ const paper = publications.find((p) => p.key === 'isarc2026')!;
 
     <section aria-labelledby="layers" class="case-section">
       <SectionHead no={2} id="layers" title="What each CAD layer becomes" />
-      <p class="case-lead" data-reveal>
+      <p class="case-lead">
         The pipeline relies on standard AIA layer names. That is why a clean, layered drawing matters more
         than a clever prompt.
       </p>
-      <div class="layer-table" data-reveal>
+      <div class="layer-table">
         <table>
           <thead>
             <tr><th scope="col">DXF layer</th><th scope="col">Element</th><th scope="col">IFC class generated</th></tr>
@@ -88,7 +88,7 @@ const paper = publications.find((p) => p.key === 'isarc2026')!;
 
     <section aria-labelledby="limits" class="case-section">
       <SectionHead no={3} id="limits" title="Where it stops" />
-      <ul class="takeaways" data-reveal>
+      <ul class="takeaways">
         <li><strong>Orthogonal, layer-disciplined drawings.</strong> Accuracy depends on a structured drawing. Diagonal walls, irregular junctions and inconsistent gaps need more geometric reasoning than gap closing.</li>
         <li><strong>Stairs and furniture stay 2D.</strong> They are read from the drawing but no IFC element is generated for them.</li>
         <li><strong>Efficiency is qualitative so far.</strong> The gain is fewer manual modelling steps. Element detection precision and geometric deviation against non-LLM baselines are the next measurements.</li>
@@ -97,7 +97,7 @@ const paper = publications.find((p) => p.key === 'isarc2026')!;
 
     <section aria-labelledby="paper" class="case-section">
       <SectionHead no={4} id="paper" title="The paper" />
-      <article class="paper" data-reveal style="border-bottom: 0">
+      <article class="paper" style="border-bottom: 0">
         <div class="paper-body">
           <h3 class="pub-title">{paper.title}</h3>
           <Authors authors={paper.authors} />

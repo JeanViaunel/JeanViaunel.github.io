@@ -58,17 +58,17 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
     <div class="container page" style="padding-bottom: clamp(32px, 4vw, 56px)">
       <div class="page-head">
         <p class="eyebrow"><a href={url('work/')} class="underline-link" style="color: inherit">Work</a></p>
-        <h1 class="page-title">Marine debris detection</h1>
+        <h1 class="page-title" data-vt style="--vt: case-marine">Marine debris detection</h1>
         <p class="lede" style="max-width: 44rem">
           {`In ${submissions.length} submissions our detector went from ${fmtScore(first, 3)} to ${fmtScore(best, 3)} mAP. It finished ${us.privateRank}th of ${facts.teamsEntered} teams, ${fmtScore(cutoff - us.privateScore, 4)} short of the top-${facts.finalists} final.`}
         </p>
       </div>
 
-      <dl class="stats" data-reveal>
-        <div><dt>Final rank</dt><dd>{us.privateRank}<span class="unit">th of {facts.teamsEntered}</span></dd></div>
-        <div><dt>Private mAP@0.5</dt><dd>{fmtScore(us.privateScore, 4)}</dd></div>
-        <div><dt>Submissions</dt><dd>{submissions.length}<span class="unit">in 18 days</span></dd></div>
-        <div><dt>Gap to the final</dt><dd>{fmtScore(cutoff - us.privateScore, 4)}</dd></div>
+      <dl class="stats">
+        <div><dt>Final rank</dt><dd><span data-count={us.privateRank}>{us.privateRank}</span><span class="unit">th of {facts.teamsEntered}</span></dd></div>
+        <div><dt>Private mAP@0.5</dt><dd><span data-count={us.privateScore} data-decimals="4">{fmtScore(us.privateScore, 4)}</span></dd></div>
+        <div><dt>Submissions</dt><dd><span data-count={submissions.length}>{submissions.length}</span><span class="unit">in 18 days</span></dd></div>
+        <div><dt>Gap to the final</dt><dd><span data-count={(cutoff - us.privateScore).toFixed(4)} data-decimals="4">{fmtScore(cutoff - us.privateScore, 4)}</span></dd></div>
       </dl>
     </div>
   </div>
@@ -77,7 +77,7 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
     <section aria-labelledby="challenge">
       <SectionHead no={1} id="challenge" title="The challenge" />
       <div class="case-split">
-        <div class="case-prose" data-reveal>
+        <div class="case-prose">
           <p>
             The {facts.organiser} released an AI-ready dataset of sea litter photos and asked teams to
             detect every object in {facts.classes} categories (33 plus 1). We entered as a two-person team.
@@ -88,7 +88,7 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
             hard class weighs as much as a common, easy one.
           </p>
         </div>
-        <dl class="spec" data-reveal style="--d: 1">
+        <dl class="spec">
           <div><dt>Task</dt><dd>Object detection, {facts.classes} classes</dd></div>
           <div><dt>Metric</dt><dd>mAP@0.5, averaged over classes</dd></div>
           <div><dt>Window</dt><dd>15 Aug to 1 Sep 2026</dd></div>
@@ -100,13 +100,13 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
 
     <section aria-labelledby="climb" class="case-section">
       <SectionHead no={2} id="climb" title="The climb" meta="Public leaderboard" />
-      <p class="case-lead" data-reveal>
+      <p class="case-lead">
         By the end of 18 August the score had risen {fmtScore(earlyGain, 2)} mAP. The last eight days added {fmtScore(lateGain, 2)}.
       </p>
       <figure class="case-figure" data-reveal>
         <ClimbChart />
       </figure>
-      <ul class="takeaways" data-reveal>
+      <ul class="takeaways">
         <li><strong>{newBests} of {submissions.length}</strong> submissions set a new best. The other {submissions.length - newBests} didn't beat it, and they stay on the chart rather than hidden.</li>
         <li><strong>Over the 0.60 floor on day four.</strong> The biggest single jump, +0.103, took the score from 0.541 to 0.645 on 18 August.</li>
         <li><strong>Diminishing returns.</strong> After 21 August only one improvement, on 27 August, added more than 0.01. The best score, {fmtScore(best, 4)}, came on 30 August and is the one we chose at the deadline.</li>
@@ -115,13 +115,13 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
 
     <section aria-labelledby="landed" class="case-section">
       <SectionHead no={3} id="landed" title="Where it landed" meta="Private leaderboard" />
-      <p class="case-lead" data-reveal>
+      <p class="case-lead">
         The top 15 finished within {fmtScore(spread15, 3)} mAP of each other. We were {fmtScore(cutoff - us.privateScore, 4)} below 10th place.
       </p>
       <figure class="case-figure" data-reveal>
         <LeaderboardChart rows={20} />
       </figure>
-      <ul class="takeaways" data-reveal>
+      <ul class="takeaways">
         <li><strong>The private test data reshuffled the board.</strong> Of the top 20, {rose} teams rose and {fell} fell. One team rose {biggestRise} places.</li>
         <li><strong>Our model held.</strong> Our score moved {fmtDelta(ourChange, 4)}, about the median change ({fmtDelta(median, 4)}). We went from {us.publicRank}th to {us.privateRank}th because others fell further.</li>
         <li><strong>The field.</strong> {facts.teamsScored} of the {facts.teamsEntered} teams that entered received a private score. The median was {fmtScore(leaderboard[Math.floor(leaderboard.length / 2)].privateScore, 3)}.</li>
@@ -130,14 +130,14 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
 
     <section aria-labelledby="learned" class="case-section">
       <SectionHead no={4} id="learned" title="What I took from it" />
-      <div class="case-prose" data-reveal>
+      <div class="case-prose">
         <p>
           Most of our misses came from classes defined by what an object is not. Because the metric
           averages over classes, every one of those weak classes pulled the whole score down. The error
           analysis taught me the most.
         </p>
       </div>
-      <p style="margin-top: 40px" data-reveal>
+      <p style="margin-top: 40px">
         <a href={url('work/')} class="underline-link"><span class="arrow" aria-hidden="true">←</span> All projects</a>
       </p>
     </section>

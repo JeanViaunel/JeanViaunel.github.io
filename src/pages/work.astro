@@ -23,7 +23,7 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
     <div class="container page" style="padding-bottom: 0">
       <div class="page-head">
         <p class="eyebrow">Work</p>
-        <h1 class="page-title">Things I've built</h1>
+        <h1 class="page-title" data-lines>Things I've built</h1>
         <p class="lede">
           Most of it is about getting usable information out of sensor data. The rest is what I build
           when a problem in my own life needs solving.
@@ -42,7 +42,7 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
   </div>
 
   <div class="container page" style="padding-top: 0">
-    <p class="project-count" aria-live="polite" data-count>{countLabel(projects.length)}</p>
+    <p class="project-count" aria-live="polite" data-project-count>{countLabel(projects.length)}</p>
     <div class="project-grid">
       {
         projects.map((p, i) => {
@@ -52,7 +52,7 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
                 <span class="kicker kicker--accent">{p.domain}</span>
                 <span class="kicker">{p.status}</span>
               </div>
-              <h2>{p.title}</h2>
+              <h2 data-vt={p.vt ? '' : undefined} style={p.vt ? `--vt: ${p.vt}` : undefined}>{p.title}</h2>
               <p class="body-text">{p.text}</p>
               <div class="chip-row">
                 {p.results.map((m) => <span class="tag tag--accent">{m}</span>)}
@@ -88,7 +88,7 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
 
 <script>
   const group = document.querySelector<HTMLElement>('[data-filters]');
-  const count = document.querySelector<HTMLElement>('[data-count]');
+  const count = document.querySelector<HTMLElement>('[data-project-count]');
   const cards = Array.from(document.querySelectorAll<HTMLElement>('.project-card'));
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
