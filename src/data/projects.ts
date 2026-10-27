@@ -68,6 +68,8 @@ export const projects: Project[] = [
     text: 'Finding 34 kinds of ocean waste in photos for the National Academy of Marine Research’s international challenge, in a two-person team. Over 37 submissions our public score rose from 0.396 to 0.793 mAP. Most misses came from classes defined by what an object is not.',
     results: ['15th of 69 teams', 'mAP@0.5 0.7917'],
     stack: [],
+    href: 'work/marine-debris/',
+    cta: 'Read the case study',
   },
   {
     domain: 'Computer vision',

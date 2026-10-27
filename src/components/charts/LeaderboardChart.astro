@@ -1,0 +1,130 @@
+---
+// Dumbbell per team for the top of the private leaderboard: public score (hollow)
+// to private score (filled). Our team in the accent, everyone else in grey.
+import { facts, leaderboard } from '../../data/marine-debris';
+import { fmtDelta, fmtScore } from '../../lib/format';
+
+interface Props {
+  rows?: number;
+}
+const { rows: n = 20 } = Astro.props;
+const rows = leaderboard.slice(0, n);
+
+const W = 640;
+const rowH = 20;
+const m = { l: 168, r: 16, t: 30, b: 30 };
+const H = m.t + n * rowH + m.b;
+const pw = W - m.l - m.r;
+const v0 = 0.775;
+const v1 = 0.815;
+const x = (v: number) => m.l + ((v - v0) / (v1 - v0)) * pw;
+const yRow = (i: number) => m.t + i * rowH + rowH / 2;
+
+const cutoff = leaderboard[facts.finalists - 1].privateScore;
+const ticks = [0.78, 0.79, 0.8, 0.81];
+const usIndex = rows.findIndex((r) => r.us);
+const us = rows[usIndex];
+---
+
+<div class="chart" data-chart>
+  <ul class="chart-legend" aria-hidden="true">
+    <li><span class="key key--hollow"></span>Public leaderboard</li>
+    <li><span class="key key--dot key--grey"></span>Private leaderboard (final ranking)</li>
+    <li><span class="key key--dot key--accent"></span>Our team</li>
+  </ul>
+  <div class="chart-scroll">
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      class="chart-svg board"
+      role="img"
+      tabindex="0"
+      aria-label={`Dot chart of the top ${n} teams on the private leaderboard, each showing its public and private score. Our team, ${facts.team}, finished ${us.privateRank}th with ${fmtScore(us.privateScore, 4)}, ${fmtScore(cutoff - us.privateScore, 4)} below 10th place. Use the arrow keys to step through teams.`}
+    >
+      <rect class="band" x={m.l - 6} y={m.t} width={pw + 12} height={facts.finalists * rowH} rx="4" />
+      <text class="band-label" x={m.l + 4} y={yRow((facts.finalists - 1) / 2) + 4}>Top {facts.finalists} go to the final</text>
+
+      <g class="grid">
+        {ticks.map((v) => <line x1={x(v)} x2={x(v)} y1={m.t} y2={m.t + n * rowH} />)}
+      </g>
+      <g class="tick-labels" text-anchor="middle">
+        {ticks.map((v) => <text x={x(v)} y={H - 8}>{v.toFixed(2)}</text>)}
+      </g>
+
+      <line class="cutoff" x1={x(cutoff)} x2={x(cutoff)} y1={m.t - 6} y2={m.t + n * rowH} />
+      <text class="cutoff-label" x={x(cutoff)} y={m.t - 12} text-anchor="middle">10th place {fmtScore(cutoff, 4)}</text>
+
+      <g class="row-labels">
+        {
+          rows.map((r, i) => (
+            <text x="28" y={yRow(i) + 4} text-anchor="end" class:list={{ 'is-us': r.us }}>
+              {r.privateRank}
+            </text>
+          ))
+        }
+        <text x="38" y={yRow(usIndex) + 4} class="is-us">{facts.team} (us)</text>
+      </g>
+
+      <g class="bells">
+        {
+          rows.map((r, i) => {
+            const pub = r.publicScore ?? r.privateScore;
+            return (
+              <g class:list={['bell', { 'is-us': r.us }]} style={`--i: ${i}`}>
+                <line x1={x(pub)} x2={x(r.privateScore)} y1={yRow(i)} y2={yRow(i)} />
+                <circle class="pub" cx={x(pub)} cy={yRow(i)} r="4" />
+                <circle class="priv" cx={x(r.privateScore)} cy={yRow(i)} r="4.5" />
+              </g>
+            );
+          })
+        }
+      </g>
+
+      <g class="gap">
+        <line x1={x(us.privateScore)} x2={x(cutoff)} y1={yRow(usIndex) + 8} y2={yRow(usIndex) + 8} />
+        <line x1={x(us.privateScore)} x2={x(us.privateScore)} y1={yRow(usIndex) + 5} y2={yRow(usIndex) + 11} />
+        <line x1={x(cutoff)} x2={x(cutoff)} y1={yRow(usIndex) + 5} y2={yRow(usIndex) + 11} />
+        <text x={x(cutoff) + 8} y={yRow(usIndex) + 4}>{fmtScore(cutoff - us.privateScore, 4)} short</text>
+      </g>
+
+      <rect class="row-focus" x="0" y="-40" width={W} height={rowH} />
+      <g class="hits">
+        {
+          rows.map((r, i) => (
+            <rect
+              x="0"
+              y={m.t + i * rowH}
+              width={W}
+              height={rowH}
+              data-x={x(r.privateScore)}
+              data-y={yRow(i)}
+              data-row={m.t + i * rowH}
+              data-title={`${r.us ? `${facts.team}, ` : ''}private rank ${r.privateRank}, public rank ${r.publicRank}`}
+              data-value={fmtScore(r.privateScore, 4)}
+              data-note={r.publicScore != null ? `Public ${fmtScore(r.publicScore, 4)}, change ${fmtDelta(r.privateScore - r.publicScore, 4)}` : ''}
+            />
+          ))
+        }
+      </g>
+    </svg>
+  </div>
+  <div class="chart-tip" role="status" aria-live="polite" hidden>
+    <strong class="tip-value"></strong>
+    <span class="tip-title"></span>
+    <span class="tip-note"></span>
+  </div>
+  <details class="chart-table">
+    <summary>Show the full private leaderboard ({leaderboard.length} teams) as a table</summary>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th scope="col">Private rank</th><th scope="col">Public rank</th><th scope="col">Private mAP@0.5</th><th scope="col">Public mAP@0.5</th></tr></thead>
+        <tbody>
+          {leaderboard.map((r) => (
+            <tr class:list={{ 'is-best': r.us }}>
+              <td>{r.privateRank}{r.us ? ` (${facts.team})` : ''}</td><td>{r.publicRank}</td><td>{fmtScore(r.privateScore, 4)}</td><td>{r.publicScore != null ? fmtScore(r.publicScore, 4) : 'not published'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</div>
