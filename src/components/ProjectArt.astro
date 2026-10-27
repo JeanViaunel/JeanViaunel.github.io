@@ -1,0 +1,51 @@
+---
+// Card illustrations, one per featured project. Each acts out its project on hover.
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+{id === 'scan-to-bim' && (
+  <svg viewBox="0 0 320 180" aria-hidden="true">
+  <defs>
+  <pattern id="tDense" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="2" r="0.7" fill="#1A1D21"></circle><circle cx="5.5" cy="1" r="0.7" fill="#1A1D21"></circle><circle cx="7.5" cy="5" r="0.7" fill="#1A1D21"></circle><circle cx="3" cy="6.5" r="0.7" fill="#1A1D21"></circle><circle cx="6" cy="8.5" r="0.7" fill="#1A1D21"></circle></pattern>
+  <clipPath id="tL"><rect x="0" y="0" width="160" height="180"></rect></clipPath>
+  <clipPath id="tR"><rect x="160" y="0" width="160" height="180"></rect></clipPath>
+  </defs>
+  <g clip-path="url(#tL)"><rect x="20" y="40" width="280" height="104" fill="url(#tDense)"></rect><rect x="46.6" y="81.6" width="43.5" height="36.4" fill="#F1F2EE"></rect><rect x="138" y="81.6" width="43.5" height="36.4" fill="#F1F2EE"></rect></g>
+  <g clip-path="url(#tR)"><rect x="20" y="40" width="280" height="104" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></rect><rect x="138" y="81.6" width="43.5" height="36.4" fill="#F1F2EE" stroke="#1A1D21"></rect><rect x="230" y="81.6" width="43.5" height="36.4" fill="#F1F2EE" stroke="#1A1D21"></rect><line x1="20" y1="144" x2="300" y2="144" stroke="#1A1D21" stroke-width="3"></line></g>
+  <line x1="160" y1="26" x2="160" y2="158" stroke="#9AA0A6" stroke-dasharray="3 3"></line>
+  <line class="art-beam" x1="20" y1="30" x2="20" y2="154" stroke="#C2410C" stroke-width="2"></line>
+  </svg>
+)}
+{id === 'maischool' && (
+  <svg viewBox="0 0 320 180" aria-hidden="true">
+  <rect x="18" y="14" width="284" height="152" rx="6" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></rect>
+  <line x1="18" y1="34" x2="302" y2="34" stroke="#1A1D21" stroke-width="1.5"></line>
+  <g fill="#9AA0A6"><circle cx="30" cy="24" r="3"></circle><circle cx="40" cy="24" r="3"></circle><circle cx="50" cy="24" r="3"></circle></g>
+  <g fill="#F1F2EE" stroke="#1A1D21"><rect x="32" y="48" width="70" height="48" rx="3"></rect><rect x="110" y="48" width="70" height="48" rx="3"></rect><rect x="32" y="104" width="70" height="48" rx="3"></rect><rect x="110" y="104" width="70" height="48" rx="3"></rect></g>
+  <g fill="none" stroke="#9AA0A6"><rect x="196" y="48" width="18" height="16"></rect><rect x="218" y="48" width="18" height="16"></rect><rect x="240" y="48" width="18" height="16"></rect><rect x="262" y="48" width="18" height="16"></rect><rect x="196" y="68" width="18" height="16"></rect><rect x="218" y="68" width="18" height="16"></rect><rect x="240" y="68" width="18" height="16"></rect><rect x="262" y="68" width="18" height="16"></rect><rect x="196" y="88" width="18" height="16"></rect><rect x="218" y="88" width="18" height="16"></rect><rect x="240" y="88" width="18" height="16"></rect><rect x="262" y="88" width="18" height="16"></rect></g>
+  <rect class="art-cell" x="218" y="68" width="18" height="16" fill="#C2410C"></rect>
+  <rect class="art-cta" x="196" y="120" width="84" height="24" rx="4" fill="#1A1D21"></rect>
+  </svg>
+)}
+{id === 'marine-debris' && (
+  <svg viewBox="0 0 320 180" aria-hidden="true">
+  <path class="art-wave" d="M0 44 Q 40 32 80 44 T 160 44 T 240 44 T 320 44 T 400 44" fill="none" stroke="#9AA0A6" stroke-width="1.5"></path>
+  <rect x="44" y="92" width="58" height="20" rx="8" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5" transform="rotate(-14 73 102)"></rect>
+  <circle cx="168" cy="118" r="17" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></circle>
+  <polyline points="232,82 244,100 256,80 268,104 280,84 290,102" fill="none" stroke="#1A1D21" stroke-width="1.5"></polyline>
+  <polyline points="234,98 248,86 262,100 276,88 288,96" fill="none" stroke="#1A1D21" stroke-width="1.5"></polyline>
+  <g fill="none" stroke="#C2410C" stroke-width="1.5">
+  <rect class="art-box" style="--d: 0" pathLength="1" stroke-dasharray="1" x="36" y="78" width="74" height="46"></rect>
+  <rect class="art-box" style="--d: 1" pathLength="1" stroke-dasharray="1" x="144" y="94" width="48" height="48"></rect>
+  <rect class="art-box" style="--d: 2" pathLength="1" stroke-dasharray="1" x="224" y="72" width="74" height="40"></rect>
+  </g>
+  <g font-family="IBM Plex Mono, monospace" font-size="11" fill="#C2410C">
+  <text class="art-tag" style="--d: 0" x="36" y="72">bottle</text>
+  <text class="art-tag" style="--d: 1" x="144" y="88">buoy</text>
+  <text class="art-tag" style="--d: 2" x="224" y="66">net</text>
+  </g>
+  </svg>
+)}

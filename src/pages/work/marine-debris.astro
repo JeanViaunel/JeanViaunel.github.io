@@ -43,7 +43,7 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
   schema={[
     {
       '@type': 'Article',
-      headline: 'Marine debris detection: 37 submissions to 15th of 69 teams',
+      headline: `Marine debris detection: ${submissions.length} submissions to ${us.privateRank}th of ${facts.teamsEntered} teams`,
       author: personRef(Astro.site),
       datePublished: '2026-10-27',
       about: 'International AI Challenge on Marine Debris Image Recognition 2026',

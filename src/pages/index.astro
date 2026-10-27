@@ -3,10 +3,13 @@ import Base from '../layouts/Base.astro';
 import Authors from '../components/Authors.astro';
 import ScanFigure from '../components/ScanFigure.astro';
 import SectionHead from '../components/SectionHead.astro';
+import ProjectArt from '../components/ProjectArt.astro';
 import { publications } from '../data/publications';
-import { url } from '../lib/url';
+import { featured } from '../data/projects';
+import { news } from '../data/news';
+import { href, isExternal, url } from '../lib/url';
 
-const [isarc, icccbe] = publications;
+const research = publications.filter((p) => p.featured);
 
 
 const pills = ['Assistant Researcher', 'NTU H-Team lab', 'M.S. Civil Engineering 2026'];
@@ -42,125 +45,54 @@ const accent = ['read', 'buildings.'];
   <section aria-labelledby="featured" class="section container">
     <SectionHead no={1} id="featured" title="Selected work" link={{ href: 'work/', label: 'All projects' }} />
     <div class="feature-grid">
-      <a href={url('research/')} class="feature-card frame" data-reveal style="--d: 0">
-        <div class="feature-art">
-          <svg viewBox="0 0 320 180" aria-hidden="true">
-            <defs>
-              <pattern id="tDense" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="2" r="0.7" fill="#1A1D21"></circle><circle cx="5.5" cy="1" r="0.7" fill="#1A1D21"></circle><circle cx="7.5" cy="5" r="0.7" fill="#1A1D21"></circle><circle cx="3" cy="6.5" r="0.7" fill="#1A1D21"></circle><circle cx="6" cy="8.5" r="0.7" fill="#1A1D21"></circle></pattern>
-              <clipPath id="tL"><rect x="0" y="0" width="160" height="180"></rect></clipPath>
-              <clipPath id="tR"><rect x="160" y="0" width="160" height="180"></rect></clipPath>
-            </defs>
-            <g clip-path="url(#tL)"><rect x="20" y="40" width="280" height="104" fill="url(#tDense)"></rect><rect x="46.6" y="81.6" width="43.5" height="36.4" fill="#F1F2EE"></rect><rect x="138" y="81.6" width="43.5" height="36.4" fill="#F1F2EE"></rect></g>
-            <g clip-path="url(#tR)"><rect x="20" y="40" width="280" height="104" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></rect><rect x="138" y="81.6" width="43.5" height="36.4" fill="#F1F2EE" stroke="#1A1D21"></rect><rect x="230" y="81.6" width="43.5" height="36.4" fill="#F1F2EE" stroke="#1A1D21"></rect><line x1="20" y1="144" x2="300" y2="144" stroke="#1A1D21" stroke-width="3"></line></g>
-            <line x1="160" y1="26" x2="160" y2="158" stroke="#9AA0A6" stroke-dasharray="3 3"></line>
-            <line class="art-beam" x1="20" y1="30" x2="20" y2="154" stroke="#C2410C" stroke-width="2"></line>
-          </svg>
-        </div>
-        <div class="feature-body">
-          <div class="card-meta">
-            <span class="kicker">NTU H-Team lab</span>
-            <span class="kicker">Research</span>
-          </div>
-          <h3>Scan-to-BIM with mobile LiDAR</h3>
-          <p class="body-text">My research area: turning quick scans of existing buildings into IFC models engineers can work with.</p>
-          <div class="chip-row">
-            <span class="tag tag--accent">ISARC 2026</span>
-            <span class="tag tag--accent">ICCCBE 2026</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="https://maischool.legendcastle.org" class="feature-card frame" data-reveal style="--d: 1">
-        <div class="feature-art">
-          <svg viewBox="0 0 320 180" aria-hidden="true">
-            <rect x="18" y="14" width="284" height="152" rx="6" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></rect>
-            <line x1="18" y1="34" x2="302" y2="34" stroke="#1A1D21" stroke-width="1.5"></line>
-            <g fill="#9AA0A6"><circle cx="30" cy="24" r="3"></circle><circle cx="40" cy="24" r="3"></circle><circle cx="50" cy="24" r="3"></circle></g>
-            <g fill="#F1F2EE" stroke="#1A1D21"><rect x="32" y="48" width="70" height="48" rx="3"></rect><rect x="110" y="48" width="70" height="48" rx="3"></rect><rect x="32" y="104" width="70" height="48" rx="3"></rect><rect x="110" y="104" width="70" height="48" rx="3"></rect></g>
-            <g fill="none" stroke="#9AA0A6"><rect x="196" y="48" width="18" height="16"></rect><rect x="218" y="48" width="18" height="16"></rect><rect x="240" y="48" width="18" height="16"></rect><rect x="262" y="48" width="18" height="16"></rect><rect x="196" y="68" width="18" height="16"></rect><rect x="218" y="68" width="18" height="16"></rect><rect x="240" y="68" width="18" height="16"></rect><rect x="262" y="68" width="18" height="16"></rect><rect x="196" y="88" width="18" height="16"></rect><rect x="218" y="88" width="18" height="16"></rect><rect x="240" y="88" width="18" height="16"></rect><rect x="262" y="88" width="18" height="16"></rect></g>
-            <rect class="art-cell" x="218" y="68" width="18" height="16" fill="#C2410C"></rect>
-            <rect class="art-cta" x="196" y="120" width="84" height="24" rx="4" fill="#1A1D21"></rect>
-          </svg>
-        </div>
-        <div class="feature-body">
-          <div class="card-meta">
-            <span class="kicker">Legend Castle</span>
-            <span class="kicker">Since 2024</span>
-          </div>
-          <h3>MaiSchool <span class="arrow arrow--ne" aria-hidden="true" style="font-size: 0.9em; color: var(--muted)">↗</span></h3>
-          <p class="body-text">A live online tutoring platform for families. I've been its main full-stack developer for two years, from the first design to the shipped product.</p>
-          <div class="chip-row">
-            <span class="tag tag--accent">Live product</span>
-            <span class="tag">Next.js</span>
-            <span class="tag">Convex</span>
-            <span class="tag">Clerk</span>
-          </div>
-        </div>
-      </a>
-
-      <a href={url('work/marine-debris/')} class="feature-card frame" data-reveal style="--d: 2">
-        <div class="feature-art">
-          <svg viewBox="0 0 320 180" aria-hidden="true">
-            <path class="art-wave" d="M0 44 Q 40 32 80 44 T 160 44 T 240 44 T 320 44 T 400 44" fill="none" stroke="#9AA0A6" stroke-width="1.5"></path>
-            <rect x="44" y="92" width="58" height="20" rx="8" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5" transform="rotate(-14 73 102)"></rect>
-            <circle cx="168" cy="118" r="17" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></circle>
-            <polyline points="232,82 244,100 256,80 268,104 280,84 290,102" fill="none" stroke="#1A1D21" stroke-width="1.5"></polyline>
-            <polyline points="234,98 248,86 262,100 276,88 288,96" fill="none" stroke="#1A1D21" stroke-width="1.5"></polyline>
-            <g fill="none" stroke="#C2410C" stroke-width="1.5">
-              <rect class="art-box" style="--d: 0" pathLength="1" stroke-dasharray="1" x="36" y="78" width="74" height="46"></rect>
-              <rect class="art-box" style="--d: 1" pathLength="1" stroke-dasharray="1" x="144" y="94" width="48" height="48"></rect>
-              <rect class="art-box" style="--d: 2" pathLength="1" stroke-dasharray="1" x="224" y="72" width="74" height="40"></rect>
-            </g>
-            <g font-family="IBM Plex Mono, monospace" font-size="11" fill="#C2410C">
-              <text class="art-tag" style="--d: 0" x="36" y="72">bottle</text>
-              <text class="art-tag" style="--d: 1" x="144" y="88">buoy</text>
-              <text class="art-tag" style="--d: 2" x="224" y="66">net</text>
-            </g>
-          </svg>
-        </div>
-        <div class="feature-body">
-          <div class="card-meta">
-            <span class="kicker">Competition</span>
-            <span class="kicker">2026</span>
-          </div>
-          <h3 data-vt style="--vt: case-marine">Marine debris detection</h3>
-          <p class="body-text">Finding 34 kinds of ocean waste in photos, in a two-person team. The error analysis taught me the most.</p>
-          <div class="chip-row">
-            <span class="tag tag--accent">15th of 69 teams</span>
-            <span class="tag">mAP@0.5 0.7917</span>
-          </div>
-        </div>
-      </a>
+      {
+        featured.map((p, i) => (
+          <a href={href(p.href!)} class="feature-card frame" data-reveal style={`--d: ${i}`}>
+            <div class="feature-art">
+              <ProjectArt id={p.id} />
+            </div>
+            <div class="feature-body">
+              <div class="card-meta">
+                <span class="kicker kicker--accent">{p.domain}</span>
+                <span class="kicker">{p.status}</span>
+              </div>
+              <h3 data-vt={p.vt ? '' : undefined} style={p.vt ? `--vt: ${p.vt}` : undefined}>
+                {p.title}
+                {isExternal(p.href!) && <span class="arrow arrow--ne" aria-hidden="true" style="font-size: 0.9em; color: var(--muted)">{' '}↗</span>}
+              </h3>
+              <p class="body-text">{p.short ?? p.text}</p>
+              <div class="chip-row">
+                {p.results.map((m) => <span class="tag tag--accent">{m}</span>)}
+                {p.stack.map((m) => <span class="tag">{m}</span>)}
+              </div>
+            </div>
+          </a>
+        ))
+      }
     </div>
   </section>
 
   <section aria-labelledby="research" class="section container">
     <SectionHead no={2} id="research" title="Selected research" link={{ href: 'research/', label: 'All publications' }} />
 
-    <article class="pub-row">
-      <p class="pub-meta"><span>ISARC 2026</span><span>Proceedings</span><span>Singapore</span></p>
-      <div>
-        <h3 class="pub-title">{isarc.title}</h3>
-        <Authors authors={isarc.authors} />
-        <p class="pub-summary">An LLM calls four tools to turn a layered DXF floor plan into a multi-storey IFC model.</p>
-        <div class="chip-row pub-links">
-          <a class="link-chip" href={url('research/2d-to-bim/')}>How it works <span class="arrow" aria-hidden="true">→</span></a>
-          {isarc.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}
-        </div>
-      </div>
-    </article>
-
-    <article class="pub-row">
-      <p class="pub-meta"><span>ICCCBE 2026</span><span>Talk</span><span>25 March 2026</span></p>
-      <div>
-        <h3 class="pub-title">{icccbe.title}</h3>
-        <Authors authors={icccbe.authors} />
-        <p class="pub-summary">What a team retrofitting an older building for energy performance actually needs from a scan-to-BIM model.</p>
-        <div class="chip-row pub-links">
-          {icccbe.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}
-        </div>
-      </div>
-    </article>
+    {
+      research.map((p) => (
+        <article class="pub-row">
+          <p class="pub-meta">{p.meta?.map((m) => <span>{m}</span>)}</p>
+          <div>
+            <h3 class="pub-title">{p.title}</h3>
+            <Authors authors={p.authors} />
+            <p class="pub-summary">{p.short ?? p.summary}</p>
+            <div class="chip-row pub-links">
+              {p.page && (
+                <a class="link-chip" href={url(p.page)}>How it works <span class="arrow" aria-hidden="true">→</span></a>
+              )}
+              {p.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}
+            </div>
+          </div>
+        </article>
+      ))
+    }
   </section>
 
   <section aria-labelledby="beyond" class="section container">
@@ -198,8 +130,7 @@ const accent = ['read', 'buildings.'];
       <div>
         <h3>News</h3>
         <ul class="dated-list">
-          <li class="dated"><span class="date">Jun 2026</span><span class="what">ISARC 2026 paper published in the proceedings.</span></li>
-          <li class="dated"><span class="date">Mar 2026</span><span class="what">Presented my scan-to-BIM review at ICCCBE 2026.</span></li>
+          {news.map((n) => <li class="dated"><span class="date">{n.date}</span><span class="what">{n.text}</span></li>)}
         </ul>
       </div>
     </div>

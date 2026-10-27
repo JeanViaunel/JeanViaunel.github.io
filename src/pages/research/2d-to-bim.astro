@@ -4,7 +4,7 @@ import Authors from '../../components/Authors.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import DxfPipeline from '../../components/figures/DxfPipeline.astro';
 import { layerMap } from '../../data/dxf-demo';
-import { publications } from '../../data/publications';
+import { isarcSentence, publications } from '../../data/publications';
 import { url } from '../../lib/url';
 import { personRef, scholarlyArticle } from '../../lib/seo';
 
@@ -28,7 +28,7 @@ const paper = publications.find((p) => p.key === 'isarc2026')!;
     },
   ]}
   current="research"
-  description="How an LLM orchestrates four tools through MCP to turn a layered DXF floor plan into a multi-storey IFC model. ISARC 2026."
+  description={`${isarcSentence} ISARC 2026.`}
 >
   <div class="grid-paper">
     <div class="container page" style="padding-bottom: clamp(32px, 4vw, 56px)">

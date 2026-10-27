@@ -1,6 +1,10 @@
 /** How my name appears in author lists; rendered bold. */
 export const SELF = 'J. V. Victor';
 
+/** The one sentence that describes the ISARC paper everywhere on the site. */
+export const isarcSentence =
+  'An LLM calls four tools through the Model Context Protocol to turn a layered DXF floor plan into a multi-storey IFC model.';
+
 export interface Publication {
   key: string;
   title: string;
@@ -12,7 +16,14 @@ export interface Publication {
   /** ISO date (or year-month) of publication or presentation. */
   date: string;
   venue?: string;
+  /** Full summary, used on the Research page. */
   summary: string;
+  /** Teaser for Home; a shortened `summary`, never a different claim. */
+  short?: string;
+  /** Shown in the Selected research list on Home. */
+  featured?: boolean;
+  /** Margin lines on Home, e.g. venue, kind, place or date. */
+  meta?: string[];
   /** Internal page explaining the work, if there is one. */
   page?: string;
   links: { label: string; href: string }[];
@@ -31,7 +42,9 @@ export const publications: Publication[] = [
     date: '2026-06',
     venue: 'Proceedings of the 43rd ISARC, Singapore, 2026, pp. 2410–2414',
     summary:
-      'An LLM orchestrates four tools through the Model Context Protocol to turn a layered DXF floor plan and a plain-language request into a multi-storey IFC model.',
+      isarcSentence,
+    featured: true,
+    meta: ['ISARC 2026', 'Proceedings', 'Singapore'],
     page: 'research/2d-to-bim/',
     links: [
       { label: 'DOI', href: 'https://doi.org/10.22260/ISARC2026/0307' },
@@ -62,6 +75,9 @@ export const publications: Publication[] = [
     venue: 'ICCCBE 2026, International Conference on Computing in Civil and Building Engineering',
     summary:
       'A systematic review of scan-to-BIM methods, read through one question: what does a team retrofitting an older building for energy performance need from the model?',
+    short: 'What a team retrofitting an older building for energy performance needs from a scan-to-BIM model.',
+    featured: true,
+    meta: ['ICCCBE 2026', 'Talk', '25 March 2026'],
     links: [
       { label: 'Programme', href: 'https://easychair.org/smart-program/ICCCBE2026/2026-03-25.html' },
     ],

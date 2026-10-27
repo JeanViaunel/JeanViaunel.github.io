@@ -1,3 +1,8 @@
+// The single source for every project. The Work page shows `text`; Home and
+// share cards show `short` (or `text` when there is no short version).
+import { facts as marine } from './marine-debris';
+import { isarcSentence } from './publications';
+
 export const domains = [
   'Reality capture & BIM',
   'Computer vision',
@@ -9,10 +14,14 @@ export const domains = [
 export type Domain = (typeof domains)[number];
 
 export interface Project {
+  id: string;
   domain: Domain;
   status: string;
   title: string;
+  /** Full description, used on the Work page. */
   text: string;
+  /** Teaser for Home and share cards; a shortened `text`, never a different claim. */
+  short?: string;
   /** Outcomes, shown as accent tags. */
   results: string[];
   /** Tools and licences, shown as neutral tags. */
@@ -20,12 +29,15 @@ export interface Project {
   /** Internal path or external URL. Projects without one render as a plain card. */
   href?: string;
   cta?: string;
+  /** Position on the Home page (1, 2, 3); absent when not featured. */
+  featured?: number;
   /** Shared-element name: the card title morphs into the page heading. */
   vt?: string;
 }
 
 export const projects: Project[] = [
   {
+    id: 'scan-to-bim',
     domain: 'Reality capture & BIM',
     status: 'Research at NTU',
     title: 'Scan-to-BIM with mobile LiDAR',
@@ -34,22 +46,27 @@ export const projects: Project[] = [
     stack: [],
     href: 'research/',
     cta: 'See the research',
+    featured: 1,
   },
   {
+    id: 'maischool',
     domain: 'Web products',
     status: 'Legend Castle since 2024',
     title: 'MaiSchool',
     text: 'A live online tutoring platform for families: course and teacher browsing, class booking, progress tracking and parent messages. Lead full-stack developer for two years, from design to implementation.',
+    short: 'A live online tutoring platform for families. Lead full-stack developer for two years, from design to implementation.',
     results: ['Live product'],
     stack: ['Next.js', 'Convex', 'Clerk', 'Zod'],
     href: 'https://maischool.legendcastle.org',
     cta: 'Visit the site',
+    featured: 2,
   },
   {
+    id: '2d-to-bim',
     domain: 'Reality capture & BIM',
     status: 'Published 2026',
     title: 'From 2D drawings to BIM',
-    text: 'An LLM, working through four MCP tools, turns a layered DXF floor plan into an IFC model and stacks it into a multi-storey building.',
+    text: isarcSentence,
     results: ['ISARC 2026'],
     stack: ['MCP', 'IFC4', 'ezdxf'],
     href: 'research/2d-to-bim/',
@@ -57,6 +74,7 @@ export const projects: Project[] = [
     vt: 'case-bim',
   },
   {
+    id: 'photoforge',
     domain: 'Computer vision',
     status: 'In progress',
     title: 'PhotoForge',
@@ -65,17 +83,21 @@ export const projects: Project[] = [
     stack: ['FastAPI', 'Next.js'],
   },
   {
+    id: 'marine-debris',
     domain: 'Computer vision',
     status: 'Competition 2026',
     title: 'Marine debris detection',
-    text: 'Finding 34 kinds of ocean waste in photos for the National Academy of Marine Research’s international challenge, in a two-person team. Over 37 submissions our public score rose from 0.396 to 0.793 mAP. Most misses came from classes defined by what an object is not.',
-    results: ['15th of 69 teams', 'mAP@0.5 0.7917'],
+    text: `Finding ${marine.classes} kinds of ocean waste in photos for the National Academy of Marine Research’s international challenge, in a two-person team. Over 37 submissions our public score rose from 0.396 to 0.793 mAP. Most misses came from classes defined by what an object is not.`,
+    short: `Finding ${marine.classes} kinds of ocean waste in photos, in a two-person team. Most misses came from classes defined by what an object is not.`,
+    results: [`15th of ${marine.teamsEntered} teams`, 'mAP@0.5 0.7917'],
     stack: [],
     href: 'work/marine-debris/',
     cta: 'Read the case study',
+    featured: 3,
     vt: 'case-marine',
   },
   {
+    id: 'solar',
     domain: 'Computer vision',
     status: 'AI CUP 2026',
     title: 'Solar panel defect detection',
@@ -84,6 +106,7 @@ export const projects: Project[] = [
     stack: [],
   },
   {
+    id: 'kreyol',
     domain: 'AI & data',
     status: 'In progress',
     title: 'A Kreyòl dataset for language models',
@@ -92,6 +115,7 @@ export const projects: Project[] = [
     stack: ['MongoDB', 'n8n'],
   },
   {
+    id: 'guanin',
     domain: 'Ventures',
     status: 'Founder and developer',
     title: 'GUANIN marketplace',
@@ -102,6 +126,7 @@ export const projects: Project[] = [
     cta: 'Visit the site',
   },
   {
+    id: 'opendrone3d',
     domain: 'Reality capture & BIM',
     status: 'Up next',
     title: 'OpenDrone3D',
@@ -110,3 +135,6 @@ export const projects: Project[] = [
     stack: ['AGPL-3.0'],
   },
 ];
+
+export const featured = projects.filter((p) => p.featured).sort((a, b) => a.featured! - b.featured!);
+export const projectById = (id: string) => projects.find((p) => p.id === id)!;

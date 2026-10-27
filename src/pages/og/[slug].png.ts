@@ -6,6 +6,11 @@ import type { APIRoute, GetStaticPaths } from 'astro';
 import satori from 'satori';
 import sharp from 'sharp';
 import { site } from '../../data/site';
+import { isarcSentence } from '../../data/publications';
+import { facts, leaderboard, submissions } from '../../data/marine-debris';
+
+const us = leaderboard.find((r) => r.us)!;
+const best = Math.max(...submissions.map((s) => s.score));
 
 const cards: Record<string, { kicker: string; title: string; sub: string }> = {
   home: {
@@ -24,12 +29,12 @@ const cards: Record<string, { kicker: string; title: string; sub: string }> = {
   'marine-debris': {
     kicker: 'Case study',
     title: 'Marine debris detection',
-    sub: '37 submissions from 0.396 to 0.793 mAP, finishing 15th of 69 teams.',
+    sub: `${submissions.length} submissions from ${submissions[0].score.toFixed(3)} to ${best.toFixed(3)} mAP, finishing ${us.privateRank}th of ${facts.teamsEntered} teams.`,
   },
   '2d-to-bim': {
     kicker: 'Research explainer',
     title: 'From 2D drawings to BIM',
-    sub: 'An LLM calls four tools to turn a DXF floor plan into a multi-storey IFC model.',
+    sub: isarcSentence,
   },
 };
 
