@@ -1,0 +1,65 @@
+---
+import { nav, site } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props {
+  current?: string;
+}
+
+const { current } = Astro.props;
+---
+
+<header class="site-header">
+  <nav class="site-nav container" aria-label="Main">
+    <a href={url('')} class="brand" aria-current={current === 'home' ? 'page' : undefined}>
+      <span class="brand-name">{site.name}</span>
+      <span class="brand-zh" lang="zh-Hant">{site.nameZh}</span>
+    </a>
+    <button
+      type="button"
+      class="menu-toggle"
+      aria-expanded="false"
+      aria-controls="nav-links"
+      aria-label="Open menu"
+    >
+      <svg class="icon-open" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line>
+      </svg>
+    </button>
+    <div class="nav-links" id="nav-links">
+      {
+        nav.map((item) => (
+          <a
+            href={url(item.path)}
+            aria-current={current === item.label.toLowerCase() ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a href={url('about/#cv')} class="nav-cv">CV ↓</a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const links = document.getElementById('nav-links');
+  if (toggle && links) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      links.classList.toggle('is-open', open);
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    links.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+    toggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+  }
+</script>

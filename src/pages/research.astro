@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import { publications } from '../data/publications';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+---
+
+<Base title="Research" current="research" description="Papers and talks on scan-to-BIM, IFC and language models for BIM, from the NTU H-Team lab.">
+  <div class="container page">
+    <p class="eyebrow">Research</p>
+    <h1 class="page-title">Papers and talks</h1>
+    <p class="lede" style="max-width: 40rem">
+      I'm an assistant researcher in Prof. Shang-Hsien (Patrick) Hsieh's H-Team lab at National
+      Taiwan University. My work is on scan-to-BIM, IFC and using language models to build BIM models
+      faster.
+    </p>
+    <div class="chip-row" style="margin-top: 24px">
+      <a href={url('publications.bib')} download="victor-jean-viaunel.bib" class="btn btn--sm">Download all as BibTeX</a>
+      <a href={site.links.hteam} class="btn btn--sm btn--quiet">H-Team profile ↗</a>
+    </div>
+
+    <section aria-labelledby="pubs" style="margin-top: 64px">
+      <div class="rule-head">
+        <h2 id="pubs">Conference proceedings</h2>
+        <span class="count">{publications.length}</span>
+      </div>
+
+      {
+        publications.map((p) => (
+          <article class="paper">
+            <div class="paper-thumb">
+              {p.key === 'isarc2026' ? (
+                <svg viewBox="0 0 160 100" aria-hidden="true">
+                  <rect x="18" y="30" width="44" height="40" fill="#FFFFFF" stroke="#1A1D21" />
+                  <line x1="18" y1="50" x2="62" y2="50" stroke="#1A1D21" />
+                  <line x1="40" y1="30" x2="40" y2="70" stroke="#1A1D21" />
+                  <line x1="70" y1="50" x2="90" y2="50" stroke="#C2410C" stroke-width="1.5" />
+                  <polyline points="85,45 90,50 85,55" fill="none" stroke="#C2410C" stroke-width="1.5" />
+                  <g fill="#FFFFFF" stroke="#1A1D21">
+                    <polygon points="98,70 120,80 142,70 120,60" />
+                    <polygon points="98,58 120,68 142,58 120,48" />
+                    <polygon points="98,46 120,56 142,46 120,36" />
+                    <polygon points="98,34 120,44 142,34 120,24" />
+                  </g>
+                </svg>
+              ) : (
+                <svg viewBox="0 0 160 100" aria-hidden="true">
+                  <defs>
+                    <pattern id="rDots" width="7" height="7" patternUnits="userSpaceOnUse">
+                      <circle cx="1.5" cy="2" r="0.7" fill="#1A1D21" />
+                      <circle cx="5" cy="5" r="0.7" fill="#1A1D21" />
+                    </pattern>
+                  </defs>
+                  <rect x="20" y="24" width="56" height="52" fill="url(#rDots)" />
+                  <rect x="84" y="24" width="56" height="52" fill="#FFFFFF" stroke="#1A1D21" />
+                  <rect x="98" y="38" width="28" height="18" fill="#FBEDE6" stroke="#C2410C" />
+                </svg>
+              )}
+            </div>
+            <div class="paper-body">
+              <h3 class="pub-title">{p.title}</h3>
+              <p class="pub-authors"><strong>J. V. Victor</strong>, {p.authors}</p>
+              <p class="pub-venue">{p.venue}</p>
+              <p class="pub-summary">{p.summary}</p>
+              <div class="chip-row pub-links">
+                {p.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </section>
+
+    <section aria-labelledby="area" style="margin-top: 56px">
+      <div class="rule-head"><h2 id="area">Research area</h2></div>
+      <div class="area-grid">
+        <div>
+          <p class="area-title">Scan-to-BIM with mobile LiDAR</p>
+          <p class="body-text">How far a quick, low-cost scan can go toward an as-built BIM model of an existing building, exported as IFC. This was the focus of my master's research.</p>
+        </div>
+        <div>
+          <p class="area-title">BIM for energy retrofit</p>
+          <p class="body-text">What engineers upgrading older buildings actually need from a scanned model.</p>
+        </div>
+        <div>
+          <p class="area-title">Language models for BIM</p>
+          <p class="body-text">Using LLMs to create and edit BIM models from drawings and plain-language instructions.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="two-col">
+      <section aria-labelledby="talks">
+        <div class="rule-head"><h2 id="talks">Talks</h2></div>
+        <div class="timeline-row">
+          <span class="date">25 Mar 2026</span>
+          <span class="what">Presented <em>A Review on Scan-to-BIM for Building Energy Retrofit</em> at ICCCBE 2026, Infrastructure Systems session.</span>
+        </div>
+      </section>
+      <section aria-labelledby="teaching">
+        <div class="rule-head"><h2 id="teaching">Teaching assistance</h2></div>
+        <div class="timeline-row">
+          <span class="date">Now</span>
+          <span class="what">Teaching assistant for Prof. Shang-Hsien (Patrick) Hsieh's BIM course at NTU, supporting students with practical topics and their implementation ideas.</span>
+        </div>
+      </section>
+    </div>
+  </div>
+</Base>

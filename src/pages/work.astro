@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import { domains, projects } from '../data/projects';
+import { href, isExternal } from '../lib/url';
+
+const filters = ['All', ...domains];
+const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
+---
+
+<Base title="Work" current="work" description="Projects in reality capture and BIM, computer vision, AI and data, web products and ventures.">
+  <div class="container page">
+    <p class="eyebrow">Work</p>
+    <h1 class="page-title">Things I've built</h1>
+    <p class="lede">
+      Most of it is about getting usable information out of sensor data. The rest is what I build
+      when a problem in my own life needs solving.
+    </p>
+
+    <div class="filters" role="group" aria-label="Filter projects" hidden data-filters>
+      {
+        filters.map((label, i) => (
+          <button type="button" class="filter" data-filter={label} aria-pressed={i === 0 ? 'true' : 'false'}>
+            {label}
+          </button>
+        ))
+      }
+    </div>
+    <p class="project-count" aria-live="polite" data-count>{countLabel(projects.length)}</p>
+
+    <div class="project-grid">
+      {
+        projects.map((p) => {
+          const inner = (
+            <>
+              <div class="card-top">
+                <span class="kicker kicker--accent">{p.domain}</span>
+                <span class="kicker">{p.status}</span>
+              </div>
+              <h2>{p.title}</h2>
+              <p class="body-text">{p.text}</p>
+              <div class="chip-row">
+                {p.metrics.map((m) => <span class="tag">{m}</span>)}
+              </div>
+              {p.cta && <span class="cta">{p.cta}</span>}
+            </>
+          );
+          return p.href ? (
+            <a
+              class="project-card"
+              href={href(p.href)}
+              data-domain={p.domain}
+              rel={isExternal(p.href) ? 'noopener' : undefined}
+            >
+              {inner}
+            </a>
+          ) : (
+            <article class="project-card" data-domain={p.domain}>
+              {inner}
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</Base>
+
+<script>
+  const group = document.querySelector<HTMLElement>('[data-filters]');
+  const count = document.querySelector<HTMLElement>('[data-count]');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('.project-card'));
+
+  if (group && count) {
+    group.hidden = false;
+    const buttons = Array.from(group.querySelectorAll<HTMLButtonElement>('button'));
+
+    const apply = (filter: string) => {
+      let shown = 0;
+      for (const card of cards) {
+        const visible = filter === 'All' || card.dataset.domain === filter;
+        card.hidden = !visible;
+        if (visible) shown++;
+      }
+      for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.filter === filter));
+      count.textContent = shown === 1 ? '1 project' : `${shown} projects`;
+    };
+
+    group.addEventListener('click', (e) => {
+      const button = (e.target as HTMLElement).closest('button');
+      if (button?.dataset.filter) apply(button.dataset.filter);
+    });
+  }
+</script>

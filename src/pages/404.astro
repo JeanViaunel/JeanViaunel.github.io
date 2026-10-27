@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+---
+
+<Base title="Page not found">
+  <div class="container page page--narrow">
+    <p class="eyebrow">404</p>
+    <h1 class="page-title">Nothing at this address.</h1>
+    <p class="lede">The page may have moved when the site was rebuilt.</p>
+    <div class="btn-row" style="margin-top: 32px">
+      <a href={url('')} class="btn btn--primary">Go to the home page</a>
+      <a href={url('work/')} class="btn">See my work</a>
+    </div>
+  </div>
+</Base>

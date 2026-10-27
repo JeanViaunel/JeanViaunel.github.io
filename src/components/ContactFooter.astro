@@ -1,0 +1,22 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="contact-footer">
+  <div class="container">
+    <h2>Let's talk.</h2>
+    <p class="intro">
+      I'm open to research and engineering roles in digital construction and applied AI. Students
+      hoping to study in Taiwan are welcome to write too.
+    </p>
+    <p style="margin: 28px 0 0">
+      <a class="contact-email" href={`mailto:${site.email}`}>{site.email}</a>
+    </p>
+    <div class="contact-links">
+      <a href={site.links.linkedin}>LinkedIn ↗</a>
+      <a href={site.links.github}>GitHub ↗</a>
+      <a href={site.links.hteam}>H-Team ↗</a>
+    </div>
+    <p class="footer-meta">© 2026 {site.name} · Last updated {site.updated}</p>
+  </div>
+</footer>

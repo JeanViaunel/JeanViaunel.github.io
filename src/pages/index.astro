@@ -1,0 +1,212 @@
+---
+import Base from '../layouts/Base.astro';
+import { publications } from '../data/publications';
+import { url } from '../lib/url';
+
+const [isarc, icccbe] = publications;
+---
+
+<Base current="home" contactFooter>
+  <section class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow">Assistant Researcher · NTU H-Team lab · M.S. Civil Engineering 2026</p>
+      <h1>I teach computers to read buildings.</h1>
+      <p class="lede">
+        I'm Victor, a civil engineer who writes software. I build pipelines that turn LiDAR scans
+        and photos into BIM models an engineer can actually use, and I've published that work at
+        ISARC and ICCCBE.
+      </p>
+      <div class="btn-row">
+        <a href={url('work/')} class="btn btn--primary">See my work</a>
+        <a href={url('about/#cv')} class="btn">Download CV</a>
+      </div>
+    </div>
+
+    <figure class="hero-figure">
+      <svg viewBox="0 0 660 320" role="img" aria-label="A building wall drawn half as scanned LiDAR points and half as an IFC model with the wall, windows and slab labelled.">
+        <defs>
+          <pattern id="hDense" width="14" height="14" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="3" r="0.9" fill="#1A1D21"></circle><circle cx="7.5" cy="1.2" r="0.9" fill="#1A1D21"></circle><circle cx="11.5" cy="5" r="0.9" fill="#1A1D21"></circle><circle cx="4.2" cy="8" r="0.9" fill="#1A1D21"></circle><circle cx="9" cy="10.5" r="0.9" fill="#1A1D21"></circle><circle cx="13" cy="12" r="0.9" fill="#1A1D21"></circle><circle cx="1" cy="12.5" r="0.9" fill="#1A1D21"></circle><circle cx="6" cy="13.3" r="0.9" fill="#1A1D21"></circle>
+          </pattern>
+          <clipPath id="hScan"><rect x="0" y="0" width="292.5" height="320"></rect></clipPath>
+          <clipPath id="hModel"><rect x="292.5" y="0" width="367.5" height="320"></rect></clipPath>
+        </defs>
+        <g font-family="IBM Plex Mono, monospace" font-size="12" fill="#5A6068" letter-spacing="1"><text x="56" y="30">SCAN</text><text x="304" y="30">IFC MODEL</text></g>
+        <g font-family="IBM Plex Mono, monospace" font-size="11" fill="#5A6068" text-anchor="end"><text x="38" y="266">0</text><text x="38" y="216">1</text><text x="38" y="166">2</text><text x="38" y="116">3 m</text></g>
+        <g stroke="#9AA0A6" stroke-width="1"><line x1="44" y1="87" x2="44" y2="262"></line><line x1="41" y1="262" x2="44" y2="262"></line><line x1="41" y1="212" x2="44" y2="212"></line><line x1="41" y1="162" x2="44" y2="162"></line><line x1="41" y1="112" x2="44" y2="112"></line></g>
+        <g clip-path="url(#hScan)">
+          <rect x="56" y="87" width="473" height="175" fill="url(#hDense)" opacity="0.85"></rect>
+          <rect x="101" y="156.7" width="73.5" height="61.5" fill="#FFFFFF"></rect>
+          <rect x="256" y="156.7" width="73.5" height="61.5" fill="#FFFFFF"></rect>
+        </g>
+        <g clip-path="url(#hModel)">
+          <rect x="56" y="87" width="473" height="175" fill="#EEEFEA" stroke="#1A1D21" stroke-width="2"></rect>
+          <rect x="256" y="156.7" width="73.5" height="61.5" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></rect>
+          <rect x="410.5" y="156.7" width="73.5" height="61.5" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></rect>
+          <line x1="56" y1="262" x2="529" y2="262" stroke="#1A1D21" stroke-width="4"></line>
+        </g>
+        <line x1="292.5" y1="44" x2="292.5" y2="292" stroke="#9AA0A6" stroke-width="1" stroke-dasharray="4 4"></line>
+        <g stroke="#C2410C" stroke-width="1.2" fill="none"><polyline points="510,112 541,112"></polyline><polyline points="484,192 541,192"></polyline><polyline points="510,262 541,276"></polyline></g>
+        <g fill="#C2410C"><circle cx="510" cy="112" r="3"></circle><circle cx="484" cy="192" r="3"></circle><circle cx="510" cy="262" r="3"></circle></g>
+        <g font-family="IBM Plex Mono, monospace" font-size="12" fill="#1A1D21"><text x="545" y="116">IfcWall</text><text x="545" y="196">IfcWindow</text><text x="545" y="280">IfcSlab</text></g>
+      </svg>
+      <figcaption>Fig. 1 — The same wall as scanned points and as a BIM model. Most of my work happens on that dashed line.</figcaption>
+    </figure>
+  </section>
+
+  <section aria-labelledby="featured" class="section container">
+    <div class="home-head">
+      <h2 id="featured">Selected work</h2>
+      <a href={url('work/')}>All projects →</a>
+    </div>
+    <div class="feature-grid">
+      <a href={url('research/')} class="feature-card">
+        <div class="feature-art">
+          <svg viewBox="0 0 320 180" aria-hidden="true">
+            <defs>
+              <pattern id="tDense" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="2" r="0.7" fill="#1A1D21"></circle><circle cx="5.5" cy="1" r="0.7" fill="#1A1D21"></circle><circle cx="7.5" cy="5" r="0.7" fill="#1A1D21"></circle><circle cx="3" cy="6.5" r="0.7" fill="#1A1D21"></circle><circle cx="6" cy="8.5" r="0.7" fill="#1A1D21"></circle></pattern>
+              <clipPath id="tL"><rect x="0" y="0" width="160" height="180"></rect></clipPath>
+              <clipPath id="tR"><rect x="160" y="0" width="160" height="180"></rect></clipPath>
+            </defs>
+            <g clip-path="url(#tL)"><rect x="20" y="40" width="280" height="104" fill="url(#tDense)"></rect><rect x="46.6" y="81.6" width="43.5" height="36.4" fill="#F1F2EE"></rect><rect x="138" y="81.6" width="43.5" height="36.4" fill="#F1F2EE"></rect></g>
+            <g clip-path="url(#tR)"><rect x="20" y="40" width="280" height="104" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></rect><rect x="138" y="81.6" width="43.5" height="36.4" fill="#F1F2EE" stroke="#1A1D21"></rect><rect x="230" y="81.6" width="43.5" height="36.4" fill="#F1F2EE" stroke="#1A1D21"></rect><line x1="20" y1="144" x2="300" y2="144" stroke="#1A1D21" stroke-width="3"></line></g>
+            <line x1="160" y1="26" x2="160" y2="158" stroke="#9AA0A6" stroke-dasharray="3 3"></line>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <p class="kicker">Research · NTU H-Team lab</p>
+          <h3>Scan-to-BIM with mobile LiDAR</h3>
+          <p class="body-text">My research area: turning quick scans of existing buildings into IFC models engineers can work with.</p>
+          <div class="chip-row">
+            <span class="tag tag--accent">ISARC 2026</span>
+            <span class="tag">ICCCBE 2026</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://maischool.legendcastle.org" class="feature-card">
+        <div class="feature-art">
+          <svg viewBox="0 0 320 180" aria-hidden="true">
+            <rect x="18" y="14" width="284" height="152" rx="6" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></rect>
+            <line x1="18" y1="34" x2="302" y2="34" stroke="#1A1D21" stroke-width="1.5"></line>
+            <g fill="#9AA0A6"><circle cx="30" cy="24" r="3"></circle><circle cx="40" cy="24" r="3"></circle><circle cx="50" cy="24" r="3"></circle></g>
+            <g fill="#F1F2EE" stroke="#1A1D21"><rect x="32" y="48" width="70" height="48" rx="3"></rect><rect x="110" y="48" width="70" height="48" rx="3"></rect><rect x="32" y="104" width="70" height="48" rx="3"></rect><rect x="110" y="104" width="70" height="48" rx="3"></rect></g>
+            <g fill="none" stroke="#9AA0A6"><rect x="196" y="48" width="18" height="16"></rect><rect x="218" y="48" width="18" height="16"></rect><rect x="240" y="48" width="18" height="16"></rect><rect x="262" y="48" width="18" height="16"></rect><rect x="196" y="68" width="18" height="16"></rect><rect x="240" y="68" width="18" height="16"></rect><rect x="262" y="68" width="18" height="16"></rect><rect x="196" y="88" width="18" height="16"></rect><rect x="218" y="88" width="18" height="16"></rect><rect x="240" y="88" width="18" height="16"></rect><rect x="262" y="88" width="18" height="16"></rect></g>
+            <rect x="218" y="68" width="18" height="16" fill="#C2410C"></rect>
+            <rect x="196" y="120" width="84" height="24" rx="4" fill="#1A1D21"></rect>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <p class="kicker">Legend Castle · since 2024</p>
+          <h3>MaiSchool</h3>
+          <p class="body-text">A live online tutoring platform for families. I've been its main full-stack developer for two years, from the first design to the shipped product.</p>
+          <div class="chip-row">
+            <span class="tag tag--accent">Live product</span>
+            <span class="tag">Next.js · Convex · Clerk</span>
+          </div>
+        </div>
+      </a>
+
+      <a href={url('work/')} class="feature-card">
+        <div class="feature-art">
+          <svg viewBox="0 0 320 180" aria-hidden="true">
+            <path d="M0 44 Q 40 32 80 44 T 160 44 T 240 44 T 320 44" fill="none" stroke="#9AA0A6" stroke-width="1.5"></path>
+            <rect x="44" y="92" width="58" height="20" rx="8" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5" transform="rotate(-14 73 102)"></rect>
+            <circle cx="168" cy="118" r="17" fill="#FFFFFF" stroke="#1A1D21" stroke-width="1.5"></circle>
+            <polyline points="232,82 244,100 256,80 268,104 280,84 290,102" fill="none" stroke="#1A1D21" stroke-width="1.5"></polyline>
+            <polyline points="234,98 248,86 262,100 276,88 288,96" fill="none" stroke="#1A1D21" stroke-width="1.5"></polyline>
+            <g fill="none" stroke="#C2410C" stroke-width="1.5"><rect x="36" y="78" width="74" height="46"></rect><rect x="144" y="94" width="48" height="48"></rect><rect x="224" y="72" width="74" height="40"></rect></g>
+            <g font-family="IBM Plex Mono, monospace" font-size="11" fill="#C2410C"><text x="36" y="72">bottle</text><text x="144" y="88">buoy</text><text x="224" y="66">net</text></g>
+          </svg>
+        </div>
+        <div class="feature-body">
+          <p class="kicker">Competition · 2026</p>
+          <h3>Marine debris detection</h3>
+          <p class="body-text">Finding 34 kinds of ocean waste in photos, in a two-person team. The error analysis taught me the most.</p>
+          <div class="chip-row">
+            <span class="tag tag--accent">15th of 69 teams</span>
+            <span class="tag">mAP@0.5 0.7917</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section aria-labelledby="research" class="section container">
+    <div class="home-head">
+      <h2 id="research">Selected research</h2>
+      <a href={url('research/')}>All publications →</a>
+    </div>
+
+    <article class="pub-row">
+      <p class="pub-meta">ISARC 2026 · Proceedings<br />Singapore</p>
+      <div class="pub-main">
+        <h3 class="pub-title">{isarc.title}</h3>
+        <p class="pub-authors"><strong>J. V. Victor</strong>, {isarc.authors}</p>
+        <p class="pub-summary" style="margin-top: 6px">Language models can turn a single floor plan into a parametric BIM model and grow it into a multi-storey building.</p>
+        <div class="chip-row pub-links">
+          {isarc.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}
+        </div>
+      </div>
+    </article>
+
+    <article class="pub-row">
+      <p class="pub-meta">ICCCBE 2026 · Talk<br />25 March 2026</p>
+      <div class="pub-main">
+        <h3 class="pub-title">{icccbe.title}</h3>
+        <p class="pub-authors"><strong>J. V. Victor</strong>, {icccbe.authors}</p>
+        <p class="pub-summary" style="margin-top: 6px">What a team retrofitting an older building for energy performance actually needs from a scan-to-BIM model.</p>
+        <div class="chip-row pub-links">
+          {icccbe.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section aria-labelledby="beyond" class="section container">
+    <div class="home-head">
+      <h2 id="beyond">Beyond the lab</h2>
+    </div>
+    <div class="trio">
+      <div>
+        <p class="kicker kicker--accent">Teaching assistant</p>
+        <h3>Prof. Hsieh's BIM course, NTU</h3>
+        <p class="body-text">I assist in my professor's course, supporting students as they work through practical topics and their own implementation ideas.</p>
+      </div>
+      <div>
+        <p class="kicker kicker--accent">Community</p>
+        <h3>Academic Committee Lead, second term</h3>
+        <p class="body-text">I help Haitian students apply to Taiwanese universities, from study plans and autobiographies to application workshops.</p>
+      </div>
+      <div>
+        <p class="kicker kicker--accent">Venture</p>
+        <h3>GUANIN</h3>
+        <p class="body-text">A marketplace I founded and built, connecting suppliers in Asia with buyers in the Caribbean and Latin America.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="now" class="section container">
+    <div class="split">
+      <div>
+        <div style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap">
+          <h2 id="now">Now</h2>
+          <span class="mono" style="font-size: 0.78rem; color: var(--muted)">updated October 2026</span>
+        </div>
+        <p class="body-text" style="margin-top: 16px; font-size: 1.05rem; line-height: 1.65; max-width: 34rem">
+          Assistant researcher in the H-Team lab, teaching assistant for Prof. Hsieh's BIM course, and
+          lead developer of MaiSchool. On the side I'm building PhotoForge and helping the next group of
+          Haitian students with their applications.
+        </p>
+        <a href={url('now/')} style="display: inline-block; margin-top: 12px; padding: 10px 0; font-size: 0.95rem">More on what I'm doing →</a>
+      </div>
+      <div>
+        <h2>News</h2>
+        <ul class="dated-list">
+          <li class="dated"><span class="date">Jun 2026</span><span class="what">ISARC 2026 paper published in the proceedings.</span></li>
+          <li class="dated"><span class="date">Mar 2026</span><span class="what">Presented my scan-to-BIM review at ICCCBE 2026.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>
