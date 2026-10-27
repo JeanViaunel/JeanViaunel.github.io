@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Authors from '../components/Authors.astro';
 import { publications } from '../data/publications';
 import { site } from '../data/site';
 import { url } from '../lib/url';
@@ -21,7 +22,7 @@ import { url } from '../lib/url';
 
     <section aria-labelledby="pubs" style="margin-top: 64px">
       <div class="rule-head">
-        <h2 id="pubs">Conference proceedings</h2>
+        <h2 id="pubs">Publications</h2>
         <span class="count">{publications.length}</span>
       </div>
 
@@ -43,6 +44,19 @@ import { url } from '../lib/url';
                     <polygon points="98,34 120,44 142,34 120,24" />
                   </g>
                 </svg>
+              ) : p.key === 'housing2025' ? (
+                <svg viewBox="0 0 160 100" aria-hidden="true">
+                  <g fill="#FFFFFF" stroke="#1A1D21">
+                    <rect x="30" y="22" width="100" height="56" />
+                    <line x1="30" y1="50" x2="130" y2="50" />
+                    <line x1="55" y1="22" x2="55" y2="50" />
+                    <line x1="80" y1="22" x2="80" y2="50" />
+                    <line x1="105" y1="22" x2="105" y2="50" />
+                    <line x1="63" y1="50" x2="63" y2="78" />
+                    <line x1="97" y1="50" x2="97" y2="78" />
+                  </g>
+                  <rect x="80" y="22" width="25" height="28" fill="#FBEDE6" stroke="#C2410C" />
+                </svg>
               ) : (
                 <svg viewBox="0 0 160 100" aria-hidden="true">
                   <defs>
@@ -59,8 +73,8 @@ import { url } from '../lib/url';
             </div>
             <div class="paper-body">
               <h3 class="pub-title">{p.title}</h3>
-              <p class="pub-authors"><strong>J. V. Victor</strong>, {p.authors}</p>
-              <p class="pub-venue">{p.venue}</p>
+              <Authors authors={p.authors} />
+              <p class="pub-venue">{p.venue ?? p.year}</p>
               <p class="pub-summary">{p.summary}</p>
               <div class="chip-row pub-links">
                 {p.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}

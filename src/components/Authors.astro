@@ -1,0 +1,20 @@
+---
+import { SELF } from '../data/publications';
+
+interface Props {
+  authors: string[];
+}
+
+const { authors } = Astro.props;
+---
+
+<p class="pub-authors">
+  {
+    authors.map((a, i) => (
+      <>
+        {a === SELF ? <strong>{a}</strong> : a}
+        {i < authors.length - 1 && ', '}
+      </>
+    ))
+  }
+</p>

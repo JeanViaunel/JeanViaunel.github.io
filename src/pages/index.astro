@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Authors from '../components/Authors.astro';
 import { publications } from '../data/publications';
 import { url } from '../lib/url';
 
@@ -142,7 +143,7 @@ const [isarc, icccbe] = publications;
       <p class="pub-meta">ISARC 2026 · Proceedings<br />Singapore</p>
       <div class="pub-main">
         <h3 class="pub-title">{isarc.title}</h3>
-        <p class="pub-authors"><strong>J. V. Victor</strong>, {isarc.authors}</p>
+        <Authors authors={isarc.authors} />
         <p class="pub-summary" style="margin-top: 6px">Language models can turn a single floor plan into a parametric BIM model and grow it into a multi-storey building.</p>
         <div class="chip-row pub-links">
           {isarc.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}
@@ -154,7 +155,7 @@ const [isarc, icccbe] = publications;
       <p class="pub-meta">ICCCBE 2026 · Talk<br />25 March 2026</p>
       <div class="pub-main">
         <h3 class="pub-title">{icccbe.title}</h3>
-        <p class="pub-authors"><strong>J. V. Victor</strong>, {icccbe.authors}</p>
+        <Authors authors={icccbe.authors} />
         <p class="pub-summary" style="margin-top: 6px">What a team retrofitting an older building for energy performance actually needs from a scan-to-BIM model.</p>
         <div class="chip-row pub-links">
           {icccbe.links.map((l) => <a class="link-chip" href={l.href}>{l.label}</a>)}
