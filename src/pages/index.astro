@@ -12,7 +12,7 @@ import { href, isExternal, url } from '../lib/url';
 const research = publications.filter((p) => p.featured);
 
 
-const pills = ['Assistant Researcher', 'NTU H-Team lab', 'M.S. student, Civil Engineering'];
+const facts = ['Based in Taipei', 'Open to research and engineering roles', 'Works in English'];
 const lead = ['I', 'teach', 'computers', 'to'];
 const accent = ['read', 'buildings.'];
 ---
@@ -20,27 +20,51 @@ const accent = ['read', 'buildings.'];
 <Base current="home" sheet={1} contactFooter>
   <div class="grid-paper">
     <section class="hero container">
-      <div>
-        <ul class="pills">
-          {pills.map((p, i) => <li class="pill" style={`--d: ${i}`}>{p}</li>)}
-        </ul>
+      <div class="hero-copy">
+        <p class="hero-id">
+          <span class="hero-name">Victor Jean Viaunel</span>
+          <span class="hero-role">Civil engineer and software developer, National Taiwan University</span>
+        </p>
         <h1 data-lines>
           {lead.map((w) => <><span class="h-word"><span>{w}</span></span>{' '}</>)}
           <span class="hl">{accent.map((w, i) => <><span class="h-word"><span>{w}</span></span>{i === 0 ? ' ' : ''}</>)}</span>
         </h1>
         <p class="lede">
-          I'm Victor, a civil engineer who writes software. I build pipelines that turn LiDAR scans
-          and photos into BIM models an engineer can actually use, and I've published that work at
-          ISARC and ICCCBE.
+          I build pipelines that turn LiDAR scans and photos into BIM models an engineer can actually
+          use. I'm an assistant researcher in the H-Team lab at NTU, where I'm also studying for my
+          M.S., and I've led development of the MaiSchool platform since 2024.
         </p>
         <div class="btn-row">
           <a href={url('work/')} class="btn btn--primary">See my work <span class="arrow" aria-hidden="true">→</span></a>
           <a href={url('about/#cv')} class="btn">Download CV</a>
         </div>
+        <ul class="hero-facts">
+          {facts.map((f) => <li>{f}</li>)}
+        </ul>
       </div>
       <ScanFigure />
     </section>
   </div>
+
+  <section class="container" aria-label="In numbers">
+    <dl class="proof">
+      <div class="proof-cell" data-reveal>
+        <dt>Conference papers in 2026</dt>
+        <dd class="proof-n"><span data-count="3">3</span></dd>
+        <dd class="proof-note">ISARC, ICCCBE and i3CE</dd>
+      </div>
+      <div class="proof-cell" data-reveal style="--d: 1">
+        <dt>Marine debris challenge</dt>
+        <dd class="proof-n"><span data-count="15">15</span>th <span class="proof-of">of 69 teams</span></dd>
+        <dd class="proof-note">mAP@0.5 0.7917, two-person team</dd>
+      </div>
+      <div class="proof-cell" data-reveal style="--d: 2">
+        <dt>Leading a live product since</dt>
+        <dd class="proof-n">2024</dd>
+        <dd class="proof-note">MaiSchool, built with Next.js and Convex</dd>
+      </div>
+    </dl>
+  </section>
 
   <section aria-labelledby="featured" class="section container">
     <SectionHead no={1} id="featured" title="Selected work" link={{ href: 'work/', label: 'All projects' }} />
@@ -52,10 +76,7 @@ const accent = ['read', 'buildings.'];
               <ProjectArt id={p.id} />
             </div>
             <div class="feature-body">
-              <div class="card-meta">
-                <span class="kicker kicker--accent">{p.domain}</span>
-                <span class="kicker">{p.status}</span>
-              </div>
+              <p class="kicker kicker--accent">{p.domain}</p>
               <h3 data-vt={p.vt ? '' : undefined} style={p.vt ? `--vt: ${p.vt}` : undefined}>
                 {p.title}
                 {isExternal(p.href!) && <span class="arrow arrow--ne" aria-hidden="true" style="font-size: 0.9em; color: var(--muted)">{' '}↗</span>}
@@ -63,7 +84,6 @@ const accent = ['read', 'buildings.'];
               <p class="body-text">{p.short ?? p.text}</p>
               <div class="chip-row">
                 {p.results.map((m) => <span class="tag tag--accent">{m}</span>)}
-                {p.stack.map((m) => <span class="tag">{m}</span>)}
               </div>
             </div>
           </a>
@@ -116,23 +136,10 @@ const accent = ['read', 'buildings.'];
     </div>
   </section>
 
-  <section aria-labelledby="now" class="section container">
-    <SectionHead no={4} id="now" title="Now" meta="Updated October 2026" />
-    <div class="split">
-      <div>
-        <p class="body-text" style="font-size: 1.1rem; line-height: 1.65; max-width: 34rem">
-          Assistant researcher in the H-Team lab, teaching assistant for Prof. Hsieh's BIM course, and
-          lead developer of MaiSchool. On the side I'm building PhotoForge and helping the next group of
-          Haitian students with their applications.
-        </p>
-        <a href={url('now/')} class="underline-link" style="display: inline-block; margin-top: 14px; padding: 6px 0; font-size: 0.95rem">More on what I'm doing <span class="arrow" aria-hidden="true">→</span></a>
-      </div>
-      <div>
-        <h3>News</h3>
-        <ul class="dated-list">
-          {news.map((n) => <li class="dated"><span class="date">{n.date}</span><span class="what">{n.text}</span></li>)}
-        </ul>
-      </div>
-    </div>
+  <section aria-labelledby="news" class="section container">
+    <SectionHead no={4} id="news" title="News" link={{ href: 'now/', label: 'What I’m working on now' }} />
+    <ul class="dated-list news-list">
+      {news.map((n) => <li class="dated"><span class="date">{n.date}</span><span class="what">{n.text}</span></li>)}
+    </ul>
   </section>
 </Base>

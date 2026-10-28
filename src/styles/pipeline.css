@@ -4,14 +4,14 @@
    Pipeline figure (2D drawings to BIM)
    ========================================================= */
 .stats .stats-text {
-  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
-  letter-spacing: -0.02em;
+  font-size: var(--fs-h2);
+  letter-spacing: var(--track-title);
 }
 .pipe {
   margin: 0;
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: 10px;
+  border-radius: var(--r-md);
   overflow: hidden;
 }
 .pipe-head {
@@ -20,7 +20,7 @@
   margin-bottom: 12px;
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: 10px;
+  border-radius: var(--r-md);
 }
 .pipe-head > div {
   padding: 16px 20px;
@@ -34,11 +34,11 @@
 }
 .pipe-request p {
   font-family: var(--mono);
-  font-size: 0.86rem;
+  font-size: var(--fs-meta);
   color: var(--graphite);
 }
 .pipe-llm p {
-  font-size: 0.95rem;
+  font-size: var(--fs-small);
   color: var(--body);
 }
 @media (max-width: 760px) {
@@ -84,11 +84,11 @@
 }
 .pipe-tabs [role='tab']:hover {
   color: var(--graphite);
-  background: #fbfbf9;
+  background: var(--tint);
 }
 .pipe-tabs [role='tab'][aria-selected='true'] {
   color: var(--graphite);
-  background: #fbfbf9;
+  background: var(--tint);
 }
 .pipe-tabs [role='tab']:focus-visible {
   outline-offset: -3px;
@@ -111,7 +111,7 @@
 .pipe-tabs .is-done .n {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--surface);
 }
 .pipe-tabs .bar {
   position: absolute;
@@ -195,8 +195,8 @@
 }
 .pipe-notes h3 {
   margin: 0;
-  font-size: 1.35rem;
-  letter-spacing: -0.015em;
+  font-size: var(--fs-h3);
+  letter-spacing: var(--track-heading);
   font-weight: 600;
 }
 .pipe-sub {
@@ -213,7 +213,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.92rem;
+  font-size: var(--fs-small);
 }
 .pipe-sub li::before {
   content: counter(sub);
@@ -222,7 +222,7 @@
   place-items: center;
   width: 20px;
   height: 20px;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
   background: var(--sunk);
   font: 500 0.7rem var(--mono);
   color: var(--body);
@@ -238,7 +238,7 @@
 .pipe-passes li {
   font: 0.78rem var(--mono);
   padding: 4px 9px;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
   background: var(--sunk);
   color: var(--muted);
   transition:
@@ -288,16 +288,16 @@
 }
 .cad-wind rect {
   fill: var(--surface);
-  stroke: #5a6068;
+  stroke: var(--muted);
   stroke-width: 0.8;
 }
 .cad-wind line {
-  stroke: #5a6068;
+  stroke: var(--muted);
   stroke-width: 0.8;
 }
 .cad-door path {
   fill: none;
-  stroke: #5a6068;
+  stroke: var(--muted);
   stroke-width: 0.9;
 }
 .cad-cols rect {
@@ -308,13 +308,13 @@
 .cad-furn rect,
 .cad-furn line {
   fill: none;
-  stroke: #a3a8ae;
+  stroke: var(--tick);
   stroke-width: 0.7;
 }
 
 /* Rooms */
 .rm-walls rect {
-  fill: #c9cbc4;
+  fill: var(--line-strong);
 }
 .rm-rooms rect {
   fill: var(--accent-wash);
@@ -335,18 +335,18 @@
 /* Isometric */
 .iso-footprint {
   fill: none;
-  stroke: #c9cbc4;
+  stroke: var(--line-strong);
   stroke-width: 1;
   stroke-dasharray: 4 3;
 }
 .f-top {
-  fill: #ffffff;
+  fill: var(--surface);
 }
 .f-front {
-  fill: #e6e7e2;
+  fill: var(--fill-1);
 }
 .f-right {
-  fill: #cfd1cb;
+  fill: var(--fill-2);
 }
 .f-top,
 .f-front,
@@ -356,7 +356,7 @@
   stroke-linejoin: round;
 }
 .iso-cols .f-top {
-  fill: #f1f2ee;
+  fill: var(--sunk);
 }
 .iso-open path {
   fill: #2c3138;
@@ -364,7 +364,7 @@
   stroke-width: 0.5;
 }
 .iso-roof .f-top {
-  fill: #5a6068;
+  fill: var(--muted);
 }
 .lvl-lead {
   stroke: var(--tick);

@@ -101,9 +101,11 @@
   .page-head > .eyebrow:first-child {
     animation-delay: 0ms;
   }
-  .pills > li {
-    animation: rise-in var(--dur-base) var(--ease) both;
-    animation-delay: calc(var(--d) * 60ms);
+  .hero-id {
+    animation: rise-in var(--dur-slow) var(--ease) both;
+  }
+  .hero .hero-facts {
+    animation: rise-in var(--dur-slow) var(--ease) 580ms both;
   }
   .hero .lede {
     animation: rise-in var(--dur-slow) var(--ease) 420ms both;

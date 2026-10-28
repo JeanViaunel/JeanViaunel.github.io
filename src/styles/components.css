@@ -9,7 +9,7 @@
   min-height: 48px;
   padding: 0 20px;
   border: 1px solid var(--graphite);
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   font: 500 1rem var(--sans);
   text-decoration: none;
   background: transparent;
@@ -47,13 +47,13 @@
   background: var(--accent);
 }
 .btn--primary:hover {
-  color: #fff;
+  color: var(--surface);
   border-color: var(--accent);
 }
 .btn--sm {
   min-height: 40px;
   padding: 0 14px;
-  font-size: 0.92rem;
+  font-size: var(--fs-small);
   background: var(--surface);
 }
 .btn--quiet {
@@ -68,7 +68,7 @@
 
 .link-chip {
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: var(--fs-tag);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -76,7 +76,7 @@
   min-height: 32px;
   padding: 0 10px;
   border: 1px solid var(--rule);
-  border-radius: 4px;
+  border-radius: var(--r-sm);
   background: var(--surface);
   color: var(--graphite);
   cursor: pointer;
@@ -101,9 +101,9 @@
 
 .tag {
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: var(--fs-tag);
   padding: 4px 9px;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
   background: var(--sunk);
   color: var(--body);
 }
@@ -112,19 +112,6 @@
   color: var(--accent-ink);
 }
 
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.02em;
-  color: var(--body);
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  padding: 5px 11px;
-}
 
 .live-dot {
   position: relative;
@@ -220,12 +207,12 @@
 }
 .brand-name {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--fs-body);
   letter-spacing: -0.01em;
 }
 .brand-zh {
   font-family: var(--mono);
-  font-size: 0.78rem;
+  font-size: var(--fs-tag);
   color: var(--muted);
 }
 .nav-links {
@@ -233,7 +220,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 24px;
-  font-size: 0.95rem;
+  font-size: var(--fs-small);
 }
 .nav-links a:not(.nav-cv) {
   text-decoration: none;
@@ -262,7 +249,7 @@
   min-width: 44px;
   min-height: 44px;
   border: 1px solid var(--rule);
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   background: var(--surface);
   align-items: center;
   justify-content: center;
@@ -307,7 +294,7 @@
     padding: 14px 0;
     border-bottom: 1px solid var(--rule);
     background: none;
-    font-size: 1.1rem;
+    font-size: var(--fs-h4);
   }
   .js .nav-links .nav-cv {
     margin: 14px 0 0;
@@ -335,15 +322,15 @@
 .tb-k {
   display: block;
   font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--muted);
 }
 .tb-v {
   display: block;
   margin-top: 6px;
-  font-size: 0.95rem;
+  font-size: var(--fs-small);
   font-weight: 500;
 }
 .tb-links {
@@ -363,7 +350,7 @@
   justify-content: space-between;
   gap: 6px 24px;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: var(--fs-label);
   color: var(--muted);
 }
 .tb-foot p {
@@ -402,16 +389,16 @@
 }
 .contact h2 {
   margin: 0;
-  font-size: clamp(2.6rem, 7vw, 5.4rem);
-  letter-spacing: -0.045em;
+  font-size: var(--fs-display);
+  letter-spacing: var(--track-display);
   font-weight: 600;
-  line-height: 0.98;
+  line-height: var(--lh-display);
 }
 .contact .intro {
   margin: 20px 0 0;
-  font-size: 1.1rem;
+  font-size: var(--fs-lede);
   line-height: 1.6;
-  color: #c9ccd0;
+  color: var(--on-dark-muted);
   max-width: 36rem;
 }
 .contact a {
@@ -432,7 +419,7 @@
   margin-top: 32px;
 }
 .contact-email {
-  font-size: clamp(1.15rem, 2.6vw, 2rem);
+  font-size: var(--fs-h2);
   font-weight: 500;
   text-decoration: none;
   overflow-wrap: anywhere;
@@ -442,13 +429,13 @@
 }
 .copy-btn {
   font: 500 0.8rem var(--mono);
-  letter-spacing: 0.04em;
+  letter-spacing: var(--track-label);
   min-height: 36px;
   padding: 0 12px;
-  border-radius: 999px;
-  border: 1px solid #4a5058;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--on-dark-rule);
   background: transparent;
-  color: #c9ccd0;
+  color: var(--on-dark-muted);
   cursor: pointer;
   transition:
     border-color var(--dur-fast),

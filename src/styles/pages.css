@@ -15,19 +15,11 @@
     gap: 56px;
   }
 }
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0 0 26px;
-  padding: 0;
-  list-style: none;
-}
 .hero h1 {
   margin: 0;
-  font-size: clamp(2.6rem, 5.8vw, 4.7rem);
-  line-height: 1;
-  letter-spacing: -0.045em;
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--track-display);
   font-weight: 600;
 }
 .h-word > span {
@@ -49,11 +41,121 @@
 }
 .hero .lede {
   margin-top: 26px;
-  font-size: 1.15rem;
+  font-size: var(--fs-lede);
   max-width: 33rem;
 }
 .hero .btn-row {
-  margin-top: 34px;
+  margin-top: var(--s-6);
+}
+
+/* Who this is, before what he does */
+.hero-id {
+  margin: 0 0 var(--s-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  padding-left: var(--s-4);
+  border-left: 2px solid var(--accent);
+}
+.hero-name {
+  font-size: var(--fs-h4);
+  font-weight: 600;
+  letter-spacing: var(--track-heading);
+  color: var(--graphite);
+}
+.hero-role {
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+/* Availability line: square markers, no separators */
+.hero-facts {
+  list-style: none;
+  margin: var(--s-5) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-5);
+  font-family: var(--mono);
+  font-size: var(--fs-tag);
+  color: var(--body);
+}
+.hero-facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.hero-facts li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  flex: none;
+  background: var(--tick);
+}
+
+/* Proof strip: three numbers in title-block cells */
+.proof {
+  margin: 0 0 clamp(var(--s-8), 8vw, 104px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--graphite);
+  border-bottom: 1px solid var(--rule);
+}
+.proof-cell {
+  padding: var(--s-5) var(--s-5) var(--s-5) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.proof-cell + .proof-cell {
+  padding-left: var(--s-5);
+  border-left: 1px solid var(--rule);
+}
+.proof dt {
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.proof dd {
+  margin: 0;
+}
+.proof-n {
+  font-size: var(--fs-h1);
+  line-height: var(--lh-display);
+  letter-spacing: var(--track-title);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--graphite);
+}
+.proof-of {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.proof-note {
+  font-size: var(--fs-meta);
+  color: var(--body);
+}
+@media (max-width: 720px) {
+  .proof {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .proof-cell,
+  .proof-cell + .proof-cell {
+    padding: var(--s-4) 0;
+    border-left: 0;
+  }
+  .proof-cell + .proof-cell {
+    border-top: 1px solid var(--rule);
+  }
+}
+
+.news-list {
+  max-width: 52rem;
+  margin-top: var(--s-6);
 }
 
 /* Scan comparator figure */
@@ -61,9 +163,9 @@
   margin: 0;
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: 10px;
+  border-radius: var(--r-md);
   overflow: hidden;
-  box-shadow: 0 30px 60px -40px rgba(26, 29, 33, 0.35);
+  box-shadow: var(--shadow-lift);
 }
 .scan-bar {
   display: flex;
@@ -73,8 +175,8 @@
   padding: 10px 14px;
   border-bottom: 1px solid var(--rule);
   font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -209,7 +311,7 @@
   display: flex;
   gap: 10px;
   font-family: var(--mono);
-  font-size: 0.68rem;
+  font-size: var(--fs-label);
   color: var(--accent-ink);
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--accent-wash);
@@ -258,7 +360,7 @@ html:not(.js) .scan-divider {
 }
 figcaption {
   font-family: var(--mono);
-  font-size: 0.74rem;
+  font-size: var(--fs-tag);
   line-height: 1.55;
   color: var(--muted);
 }
@@ -275,7 +377,7 @@ figcaption {
   color: var(--graphite);
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: 8px;
+  border-radius: var(--r-md);
   display: flex;
   flex-direction: column;
   transition:
@@ -290,7 +392,7 @@ figcaption {
 .feature-art {
   background: var(--sunk);
   border-bottom: 1px solid var(--rule);
-  border-radius: 8px 8px 0 0;
+  border-radius: var(--r-md) var(--r-md) 0 0;
   padding: 16px;
   overflow: hidden;
 }
@@ -315,8 +417,8 @@ figcaption {
 }
 .feature-body h3 {
   margin: 0;
-  font-size: 1.3rem;
-  letter-spacing: -0.015em;
+  font-size: var(--fs-h3);
+  letter-spacing: var(--track-heading);
   font-weight: 600;
 }
 .feature-body .chip-row {
@@ -340,8 +442,10 @@ figcaption {
 .pub-meta {
   margin: 0;
   font-family: var(--mono);
-  font-size: 0.8rem;
-  line-height: 1.7;
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  line-height: 1.8;
   color: var(--muted);
 }
 .pub-meta span {
@@ -365,14 +469,14 @@ figcaption {
 
 .pub-title {
   margin: 0;
-  font-size: 1.18rem;
+  font-size: var(--fs-h4);
   line-height: 1.4;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--track-heading);
 }
 .pub-authors {
   margin: 6px 0 0;
-  font-size: 0.95rem;
+  font-size: var(--fs-small);
   color: var(--muted);
 }
 .pub-authors strong {
@@ -381,7 +485,7 @@ figcaption {
 }
 .pub-venue {
   margin: 4px 0 0;
-  font-size: 0.95rem;
+  font-size: var(--fs-small);
   font-style: italic;
   color: var(--muted);
 }
@@ -409,7 +513,7 @@ figcaption {
 }
 .trio h3 {
   margin: 0;
-  font-size: 1.08rem;
+  font-size: var(--fs-h4);
   font-weight: 600;
 }
 .trio p.body-text {
@@ -424,7 +528,7 @@ figcaption {
 }
 .split h3 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: var(--fs-h4);
   font-weight: 600;
 }
 
@@ -440,9 +544,10 @@ figcaption {
   border-bottom: 1px solid var(--rule);
 }
 .dated .date {
+  font-variant-numeric: tabular-nums;
   flex: 0 0 84px;
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: var(--fs-tag);
   color: var(--muted);
   padding-top: 2px;
 }
@@ -464,7 +569,7 @@ figcaption {
   font: 0.92rem var(--sans);
   min-height: 40px;
   padding: 0 16px;
-  border-radius: 999px;
+  border-radius: var(--r-pill);
   cursor: pointer;
   border: 1px solid var(--rule);
   background: var(--surface);
@@ -484,17 +589,17 @@ figcaption {
 }
 .filter .n {
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: var(--fs-label);
   margin-left: 6px;
   color: var(--muted);
 }
 .filter[aria-pressed='true'] .n {
-  color: #c9ccd0;
+  color: var(--on-dark-muted);
 }
 .project-count {
   margin: 18px 0 0;
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: var(--fs-tag);
   color: var(--muted);
 }
 .project-grid {
@@ -508,7 +613,7 @@ figcaption {
   color: var(--graphite);
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: 8px;
+  border-radius: var(--r-md);
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -528,8 +633,8 @@ a.project-card:hover {
 }
 .project-card h2 {
   margin: 4px 0 0;
-  font-size: 1.3rem;
-  letter-spacing: -0.015em;
+  font-size: var(--fs-h3);
+  letter-spacing: var(--track-heading);
   font-weight: 600;
 }
 .project-card .chip-row {
@@ -537,7 +642,7 @@ a.project-card:hover {
   padding-top: 10px;
 }
 .project-card .cta {
-  font-size: 0.92rem;
+  font-size: var(--fs-small);
   font-weight: 500;
   padding-top: 6px;
 }
@@ -558,7 +663,7 @@ a.project-card:hover .cta {
   aspect-ratio: 16 / 10;
   background: var(--sunk);
   border: 1px solid var(--rule);
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -585,7 +690,7 @@ a.project-card:hover .cta {
 .area-no {
   display: block;
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: var(--fs-label);
   color: var(--accent);
   margin-bottom: 10px;
 }
@@ -611,9 +716,10 @@ a.project-card:hover .cta {
   border-bottom: 1px solid var(--rule);
 }
 .timeline-row .date {
+  font-variant-numeric: tabular-nums;
   flex: 0 0 96px;
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: var(--fs-tag);
   color: var(--muted);
   padding-top: 2px;
 }
@@ -638,7 +744,7 @@ a.project-card:hover .cta {
 .portrait-inner {
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   border: 1px solid var(--rule);
 }
 .portrait {
@@ -713,18 +819,18 @@ a.project-card:hover .cta {
 .entry .when {
   margin: 0;
   font-family: var(--mono);
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   color: var(--muted);
   padding-top: 3px;
 }
 .entry h3 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: var(--fs-h4);
   font-weight: 600;
 }
 .entry .org {
   margin: 4px 0 0;
-  font-size: 0.95rem;
+  font-size: var(--fs-small);
   color: var(--muted);
 }
 .entry .body-text {
@@ -751,7 +857,7 @@ a.project-card:hover .cta {
 }
 .tool-grid .used {
   margin: 12px 0 0;
-  font-size: 0.9rem;
+  font-size: var(--fs-meta);
   line-height: 1.55;
   color: var(--muted);
 }
@@ -760,7 +866,7 @@ a.project-card:hover .cta {
   margin-top: 72px;
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: 8px;
+  border-radius: var(--r-md);
   padding: clamp(24px, 3vw, 36px);
   display: flex;
   flex-wrap: wrap;
@@ -774,8 +880,8 @@ a.project-card:hover .cta {
 }
 .cv-box h2 {
   margin: 0;
-  font-size: 1.4rem;
-  letter-spacing: -0.01em;
+  font-size: var(--fs-h3);
+  letter-spacing: var(--track-heading);
   font-weight: 600;
 }
 .cv-box .body-text {
@@ -800,22 +906,22 @@ a.project-card:hover .cta {
   margin: 0;
   flex: 0 0 120px;
   font-family: var(--mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--muted);
   padding-top: 5px;
 }
 .now-row .text {
   margin: 0;
   flex: 1 1 360px;
-  font-size: 1.08rem;
+  font-size: var(--fs-prose);
   line-height: 1.7;
   color: var(--body);
 }
 .footnote {
   margin: 32px 0 0;
-  font-size: 0.9rem;
+  font-size: var(--fs-meta);
   line-height: 1.6;
   color: var(--muted);
 }
@@ -839,6 +945,6 @@ a.project-card:hover .cta {
 .aka {
   margin: 12px 0 0;
   font-family: var(--mono);
-  font-size: 0.8rem;
+  font-size: var(--fs-meta);
   color: var(--muted);
 }

@@ -14,21 +14,21 @@
 }
 .stats dt {
   font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--muted);
 }
 .stats dd {
   margin: 8px 0 0;
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: var(--fs-h1);
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: var(--track-title);
   line-height: 1;
 }
 .stats .unit {
   margin-left: 6px;
-  font-size: 0.95rem;
+  font-size: var(--fs-small);
   font-weight: 500;
   letter-spacing: 0;
   color: var(--muted);
@@ -49,7 +49,7 @@
   }
 }
 .case-prose {
-  font-size: 1.08rem;
+  font-size: var(--fs-prose);
   line-height: 1.7;
   color: var(--body);
   max-width: 40rem;
@@ -73,8 +73,8 @@
 }
 .spec dt {
   font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--muted);
   padding-top: 3px;
@@ -85,9 +85,9 @@
 }
 .case-lead {
   margin: 24px 0 0;
-  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  font-size: var(--fs-lede);
   line-height: 1.4;
-  letter-spacing: -0.015em;
+  letter-spacing: var(--track-heading);
   font-weight: 500;
   max-width: 44rem;
 }
@@ -120,7 +120,7 @@
   position: relative;
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: 10px;
+  border-radius: var(--r-md);
   padding: 16px 16px 10px;
 }
 .chart-legend {
@@ -130,7 +130,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px 20px;
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   color: var(--body);
 }
 .chart-legend li {
@@ -157,13 +157,13 @@
   background: var(--accent);
 }
 .key--grey {
-  background: #80868d;
+  background: var(--mark);
 }
 .key--hollow {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  border: 1.5px solid #80868d;
+  border: 1.5px solid var(--mark);
   background: var(--surface);
 }
 .chart-scroll {
@@ -184,14 +184,14 @@
 .chart-svg:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
 }
 .chart-svg .grid line {
-  stroke: #ecede8;
+  stroke: var(--line-soft);
   stroke-width: 1;
 }
 .chart-svg .axis {
-  stroke: #c9cbc4;
+  stroke: var(--line-strong);
   stroke-width: 1;
 }
 .chart-svg .tick-labels text {
@@ -224,7 +224,7 @@
   fill: var(--accent);
 }
 .climb .dot--grey {
-  fill: #80868d;
+  fill: var(--mark);
 }
 .climb .annot text {
   font-size: 12px;
@@ -257,7 +257,7 @@
 
 /* Leaderboard chart */
 .board .band {
-  fill: #f6f6f2;
+  fill: var(--tint);
 }
 .board .band-label {
   font-size: 12px;
@@ -287,16 +287,16 @@
   font-family: var(--mono);
 }
 .board .bell line {
-  stroke: #c9cbc4;
+  stroke: var(--line-strong);
   stroke-width: 2;
 }
 .board .bell .pub {
   fill: var(--surface);
-  stroke: #80868d;
+  stroke: var(--mark);
   stroke-width: 1.5;
 }
 .board .bell .priv {
-  fill: #80868d;
+  fill: var(--mark);
   stroke: var(--surface);
   stroke-width: 2;
 }
@@ -345,8 +345,8 @@
   padding: 8px 11px;
   background: var(--graphite);
   color: var(--paper);
-  border-radius: 6px;
-  font-size: 0.8rem;
+  border-radius: var(--r-sm);
+  font-size: var(--fs-tag);
   line-height: 1.4;
   box-shadow: 0 10px 24px -12px rgba(26, 29, 33, 0.6);
 }
@@ -354,11 +354,11 @@
   display: none;
 }
 .chart-tip .tip-value {
-  font-size: 1.05rem;
+  font-size: var(--fs-body);
   font-weight: 600;
 }
 .chart-tip .tip-title {
-  color: #c9ccd0;
+  color: var(--on-dark-muted);
 }
 .chart-tip .tip-note {
   color: var(--accent-soft);
@@ -372,7 +372,7 @@
 }
 .chart-table summary {
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   color: var(--muted);
   padding: 6px 0;
   width: fit-content;
@@ -388,7 +388,7 @@
 .chart-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   font-variant-numeric: tabular-nums;
 }
 .chart-table th,
@@ -403,9 +403,9 @@
   top: 0;
   background: var(--surface);
   font-family: var(--mono);
-  font-size: 0.72rem;
+  font-size: var(--fs-label);
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--track-label);
   text-transform: uppercase;
   color: var(--muted);
 }
