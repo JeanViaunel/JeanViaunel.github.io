@@ -120,11 +120,13 @@ export const publications: Publication[] = [
     authorsFull: ['J.-C. Chang', 'C.-T. Yang', 'Jean Viaunel Victor'],
     year: 2025,
     date: '2025',
+    venue: 'The 29th Symposium on Construction Engineering and Management / International Conference (第29屆營建工程與管理學術研討會暨國際會議), 2025',
     summary:
       'An automated workflow that generates public housing designs with Shape Machine and evaluates them against local data.',
     links: [],
-    bibtex: `@misc{chang2025publichousing,
+    bibtex: `@inproceedings{chang2025publichousing,
 	year = 2025,
+	booktitle = {The 29th Symposium on Construction Engineering and Management / International Conference},
 	author = {Chang, J.-C. and Yang, C.-T. and Victor, Jean Viaunel and others},
 	title = {Revisit Public Housing Design in Taiwan: Automated Design and Evaluation Workflow Integrating Shape Machine and Local Data}
 }`,
