@@ -11,6 +11,7 @@ import { href, isExternal, url } from '../lib/url';
 import { Image } from 'astro:assets';
 import portrait from '../assets/portrait.jpg';
 import maischoolShot from '../assets/maischool-courses.png';
+import roomwiseShot from '../assets/roomwise-landing.png';
 
 const research = publications.filter((p) => p.featured);
 
@@ -124,43 +125,61 @@ const accent = ['read', 'buildings.'];
   </section>
 
   <section aria-labelledby="beyond" class="section container">
-    <SectionHead no={3} id="beyond" title="Beyond the lab" />
-    <div class="beyond">
-      <a class="product-card frame" href="https://maischool.legendcastle.org/en" data-reveal>
-        <div class="product-shot">
-          <span class="product-bar" aria-hidden="true"><i></i><i></i><i></i><span>maischool.legendcastle.org</span></span>
-          <Image
-            src={maischoolShot}
-            alt="MaiSchool's public course catalogue: search, subject and grade filters, and course cards"
-            widths={[480, 720, 960, 1440]}
-            sizes="(min-width: 980px) 640px, 100vw"
-          />
-        </div>
-        <div class="product-body">
-          <p class="kicker kicker--accent">Product, since 2024</p>
-          <h3>MaiSchool <span class="arrow arrow--ne" aria-hidden="true">↗</span></h3>
-          <p class="body-text">
-            A live online tutoring platform for families. As lead full-stack developer I took it from
-            design to production: course and teacher browsing, class booking, progress tracking and
-            parent messages.
-          </p>
-          <div class="chip-row">
-            <span class="tag tag--accent">Live product</span>
-            <span class="tag">Next.js</span><span class="tag">Convex</span><span class="tag">Clerk</span><span class="tag">Zod</span>
-          </div>
-        </div>
-      </a>
-      <div class="beyond-side">
-        <div>
-          <p class="kicker kicker--accent">Teaching assistant</p>
-          <h3>Prof. Hsieh's BIM course, NTU</h3>
-          <p class="body-text">I assist in my professor's course, supporting students as they work through practical topics and their own implementation ideas.</p>
-        </div>
-        <div>
-          <p class="kicker kicker--accent">Community</p>
-          <h3>Academic Committee Lead, second term</h3>
-          <p class="body-text">I help Haitian students apply to Taiwanese universities, from study plans and autobiographies to application workshops.</p>
-        </div>
+    <SectionHead no={3} id="beyond" title="Products and service" />
+    <div class="products">
+      {
+        [
+          {
+            href: 'https://maischool.legendcastle.org/en',
+            url: 'maischool.legendcastle.org',
+            img: maischoolShot,
+            alt: "MaiSchool's public course catalogue: search, subject and grade filters, and course cards",
+            kicker: 'Product, since 2024',
+            title: 'MaiSchool',
+            text: 'A live online tutoring platform for families. As lead full-stack developer I took it from design to production: course and teacher browsing, class booking, progress tracking and parent messages.',
+            results: ['Live product'],
+            stack: ['Next.js', 'Convex', 'Clerk', 'Zod'],
+          },
+          {
+            href: 'https://video.viocitostudio.me',
+            url: 'video.viocitostudio.me',
+            img: roomwiseShot,
+            alt: 'Roomwise landing page: meetings where you stay in control, with HD video, waiting-room security, live chat and recordings',
+            kicker: 'Own product, in team use',
+            title: 'Roomwise',
+            text: 'A web video-meeting platform my teams use for all our meetings. Not built to replace Google Meet, but so we are not limited by it, and so I could learn the real-time video stack.',
+            results: ['17 registered users', '30 calls'],
+            stack: ['Next.js', 'Clerk', 'Stream Video API'],
+          },
+        ].map((p, i) => (
+          <a class="product-card frame" href={p.href} data-reveal style={`--d: ${i}`}>
+            <div class="product-shot">
+              <span class="product-bar" aria-hidden="true"><i></i><i></i><i></i><span>{p.url}</span></span>
+              <Image src={p.img} alt={p.alt} widths={[480, 720, 960]} sizes="(min-width: 980px) 540px, 100vw" />
+            </div>
+            <div class="product-body">
+              <p class="kicker kicker--accent">{p.kicker}</p>
+              <h3>{p.title} <span class="arrow arrow--ne" aria-hidden="true">↗</span></h3>
+              <p class="body-text">{p.text}</p>
+              <div class="chip-row">
+                {p.results.map((r) => <span class="tag tag--accent">{r}</span>)}
+                {p.stack.map((t) => <span class="tag">{t}</span>)}
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+    <div class="beyond-side">
+      <div>
+        <p class="kicker kicker--accent">Teaching assistant</p>
+        <h3>Prof. Hsieh's BIM course, NTU</h3>
+        <p class="body-text">I assist in my professor's course, supporting students as they work through practical topics and their own implementation ideas.</p>
+      </div>
+      <div>
+        <p class="kicker kicker--accent">Community</p>
+        <h3>Academic Committee Lead, second term</h3>
+        <p class="body-text">I help Haitian students apply to Taiwanese universities, from study plans and autobiographies to application workshops.</p>
       </div>
     </div>
   </section>

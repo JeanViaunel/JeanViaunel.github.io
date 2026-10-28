@@ -539,18 +539,12 @@ figcaption {
   margin-top: 8px;
 }
 
-/* Beyond the lab: the product as a real screenshot, two roles beside it */
-.beyond {
+/* Products: real screens side by side, the two service roles in a row below */
+.products {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--s-6) var(--s-7);
+  grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+  gap: var(--s-5);
   margin-top: var(--s-6);
-}
-@media (min-width: 980px) {
-  .beyond {
-    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
-    align-items: start;
-  }
 }
 .product-card {
   display: flex;
@@ -623,7 +617,9 @@ figcaption {
 }
 .beyond-side {
   display: grid;
-  gap: var(--s-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: var(--s-5) var(--s-7);
+  margin-top: var(--s-7);
 }
 .beyond-side > div {
   border-left: 1px solid var(--rule);
@@ -758,6 +754,15 @@ a.project-card:hover {
   letter-spacing: var(--track-heading);
   font-weight: 600;
 }
+/* Live products show a real screen at the top of the card */
+.project-card .card-shot {
+  margin: 0 0 var(--s-2);
+  box-shadow: none;
+}
+.project-card:hover .card-shot img {
+  transform: scale(1.015);
+}
+
 /* Outcome first, tools last */
 .project-card .outcome-row {
   margin-top: 2px;
@@ -790,7 +795,8 @@ a.project-card:hover .cta {
   border-bottom: 1px solid var(--rule);
 }
 .paper-thumb {
-  flex: 0 0 168px;
+  flex: 0 0 300px;
+  max-width: 100%;
   aspect-ratio: 16 / 10;
   background: var(--sunk);
   border: 1px solid var(--rule);
@@ -805,8 +811,34 @@ a.project-card:hover .cta {
   display: block;
 }
 .paper-body {
-  flex: 1 1 480px;
+  flex: 1 1 420px;
   min-width: 0;
+}
+@media (max-width: 760px) {
+  .paper-thumb {
+    flex-basis: 100%;
+  }
+}
+
+/* Research illustrations: without motion each shows its finished state */
+.ra-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  fill: var(--muted);
+}
+.ra-plan,
+.ra-dxf,
+.ra-scan,
+.ra-tls,
+.ra-beam,
+.ra-rays,
+.ra-r1,
+.ra-r2,
+.ra-r3 {
+  opacity: 0;
+}
+.ra-dots {
+  opacity: 0.25;
 }
 
 .area-grid {

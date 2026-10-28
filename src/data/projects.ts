@@ -2,6 +2,8 @@
 // share cards show `short` (or `text` when there is no short version).
 import { facts as marine } from './marine-debris';
 import { isarcSentence } from './publications';
+import maischoolShot from '../assets/maischool-courses.png';
+import roomwiseShot from '../assets/roomwise-dashboard.jpg';
 
 export const domains = [
   'Reality capture & BIM',
@@ -33,6 +35,8 @@ export interface Project {
   featured?: number;
   /** Shared-element name: the card title morphs into the page heading. */
   vt?: string;
+  /** Screenshot of a live product (public or privacy-redacted screens only). */
+  shot?: { src: ImageMetadata; alt: string; url: string };
 }
 
 // Ordered by strength of outcome: published or ranked first, work in progress last.
@@ -75,6 +79,28 @@ export const projects: Project[] = [
     stack: ['Next.js', 'Convex', 'Clerk', 'Zod'],
     href: 'https://maischool.legendcastle.org',
     cta: 'Visit the site',
+    shot: {
+      src: maischoolShot,
+      alt: "MaiSchool's public course catalogue: search, subject and grade filters, and course cards",
+      url: 'maischool.legendcastle.org',
+    },
+  },
+  {
+    id: 'roomwise',
+    domain: 'Web products',
+    status: 'Own product, in team use',
+    title: 'Roomwise',
+    text: 'A web video-meeting platform my teams use for all our meetings: HD video and screen share, waiting-room security, host and moderator roles, live chat and recordings. The aim was not to replace Google Meet but to stop being limited by it, and to learn the real-time video stack along the way.',
+    short: 'A web video-meeting platform my teams use for all our meetings, with waiting rooms, host roles, chat and recordings.',
+    results: ['17 registered users', '30 calls'],
+    stack: ['Next.js', 'Clerk', 'Stream Video API'],
+    href: 'https://video.viocitostudio.me',
+    cta: 'Visit the site',
+    shot: {
+      src: roomwiseShot,
+      alt: 'Roomwise dashboard: start an instant or named meeting, join by link, and a list of recent meetings',
+      url: 'video.viocitostudio.me',
+    },
   },
   {
     id: 'scan-to-bim',

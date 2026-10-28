@@ -240,20 +240,453 @@
     }
   }
 
-  /* ---------- Drawings that run when they come into view ---------- */
-  .js .paper .draw {
-    stroke-dashoffset: 1;
+  /* ---------- Research illustrations: each loops through its paper's method ----------
+     One 9 s cycle per drawing; everything resets during the last tenth. Paused until in view. */
+  .ra,
+  .ra * {
+    animation-duration: 9s;
+    animation-iteration-count: infinite;
+    animation-timing-function: var(--ease-std);
+    animation-fill-mode: both;
   }
-  .js .paper.is-in .draw {
-    animation: draw var(--dur-draw) var(--ease) both;
-    animation-delay: calc(var(--d, 0) * 100ms + 150ms);
+  .js .paper:not(.is-in) .ra * {
+    animation-play-state: paused;
   }
-  .js .paper .fade {
-    opacity: 0;
-    transition: opacity var(--dur-base) var(--ease-std) 900ms;
+
+  /* ISARC: plan draws, tilts into isometric, storeys stack, IFC label */
+  .ra-plan {
+    transform-box: view-box;
+    transform-origin: 0 0;
+    animation-name: ra-tilt, ra-plan-out;
   }
-  .js .paper.is-in .fade {
-    opacity: 1;
+  .ra-plan-line {
+    animation-name: ra-plan-draw;
+  }
+  .ra-storey-0 {
+    animation-name: ra-s0;
+  }
+  .ra-storey-1 {
+    animation-name: ra-s1;
+  }
+  .ra-storey-2 {
+    animation-name: ra-s2;
+  }
+  .ra-roof {
+    animation-name: ra-roof;
+  }
+  .ra-dxf {
+    animation-name: ra-first-label;
+  }
+  .ra-ifc {
+    animation-name: ra-last-label;
+  }
+  @keyframes ra-plan-draw {
+    0% {
+      stroke-dashoffset: 1;
+    }
+    11%,
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes ra-tilt {
+    0%,
+    14% {
+      transform: matrix(1, 0, 0, 1, 110.5, 67);
+    }
+    28%,
+    100% {
+      transform: matrix(0.866, 0.5, -0.866, 0.5, 143, 92);
+    }
+  }
+  @keyframes ra-plan-out {
+    0%,
+    30% {
+      opacity: 1;
+    }
+    37%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ra-s0 {
+    0%,
+    28% {
+      opacity: 0;
+      transform: translateY(-14px);
+    }
+    36%,
+    88% {
+      opacity: 1;
+      transform: none;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ra-s1 {
+    0%,
+    38% {
+      opacity: 0;
+      transform: translateY(-14px);
+    }
+    46%,
+    88% {
+      opacity: 1;
+      transform: none;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ra-s2 {
+    0%,
+    48% {
+      opacity: 0;
+      transform: translateY(-14px);
+    }
+    56%,
+    88% {
+      opacity: 1;
+      transform: none;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ra-roof {
+    0%,
+    56% {
+      opacity: 0;
+    }
+    62%,
+    88% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ra-first-label {
+    0%,
+    26% {
+      opacity: 1;
+    }
+    32%,
+    96% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes ra-last-label {
+    0%,
+    60% {
+      opacity: 0;
+    }
+    66%,
+    88% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* ICCCBE: the beam sweeps, points appear, the model draws over them, heat loss lights up */
+  .ra-beam {
+    animation-name: ra-beam;
+  }
+  .ra-dots {
+    animation-name: ra-dots;
+  }
+  .ra-model rect {
+    animation-name: ra-model;
+  }
+  .ra-heat {
+    animation-name: ra-heat;
+  }
+  .ra-scan {
+    animation-name: ra-first-label;
+  }
+  .ra-loss {
+    animation-name: ra-last-label;
+  }
+  @keyframes ra-beam {
+    0% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+    3% {
+      opacity: 1;
+    }
+    26% {
+      opacity: 1;
+      transform: translateX(120px);
+    }
+    30%,
+    100% {
+      opacity: 0;
+      transform: translateX(120px);
+    }
+  }
+  @keyframes ra-dots {
+    0% {
+      clip-path: inset(0 100% 0 0);
+      opacity: 1;
+    }
+    26%,
+    38% {
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
+    }
+    50%,
+    88% {
+      clip-path: inset(0 0 0 0);
+      opacity: 0.25;
+    }
+    95%,
+    100% {
+      clip-path: inset(0 0 0 0);
+      opacity: 0;
+    }
+  }
+  @keyframes ra-model {
+    0%,
+    30% {
+      stroke-dashoffset: 1;
+      opacity: 1;
+    }
+    48%,
+    88% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    95%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes ra-heat {
+    0%,
+    52% {
+      opacity: 0;
+    }
+    62%,
+    88% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* i3CE: rays reach the pipe, points land on it, the AR tablet slides over */
+  .ra-ray {
+    animation-name: ra-ray;
+  }
+  .ra-points {
+    animation-name: ra-points;
+  }
+  .ra-tablet {
+    animation-name: ra-tablet;
+  }
+  .ra-tls {
+    animation-name: ra-first-label;
+  }
+  .ra-ar {
+    animation-name: ra-last-label;
+  }
+  @keyframes ra-ray {
+    0%,
+    4% {
+      stroke-dashoffset: 1;
+      opacity: 1;
+    }
+    24% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    34%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes ra-points {
+    0%,
+    6% {
+      clip-path: inset(0 100% 0 0);
+      opacity: 1;
+    }
+    30%,
+    88% {
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
+    }
+    95%,
+    100% {
+      clip-path: inset(0 0 0 0);
+      opacity: 0;
+    }
+  }
+  @keyframes ra-tablet {
+    0%,
+    38% {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    52%,
+    88% {
+      opacity: 1;
+      transform: none;
+    }
+    95%,
+    100% {
+      opacity: 0;
+      transform: none;
+    }
+  }
+
+  /* Housing: three rules split the block, then one unit wins the evaluation */
+  .ra-rule line {
+    animation-name: ra-rule;
+  }
+  .ra-rule-2 line {
+    animation-name: ra-rule-2;
+  }
+  .ra-rule-3 line {
+    animation-name: ra-rule-3;
+  }
+  .ra-pick {
+    animation-name: ra-pick;
+  }
+  .ra-r1 {
+    animation-name: ra-tag-1;
+  }
+  .ra-r2 {
+    animation-name: ra-tag-2;
+  }
+  .ra-r3 {
+    animation-name: ra-tag-3;
+  }
+  .ra-eval {
+    animation-name: ra-last-label;
+  }
+  @keyframes ra-rule {
+    0%,
+    6% {
+      stroke-dashoffset: 1;
+      opacity: 1;
+    }
+    18%,
+    88% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    95%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes ra-rule-2 {
+    0%,
+    22% {
+      stroke-dashoffset: 1;
+      opacity: 1;
+    }
+    34%,
+    88% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    95%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes ra-rule-3 {
+    0%,
+    38% {
+      stroke-dashoffset: 1;
+      opacity: 1;
+    }
+    50%,
+    88% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    95%,
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes ra-pick {
+    0%,
+    56% {
+      opacity: 0;
+    }
+    64%,
+    88% {
+      opacity: 1;
+    }
+    95%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ra-tag-1 {
+    0%,
+    4% {
+      opacity: 0;
+    }
+    8%,
+    20% {
+      opacity: 1;
+    }
+    23%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ra-tag-2 {
+    0%,
+    21% {
+      opacity: 0;
+    }
+    24%,
+    36% {
+      opacity: 1;
+    }
+    39%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes ra-tag-3 {
+    0%,
+    37% {
+      opacity: 0;
+    }
+    40%,
+    52% {
+      opacity: 1;
+    }
+    55%,
+    100% {
+      opacity: 0;
+    }
   }
   .js .portrait-wrap.is-in .portrait-scan {
     animation: portrait-scan var(--dur-draw) var(--ease-std) 300ms both;

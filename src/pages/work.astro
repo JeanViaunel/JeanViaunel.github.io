@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { domains, projects } from '../data/projects';
 import { href, isExternal } from '../lib/url';
+import { Image } from 'astro:assets';
 
 const filters = ['All', ...domains].map((label) => ({
   label,
@@ -49,6 +50,12 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
         projects.map((p, i) => {
           const inner = (
             <>
+              {p.shot && (
+                <div class="product-shot card-shot">
+                  <span class="product-bar" aria-hidden="true"><i></i><i></i><i></i><span>{p.shot.url}</span></span>
+                  <Image src={p.shot.src} alt={p.shot.alt} widths={[400, 640, 960]} sizes="(min-width: 980px) 360px, 100vw" />
+                </div>
+              )}
               <div class="card-meta">
                 <span class="kicker kicker--accent">{p.domain}</span>
                 <span class="kicker">{p.status}</span>
