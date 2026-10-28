@@ -11,7 +11,6 @@ export const domains = [
   'Computer vision',
   'AI & data',
   'Web products',
-  'Ventures',
 ] as const;
 
 export type Domain = (typeof domains)[number];
@@ -140,17 +139,6 @@ export const projects: Project[] = [
     text: 'Spotting defects in solar panel images for the Ministry of Education’s AI CUP, one submission at a time.',
     results: ['0.301 → 0.8337', 'about 29th of 121'],
     stack: [],
-  },
-  {
-    id: 'guanin',
-    domain: 'Ventures',
-    status: 'Founder and developer',
-    title: 'GUANIN marketplace',
-    text: 'A B2B and B2C marketplace I founded and built, connecting suppliers in Asia with buyers in the Caribbean and Latin America.',
-    results: ['guaninbuy.com'],
-    stack: [],
-    href: 'https://guaninbuy.com',
-    cta: 'Visit the site',
   },
   {
     id: 'photoforge',
