@@ -25,8 +25,9 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
         <p class="eyebrow">Work</p>
         <h1 class="page-title" data-lines>Things I've built</h1>
         <p class="lede">
-          Most of it is about getting usable information out of sensor data. The rest is what I build
-          when a problem in my own life needs solving.
+          A published method for turning floor plans into BIM, a 15th-of-69 finish in an international
+          detection challenge, and a live tutoring platform I've led since 2024. Most of it is about
+          getting usable information out of sensor data.
         </p>
         <div class="filters" role="group" aria-label="Filter projects" hidden data-filters>
           {
@@ -53,11 +54,17 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
                 <span class="kicker">{p.status}</span>
               </div>
               <h2 data-vt={p.vt ? '' : undefined} style={p.vt ? `--vt: ${p.vt}` : undefined}>{p.title}</h2>
+              {p.results.length > 0 && (
+                <div class="chip-row outcome-row">
+                  {p.results.map((m) => <span class="tag tag--accent">{m}</span>)}
+                </div>
+              )}
               <p class="body-text">{p.text}</p>
-              <div class="chip-row">
-                {p.results.map((m) => <span class="tag tag--accent">{m}</span>)}
-                {p.stack.map((m) => <span class="tag">{m}</span>)}
-              </div>
+              {p.stack.length > 0 && (
+                <div class="chip-row stack-row">
+                  {p.stack.map((m) => <span class="tag">{m}</span>)}
+                </div>
+              )}
               {p.cta && p.href && (
                 <span class="cta">
                   {p.cta}{' '}
@@ -71,12 +78,13 @@ const countLabel = (n: number) => (n === 1 ? '1 project' : `${n} projects`);
             </>
           );
           const style = `--d: ${i % 3}; --vtn: project-${i}`;
+          const wip = /in progress|up next/i.test(p.status);
           return p.href ? (
-            <a class="project-card frame" href={href(p.href)} data-domain={p.domain} data-reveal style={style}>
+            <a class:list={['project-card frame', { 'is-wip': wip }]} href={href(p.href)} data-domain={p.domain} data-reveal style={style}>
               {inner}
             </a>
           ) : (
-            <article class="project-card" data-domain={p.domain} data-reveal style={style}>
+            <article class:list={['project-card', { 'is-wip': wip }]} data-domain={p.domain} data-reveal style={style}>
               {inner}
             </article>
           );

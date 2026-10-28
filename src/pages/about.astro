@@ -6,6 +6,8 @@ import SectionHead from '../components/SectionHead.astro';
 import { site } from '../data/site';
 import { url } from '../lib/url';
 import { personRef } from '../lib/seo';
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
 
 // Only show a CV button once its PDF is actually in public/cv/.
 const hasFile = (p: string) => fs.existsSync(path.join(process.cwd(), 'public', p));
@@ -16,16 +18,16 @@ const cvLinks = [
 
 const experience = [
   {
-    when: 'Now',
+    when: 'Oct 2024 – now',
     role: 'Assistant Researcher',
     org: 'H-Team lab, National Taiwan University',
-    text: "Research on BIM and digital construction. Teaching assistant for Prof. Hsieh's BIM course, supporting students with practical topics and their implementation ideas.",
+    text: "Three conference papers in 2026 (ISARC, ICCCBE and i3CE) on scan-to-BIM and LLM-assisted BIM modelling. Teaching assistant for Prof. Hsieh's BIM course, supporting students with practical topics and their implementation ideas.",
   },
   {
-    when: '2024 – now',
+    when: 'Jun 2024 – now',
     role: 'Lead Full-Stack Developer',
     org: 'Legend Castle',
-    html: 'Main developer of <a href="https://maischool.legendcastle.org">MaiSchool</a>, a live online tutoring platform for families, from design to implementation: course and teacher browsing, class booking, progress tracking and parent messages. Built with Next.js, Convex, Clerk and Zod.',
+    html: 'Took <a href="https://maischool.legendcastle.org/en">MaiSchool</a>, a live online tutoring platform for families, from design to production as its main developer: course and teacher browsing, class booking, progress tracking and parent messages. Built with Next.js, Convex, Clerk and Zod.',
   },
   {
     when: 'Now',
@@ -92,12 +94,13 @@ const tools = [
       <section class="intro">
         <div class="portrait-wrap frame is-framed" data-reveal>
           <div class="portrait-inner">
-            <img
-              src={url('images/victor.jpg')}
+            <Image
+              src={portrait}
               alt="Victor Jean Viaunel smiling outdoors"
               class="portrait"
-              width="280"
-              height="280"
+              widths={[280, 560]}
+              sizes="280px"
+              loading="eager"
             />
             <span class="portrait-scan" aria-hidden="true"></span>
           </div>
@@ -106,10 +109,37 @@ const tools = [
           <p class="eyebrow">About</p>
           <h1 class="page-title" data-lines>Two trades, one desk</h1>
           <p class="aka">Published as Jean Viaunel Victor. In Chinese, <span lang="zh-Hant">韋將</span>.</p>
+          <p class="lede about-summary">
+            Assistant researcher at NTU with three conference papers in 2026, lead developer of a live
+            tutoring platform since 2024, and 15th of 69 teams in an international detection challenge.
+          </p>
           <div class="prose">
             <p>I came to engineering through structures: ETABS, SAP2000, SAFE, Revit and AutoCAD during my civil engineering degree at NYCU, then as a structural engineering intern at Envision. I came to software through stubbornness, working through Andrew Ng's deep learning courses on the side until I could build things on my own.</p>
             <p>The work I enjoy most needs both. My master's at NTU is about getting usable BIM out of messy scans. I also work in the H-Team lab as an assistant researcher and assist in Prof. Hsieh's BIM course.</p>
             <p>I have close ties to Haiti and the Caribbean. That's why some of my side work points that way, and why I spend a good part of my free time helping Haitian students find their feet in Taiwan.</p>
+          </div>
+          <dl class="about-facts">
+            <div><dt>Based in</dt><dd>Taipei, Taiwan</dd></div>
+            <div><dt>Open to</dt><dd>Research and engineering roles</dd></div>
+            <div><dt>Languages</dt><dd>English (fluent), Haitian Creole (native), Chinese (intermediate listening, basic speaking)</dd></div>
+          </dl>
+          <div id="cv" class="about-cv">
+            <div class="btn-row">
+              {
+                cvLinks.length > 0 ? (
+                  cvLinks.map((c) => (
+                    <a href={url(c.file)} class:list={['btn', { 'btn--primary': c.primary }]} download>
+                      {c.label} <span class="arrow" aria-hidden="true">↓</span>
+                    </a>
+                  ))
+                ) : (
+                  <a href={`mailto:${site.email}?subject=CV%20request`} class="btn btn--primary">
+                    Request my CV <span class="arrow" aria-hidden="true">→</span>
+                  </a>
+                )
+              }
+            </div>
+            {cvLinks.length > 0 && <p class="about-cv-note">Both versions updated {site.updated}.</p>}
           </div>
         </div>
       </section>
@@ -173,36 +203,5 @@ const tools = [
       </div>
     </section>
 
-    <section id="cv" aria-labelledby="cvh" class="cv-box frame">
-      <div>
-        <h2 id="cvh">Curriculum vitae</h2>
-        {
-          cvLinks.length > 0 ? (
-            <p class="body-text">
-              {cvLinks.length === 2 ? `Two versions, both updated ${site.updated}.` : `Updated ${site.updated}.`}
-            </p>
-          ) : (
-            <p class="body-text">
-              Email me and I'll send the current version: an industry résumé or an academic CV.
-            </p>
-          )
-        }
-      </div>
-      <div class="btn-row">
-        {
-          cvLinks.length > 0 ? (
-            cvLinks.map((c) => (
-              <a href={url(c.file)} class:list={['btn', { 'btn--primary': c.primary }]} download>
-                {c.label} <span class="arrow" aria-hidden="true">↓</span>
-              </a>
-            ))
-          ) : (
-            <a href={`mailto:${site.email}?subject=CV%20request`} class="btn btn--primary">
-              Request my CV <span class="arrow" aria-hidden="true">→</span>
-            </a>
-          )
-        }
-      </div>
-    </section>
   </div>
 </Base>

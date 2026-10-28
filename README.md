@@ -61,8 +61,14 @@ case studies and the share images all read from those files, so a change there s
 | `bibtex` | Used by "Copy BibTeX" and the generated `publications.bib`. |
 
 **CV downloads:** the PDFs live at `public/cv/victor-jean-viaunel-resume.pdf` and
-`public/cv/victor-jean-viaunel-academic-cv.pdf`. Each About-page download button appears only if its
-file exists. With neither, the page shows a "Request my CV" email button.
+`public/cv/victor-jean-viaunel-academic-cv.pdf`, and their sources are in `cv/` (`resume.html`,
+`academic-cv.html`, shared `cv.css`). Edit the HTML, then run `npm run cv` to print both PDFs. It uses
+Brave by default; set `BROWSER` to the path of another Chromium-based browser if needed. The résumé must
+stay on one page. Each About-page download button appears only if its file exists.
+
+**Images:** the portrait (`src/assets/portrait.jpg`) and the MaiSchool screenshot
+(`src/assets/maischool-courses.png`) go through Astro's image pipeline, which writes resized WebP files at
+build time. Only use screenshots of public pages, never a signed-in view.
 
 ## Styles
 

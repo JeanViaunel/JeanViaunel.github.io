@@ -30,6 +30,28 @@ const { id } = Astro.props;
   <rect class="art-cta" x="196" y="120" width="84" height="24" rx="4" fill="#1A1D21"></rect>
   </svg>
 )}
+{id === '2d-to-bim' && (
+  <svg viewBox="0 0 320 180" aria-hidden="true">
+  <g fill="none" stroke="#1A1D21" stroke-width="1.5">
+  <rect x="22" y="44" width="104" height="92"></rect>
+  <line x1="72" y1="44" x2="72" y2="96"></line>
+  <line x1="72" y1="96" x2="126" y2="96"></line>
+  <line x1="22" y1="108" x2="56" y2="108"></line>
+  </g>
+  <g stroke="#9AA0A6" stroke-width="1" stroke-dasharray="2 3"><line x1="22" y1="36" x2="126" y2="36"></line><line x1="134" y1="44" x2="134" y2="136"></line></g>
+  <g font-family="IBM Plex Mono, monospace" font-size="12" fill="#5A6068"><text x="22" y="156">A-WALL</text><text x="84" y="156">DXF</text></g>
+  <path d="M150 90 H 178" stroke="#1A1D21" stroke-width="1.5" fill="none"></path>
+  <path d="M172 84 L 179 90 L 172 96" stroke="#1A1D21" stroke-width="1.5" fill="none"></path>
+  <g stroke="#1A1D21" stroke-width="1.5" fill="#FFFFFF">
+  <path d="M196 140 L 248 160 L 300 140 L 248 120 Z"></path>
+  <path d="M196 140 V 116 M 248 160 V 136 M 300 140 V 116" fill="none"></path>
+  <path d="M196 116 L 248 136 L 300 116 L 248 96 Z"></path>
+  <path d="M196 116 V 92 M 248 136 V 112 M 300 116 V 92" fill="none"></path>
+  </g>
+  <path class="art-lift" d="M196 92 L 248 112 L 300 92 L 248 72 Z" fill="#FBEDE6" stroke="#C2410C" stroke-width="1.5"></path>
+  <g font-family="IBM Plex Mono, monospace" font-size="12" fill="#5A6068"><text x="236" y="176">IFC4</text></g>
+  </svg>
+)}
 {id === 'marine-debris' && (
   <svg viewBox="0 0 320 180" aria-hidden="true">
   <path class="art-wave" d="M0 44 Q 40 32 80 44 T 160 44 T 240 44 T 320 44 T 400 44" fill="none" stroke="#9AA0A6" stroke-width="1.5"></path>

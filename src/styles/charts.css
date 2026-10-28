@@ -173,7 +173,8 @@
 .chart-svg {
   display: block;
   width: 100%;
-  min-width: 560px;
+  /* Below this the 640-unit drawing scrolls sideways instead of shrinking its labels */
+  min-width: 600px;
   height: auto;
   font-family: var(--sans);
   overflow: visible;
@@ -196,7 +197,7 @@
 }
 .chart-svg .tick-labels text {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   fill: var(--muted);
 }
 
@@ -206,7 +207,7 @@
   stroke-width: 1;
 }
 .climb .ref text {
-  font-size: 11.5px;
+  font-size: 12.5px;
   fill: var(--muted);
 }
 .climb .best-line {
@@ -269,12 +270,12 @@
 }
 .board .cutoff-label {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   fill: var(--graphite);
 }
 .board .row-labels text {
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: 12.5px;
   fill: var(--muted);
 }
 .board .row-labels text.is-us {
@@ -316,7 +317,7 @@
 }
 .board .gap text {
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: 12.5px;
   font-weight: 500;
   fill: var(--accent-ink);
 }

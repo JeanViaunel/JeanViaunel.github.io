@@ -8,6 +8,9 @@ import { publications } from '../data/publications';
 import { featured } from '../data/projects';
 import { news } from '../data/news';
 import { href, isExternal, url } from '../lib/url';
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import maischoolShot from '../assets/maischool-courses.png';
 
 const research = publications.filter((p) => p.featured);
 
@@ -21,10 +24,15 @@ const accent = ['read', 'buildings.'];
   <div class="grid-paper">
     <section class="hero container">
       <div class="hero-copy">
-        <p class="hero-id">
-          <span class="hero-name">Victor Jean Viaunel</span>
-          <span class="hero-role">Civil engineer and software developer, National Taiwan University</span>
-        </p>
+        <div class="hero-id">
+          <span class="hero-avatar-ring">
+            <Image src={portrait} alt="Portrait of Victor Jean Viaunel" class="hero-avatar" widths={[64, 128]} sizes="64px" loading="eager" />
+          </span>
+          <p>
+            <span class="hero-name">Victor Jean Viaunel</span>
+            <span class="hero-role">Civil engineer and software developer, National Taiwan University</span>
+          </p>
+        </div>
         <h1 data-lines>
           {lead.map((w) => <><span class="h-word"><span>{w}</span></span>{' '}</>)}
           <span class="hl">{accent.map((w, i) => <><span class="h-word"><span>{w}</span></span>{i === 0 ? ' ' : ''}</>)}</span>
@@ -117,21 +125,42 @@ const accent = ['read', 'buildings.'];
 
   <section aria-labelledby="beyond" class="section container">
     <SectionHead no={3} id="beyond" title="Beyond the lab" />
-    <div class="trio">
-      <div>
-        <p class="kicker kicker--accent">Teaching assistant</p>
-        <h3>Prof. Hsieh's BIM course, NTU</h3>
-        <p class="body-text">I assist in my professor's course, supporting students as they work through practical topics and their own implementation ideas.</p>
-      </div>
-      <div>
-        <p class="kicker kicker--accent">Community</p>
-        <h3>Academic Committee Lead, second term</h3>
-        <p class="body-text">I help Haitian students apply to Taiwanese universities, from study plans and autobiographies to application workshops.</p>
-      </div>
-      <div>
-        <p class="kicker kicker--accent">Venture</p>
-        <h3>GUANIN</h3>
-        <p class="body-text">A marketplace I founded and built, connecting suppliers in Asia with buyers in the Caribbean and Latin America.</p>
+    <div class="beyond">
+      <a class="product-card frame" href="https://maischool.legendcastle.org/en" data-reveal>
+        <div class="product-shot">
+          <span class="product-bar" aria-hidden="true"><i></i><i></i><i></i><span>maischool.legendcastle.org</span></span>
+          <Image
+            src={maischoolShot}
+            alt="MaiSchool's public course catalogue: search, subject and grade filters, and course cards"
+            widths={[480, 720, 960, 1440]}
+            sizes="(min-width: 980px) 640px, 100vw"
+          />
+        </div>
+        <div class="product-body">
+          <p class="kicker kicker--accent">Product, since 2024</p>
+          <h3>MaiSchool <span class="arrow arrow--ne" aria-hidden="true">↗</span></h3>
+          <p class="body-text">
+            A live online tutoring platform for families. As lead full-stack developer I took it from
+            design to production: course and teacher browsing, class booking, progress tracking and
+            parent messages.
+          </p>
+          <div class="chip-row">
+            <span class="tag tag--accent">Live product</span>
+            <span class="tag">Next.js</span><span class="tag">Convex</span><span class="tag">Clerk</span><span class="tag">Zod</span>
+          </div>
+        </div>
+      </a>
+      <div class="beyond-side">
+        <div>
+          <p class="kicker kicker--accent">Teaching assistant</p>
+          <h3>Prof. Hsieh's BIM course, NTU</h3>
+          <p class="body-text">I assist in my professor's course, supporting students as they work through practical topics and their own implementation ideas.</p>
+        </div>
+        <div>
+          <p class="kicker kicker--accent">Community</p>
+          <h3>Academic Committee Lead, second term</h3>
+          <p class="body-text">I help Haitian students apply to Taiwanese universities, from study plans and autobiographies to application workshops.</p>
+        </div>
       </div>
     </div>
   </section>

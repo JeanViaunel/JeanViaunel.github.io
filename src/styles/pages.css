@@ -52,10 +52,29 @@
 .hero-id {
   margin: 0 0 var(--s-5);
   display: flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+.hero-id p {
+  margin: 0;
+  display: flex;
   flex-direction: column;
-  gap: var(--s-1);
-  padding-left: var(--s-4);
-  border-left: 2px solid var(--accent);
+  gap: 2px;
+}
+.hero-avatar-ring {
+  flex: none;
+  display: grid;
+  padding: 3px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+}
+/* The source photo is a circle on black: clip just inside it */
+.hero-avatar {
+  display: block;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  clip-path: circle(48.5%);
 }
 .hero-name {
   font-size: var(--fs-h4);
@@ -520,6 +539,108 @@ figcaption {
   margin-top: 8px;
 }
 
+/* Beyond the lab: the product as a real screenshot, two roles beside it */
+.beyond {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6) var(--s-7);
+  margin-top: var(--s-6);
+}
+@media (min-width: 980px) {
+  .beyond {
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--graphite);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  transition: border-color var(--dur-base);
+}
+.product-card:hover {
+  color: var(--graphite);
+  border-color: var(--graphite);
+}
+.product-shot {
+  margin: var(--s-4) var(--s-4) 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  background: var(--sunk);
+  box-shadow: var(--shadow-lift);
+}
+.product-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--tint);
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  color: var(--muted);
+}
+.product-bar i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+.product-bar span {
+  margin-left: var(--s-2);
+}
+.product-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  transition: transform var(--dur-slow) var(--ease);
+}
+.product-card:hover .product-shot img {
+  transform: scale(1.015);
+}
+.product-body {
+  padding: var(--s-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.product-body h3 {
+  margin: 0;
+  font-size: var(--fs-h3);
+  letter-spacing: var(--track-heading);
+  font-weight: 600;
+}
+.product-body .chip-row {
+  padding-top: var(--s-2);
+}
+.beyond-side {
+  display: grid;
+  gap: var(--s-6);
+}
+.beyond-side > div {
+  border-left: 1px solid var(--rule);
+  padding-left: var(--s-5);
+}
+.beyond-side .kicker {
+  margin-bottom: var(--s-2);
+}
+.beyond-side h3 {
+  margin: 0;
+  font-size: var(--fs-h4);
+  font-weight: 600;
+}
+.beyond-side .body-text {
+  margin-top: var(--s-2);
+}
+
 .split {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
@@ -614,10 +735,10 @@ figcaption {
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--r-md);
-  padding: 24px;
+  padding: var(--s-5);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--s-3);
   min-height: 260px;
   transition:
     border-color var(--dur-base),
@@ -637,9 +758,19 @@ a.project-card:hover {
   letter-spacing: var(--track-heading);
   font-weight: 600;
 }
-.project-card .chip-row {
+/* Outcome first, tools last */
+.project-card .outcome-row {
+  margin-top: 2px;
+}
+.project-card .stack-row {
   margin-top: auto;
-  padding-top: 10px;
+  padding-top: var(--s-2);
+}
+/* Work not finished yet: dashed, like a proposed element on a drawing */
+.project-card.is-wip {
+  border-style: dashed;
+  border-color: var(--line-strong);
+  background: var(--tint);
 }
 .project-card .cta {
   font-size: var(--fs-small);
@@ -744,12 +875,13 @@ a.project-card:hover .cta {
 .portrait-inner {
   position: relative;
   overflow: hidden;
-  border-radius: var(--r-md);
-  border: 1px solid var(--rule);
+  border-radius: 50%;
+  clip-path: circle(48.5%);
 }
 .portrait {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 1 / 1;
   object-fit: cover;
 }
@@ -767,6 +899,46 @@ a.project-card:hover .cta {
   flex: 1 1 480px;
   min-width: 0;
   max-width: 42rem;
+}
+
+.about-summary {
+  margin-top: var(--s-4);
+  color: var(--graphite);
+}
+.about-facts {
+  margin: var(--s-6) 0 0;
+  display: grid;
+  gap: var(--s-2);
+  max-width: 68ch;
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s-4);
+}
+.about-facts > div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: var(--s-4);
+}
+.about-facts dt {
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 3px;
+}
+.about-facts dd {
+  margin: 0;
+  font-size: var(--fs-small);
+  color: var(--body);
+}
+.about-cv {
+  margin-top: var(--s-6);
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+.about-cv-note {
+  margin: var(--s-3) 0 0;
+  font-size: var(--fs-meta);
+  color: var(--muted);
 }
 
 .timeline {

@@ -205,6 +205,16 @@
   .feature-card:hover .art-cta {
     transform: scale(1.06);
   }
+  /* 2D to BIM: the top storey drops onto the stack */
+  .feature-card:hover .art-lift {
+    animation: storey-drop var(--dur-slow) var(--ease) both;
+  }
+  @keyframes storey-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-22px);
+    }
+  }
   .feature-card:hover .art-wave {
     animation: wave 2.4s linear infinite;
   }

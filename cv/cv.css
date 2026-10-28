@@ -1,0 +1,217 @@
+/* Shared print styles for the résumé and academic CV (A4). Fonts come from the site's own packages. */
+@font-face {
+  font-family: 'Plex Sans';
+  font-weight: 400;
+  src: url('../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Plex Sans';
+  font-weight: 400;
+  font-style: italic;
+  src: url('../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Plex Sans';
+  font-weight: 600;
+  src: url('../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Plex Mono';
+  font-weight: 400;
+  src: url('../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Plex Mono';
+  font-weight: 500;
+  src: url('../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2') format('woff2');
+}
+
+@page {
+  size: A4;
+  margin: 15mm 16mm 14mm;
+}
+
+:root {
+  --ink: #1a1d21;
+  --body: #3a3f46;
+  --muted: #5a6068;
+  --rule: #dedfda;
+  --accent: #c2410c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Plex Sans', sans-serif;
+  font-size: 9.6pt;
+  line-height: 1.5;
+  color: var(--body);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  padding-bottom: 9pt;
+  border-bottom: 1pt solid var(--ink);
+  margin-bottom: 10pt;
+}
+
+h1 {
+  margin: 0;
+  font-size: 22pt;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.role {
+  margin: 4pt 0 0;
+  font-size: 10.5pt;
+  color: var(--body);
+}
+
+.contact {
+  margin: 6pt 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2pt 14pt;
+  font-family: 'Plex Mono', monospace;
+  font-size: 7.8pt;
+  color: var(--body);
+}
+
+.summary {
+  margin: 0 0 4pt;
+  font-size: 10pt;
+  color: var(--ink);
+}
+
+section {
+  margin-top: 11pt;
+}
+
+h2 {
+  margin: 0 0 5pt;
+  padding-bottom: 4pt;
+  border-bottom: 0.6pt solid var(--rule);
+  font-family: 'Plex Mono', monospace;
+  font-weight: 500;
+  font-size: 7.6pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  break-after: avoid;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 30mm minmax(0, 1fr);
+  gap: 0 6mm;
+  padding: 3.5pt 0;
+  break-inside: avoid;
+}
+
+.when {
+  font-family: 'Plex Mono', monospace;
+  font-size: 7.8pt;
+  color: var(--muted);
+  padding-top: 1.6pt;
+}
+
+.what {
+  margin: 0;
+}
+
+.what strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.row p {
+  margin: 2pt 0 0;
+}
+
+.row ul {
+  margin: 2pt 0 0;
+  padding-left: 11pt;
+}
+
+.row li {
+  margin: 1pt 0 0;
+}
+
+.row li::marker {
+  color: #9aa0a6;
+}
+
+.stack {
+  font-family: 'Plex Mono', monospace;
+  font-size: 7.8pt;
+  color: var(--muted);
+}
+
+.skills .row {
+  padding: 1.5pt 0;
+}
+
+.skills .when {
+  font-family: 'Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 9.6pt;
+  color: var(--ink);
+  padding-top: 0;
+}
+
+.self {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* One-page résumé: tighter rhythm, same type */
+@page compact {
+  size: A4;
+  margin: 12mm 15mm 11mm;
+}
+body.compact {
+  page: compact;
+}
+.compact {
+  font-size: 9.2pt;
+  line-height: 1.38;
+}
+.compact header {
+  padding-bottom: 7pt;
+  margin-bottom: 8pt;
+}
+.compact section {
+  margin-top: 7pt;
+}
+.compact h2 {
+  margin-bottom: 3pt;
+  padding-bottom: 3pt;
+}
+.compact .row {
+  padding: 2pt 0;
+}
+.compact .row p,
+.compact .row ul {
+  margin-top: 1pt;
+}
+.compact .row li {
+  margin-top: 0;
+}
+.compact .skills .row {
+  padding: 1pt 0;
+}
+.compact .skills .when {
+  font-size: 9.2pt;
+}

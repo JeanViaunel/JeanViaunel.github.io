@@ -371,7 +371,7 @@
   stroke-width: 1;
 }
 .lvl {
-  font-size: 11px;
+  font-size: 12px;
 }
 .lvl-name {
   font-weight: 600;
@@ -379,7 +379,7 @@
 }
 .lvl-meta {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   fill: var(--muted);
 }
 
