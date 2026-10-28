@@ -4,6 +4,7 @@ import { facts as marine } from './marine-debris';
 import { isarcSentence } from './publications';
 import maischoolShot from '../assets/maischool-courses.png';
 import roomwiseShot from '../assets/roomwise-dashboard.jpg';
+import easytopupShot from '../assets/easytopup-store.png';
 
 export const domains = [
   'Reality capture & BIM',
@@ -100,6 +101,23 @@ export const projects: Project[] = [
       src: roomwiseShot,
       alt: 'Roomwise dashboard: start an instant or named meeting, join by link, and a list of recent meetings',
       url: 'video.viocitostudio.me',
+    },
+  },
+  {
+    id: 'easytopup',
+    domain: 'Web products',
+    status: 'Client project',
+    title: 'EasyTopup',
+    text: 'A mobile-first top-up store for Haiti, in Kreyòl: game credits (Free Fire, Roblox, eFootball), Netflix plans, Apple gift cards, a wallet and transfers by EASY TOPUP ID. I designed and built it for a client, including the admin side: analytics, order handling, deposit approvals, code stock, coupons and referrals.',
+    short: 'A mobile-first top-up store for Haiti, in Kreyòl, with a wallet, transfers and a full admin side. Designed and built for a client.',
+    results: ['Live, client-owned'],
+    stack: ['Next.js'],
+    href: 'https://easytopupht.com',
+    cta: 'Visit the site',
+    shot: {
+      src: easytopupShot,
+      alt: 'EasyTopup storefront in Kreyòl: search for a game, an announcement banner and available top-up products',
+      url: 'easytopupht.com',
     },
   },
   {

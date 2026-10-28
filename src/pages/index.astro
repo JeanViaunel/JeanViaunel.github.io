@@ -12,6 +12,7 @@ import { Image } from 'astro:assets';
 import portrait from '../assets/portrait.jpg';
 import maischoolShot from '../assets/maischool-courses.png';
 import roomwiseShot from '../assets/roomwise-landing.png';
+import easytopupShot from '../assets/easytopup-store.png';
 
 const research = publications.filter((p) => p.featured);
 
@@ -151,11 +152,22 @@ const accent = ['read', 'buildings.'];
             results: ['17 registered users', '30 calls'],
             stack: ['Next.js', 'Clerk', 'Stream Video API'],
           },
+          {
+            href: 'https://easytopupht.com',
+            url: 'easytopupht.com',
+            img: easytopupShot,
+            alt: 'EasyTopup storefront in Kreyòl: search for a game, an announcement banner and available top-up products',
+            kicker: 'Client project',
+            title: 'EasyTopup',
+            text: 'A mobile-first top-up store for Haiti, in Kreyòl: game credits, gift cards, a wallet and transfers, plus the admin side. Designed and built for a client.',
+            results: ['Live, client-owned'],
+            stack: ['Next.js'],
+          },
         ].map((p, i) => (
           <a class="product-card frame" href={p.href} data-reveal style={`--d: ${i}`}>
             <div class="product-shot">
               <span class="product-bar" aria-hidden="true"><i></i><i></i><i></i><span>{p.url}</span></span>
-              <Image src={p.img} alt={p.alt} widths={[480, 720, 960]} sizes="(min-width: 980px) 540px, 100vw" />
+              <Image src={p.img} alt={p.alt} widths={[480, 720, 960]} sizes="(min-width: 980px) 360px, 100vw" />
             </div>
             <div class="product-body">
               <p class="kicker kicker--accent">{p.kicker}</p>

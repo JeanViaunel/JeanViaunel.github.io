@@ -542,7 +542,7 @@ figcaption {
 /* Products: real screens side by side, the two service roles in a row below */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: var(--s-5);
   margin-top: var(--s-6);
 }
