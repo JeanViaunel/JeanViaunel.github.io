@@ -61,12 +61,12 @@ const accent = ['read', 'buildings.'];
       <div class="proof-cell" data-reveal>
         <dt>Conference papers in 2026</dt>
         <dd class="proof-n"><span data-count="3">3</span></dd>
-        <dd class="proof-note">ISARC, ICCCBE and i3CE</dd>
+        <dd class="proof-note">2 first-author papers, 1 co-authored</dd>
       </div>
       <div class="proof-cell" data-reveal style="--d: 1">
         <dt>Marine debris challenge</dt>
         <dd class="proof-n"><span data-count="15">15</span>th <span class="proof-of">of 69 teams</span></dd>
-        <dd class="proof-note">mAP@0.5 0.7917, two-person team</dd>
+        <dd class="proof-note">Preliminary round, mAP@0.5 0.7917</dd>
       </div>
       <div class="proof-cell" data-reveal style="--d: 2">
         <dt>Leading a live product since</dt>
@@ -81,7 +81,12 @@ const accent = ['read', 'buildings.'];
     <div class="feature-grid">
       {
         featured.map((p, i) => (
-          <a href={href(p.href!)} class="feature-card frame" data-reveal style={`--d: ${i}`}>
+          <a
+            href={href(p.href!)}
+            class:list={['feature-card frame', { 'feature-card--lead': i === 0 }]}
+            data-reveal
+            style={`--d: ${i}`}
+          >
             <div class="feature-art">
               <ProjectArt id={p.id} />
             </div>

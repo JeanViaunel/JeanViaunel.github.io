@@ -3,8 +3,8 @@
 Personal site at **https://jeanviaunel.github.io**, built with [Astro](https://astro.build) as a fully
 static site and deployed to GitHub Pages.
 
-Pages: Home, Work (filterable), Research, About (with CV downloads), Now, two case studies
-(`/work/marine-debris/` and `/research/2d-to-bim/`), and a 404 page. The build also generates
+Pages: Home, Work (filterable), Research, About (with CV downloads), Now, three case studies
+(`/work/scan-to-bim/`, `/work/marine-debris/` and `/research/2d-to-bim/`), and a 404 page. The build also generates
 `publications.bib`, `sitemap.xml`, `robots.txt`, share images under `/og/` and the favicons.
 
 ## Develop

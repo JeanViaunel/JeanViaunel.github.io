@@ -1,0 +1,112 @@
+---
+// The five jobs between a walk-through scan and an IFC file.
+// This is a process diagram, not a result: no stage claims a measured outcome.
+const stages = [
+  {
+    title: 'Capture',
+    text: 'Walk the building once and record points with the device pose. Fast, but noisy and partial.',
+  },
+  {
+    title: 'Register',
+    text: 'Align the scans into one coordinate system so the building stops moving between passes.',
+  },
+  {
+    title: 'Recognise',
+    text: 'Separate walls, slabs and openings from furniture, clutter and everything else.',
+  },
+  {
+    title: 'Fit',
+    text: 'Turn point clusters into surfaces and elements with dimensions a model can hold.',
+  },
+  {
+    title: 'Export',
+    text: 'Write IFC that an authoring tool can open, check and keep working in.',
+  },
+];
+---
+
+<figure class="scan-pipe" data-inview>
+  <ol class="scan-pipe-track">
+    {
+      stages.map((s, i) => (
+        <li class="sp-stage" style={`--i: ${i}`}>
+          <span class="sp-no">{String(i + 1).padStart(2, '0')}</span>
+          <div class="sp-art" aria-hidden="true">
+            {i === 0 && (
+              <svg viewBox="0 0 160 110" fill="none">
+                <rect x="112" y="16" width="24" height="46" rx="5" stroke="currentColor" stroke-width="1.4" />
+                <rect x="118" y="22" width="12" height="24" rx="1" fill="currentColor" opacity="0.12" />
+                <path d="M112 40 54 24M112 40 54 56" stroke="#C2410C" stroke-width="1" stroke-dasharray="3 3" />
+                <rect x="38" y="16" width="34" height="48" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3" />
+                <g fill="currentColor">
+                  <circle cx="44" cy="24" r="1.2" /><circle cx="52" cy="20" r="1.2" /><circle cx="60" cy="28" r="1.2" />
+                  <circle cx="46" cy="36" r="1.2" /><circle cx="56" cy="38" r="1.2" /><circle cx="64" cy="32" r="1.2" />
+                  <circle cx="48" cy="48" r="1.2" /><circle cx="58" cy="52" r="1.2" /><circle cx="66" cy="46" r="1.2" />
+                </g>
+              </svg>
+            )}
+            {i === 1 && (
+              <svg viewBox="0 0 160 110" fill="none">
+                <g stroke="currentColor" stroke-width="1" stroke-dasharray="3 3">
+                  <rect x="42" y="24" width="52" height="40" />
+                  <rect x="52" y="32" width="52" height="40" />
+                  <rect x="62" y="40" width="52" height="40" />
+                </g>
+                <path d="M76 78 118 42" stroke="#C2410C" stroke-width="1.2" />
+                <path d="m112 40 6 2-2 6" stroke="#C2410C" stroke-width="1.2" />
+                <g stroke="currentColor" stroke-width="1">
+                  <line x1="30" y1="88" x2="46" y2="88" /><line x1="30" y1="82" x2="30" y2="94" />
+                  <line x1="30" y1="94" x2="30" y2="88" />
+                </g>
+              </svg>
+            )}
+            {i === 2 && (
+              <svg viewBox="0 0 160 110" fill="none">
+                <g fill="currentColor" opacity="0.55">
+                  <circle cx="34" cy="26" r="1.2" /><circle cx="42" cy="30" r="1.2" /><circle cx="50" cy="24" r="1.2" />
+                  <circle cx="36" cy="38" r="1.2" /><circle cx="46" cy="42" r="1.2" /><circle cx="56" cy="36" r="1.2" />
+                  <circle cx="38" cy="50" r="1.2" /><circle cx="50" cy="54" r="1.2" /><circle cx="60" cy="48" r="1.2" />
+                </g>
+                <path d="M78 18h50v72H78V18Z" stroke="currentColor" stroke-width="1.4" />
+                <path d="M78 54h50" stroke="currentColor" stroke-width="1.4" />
+                <rect x="92" y="28" width="16" height="16" stroke="#C2410C" stroke-width="1.4" />
+                <path d="M78 18 66 28M78 90 66 80" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3" />
+              </svg>
+            )}
+            {i === 3 && (
+              <svg viewBox="0 0 160 110" fill="none">
+                <path d="M34 86V24h64v62" stroke="currentColor" stroke-width="1.4" />
+                <path d="M34 56h64M98 24h28v62" stroke="currentColor" stroke-width="1.4" />
+                <rect x="50" y="34" width="16" height="14" stroke="currentColor" stroke-width="1.2" />
+                <rect x="50" y="66" width="16" height="14" stroke="currentColor" stroke-width="1.2" />
+                <g stroke="#C2410C" stroke-width="1">
+                  <line x1="34" y1="16" x2="98" y2="16" />
+                  <line x1="34" y1="12" x2="34" y2="20" /><line x1="98" y1="12" x2="98" y2="20" />
+                </g>
+                <text x="66" y="12" text-anchor="middle" fill="#C2410C" font-family="IBM Plex Mono, monospace" font-size="8">6.40 m</text>
+              </svg>
+            )}
+            {i === 4 && (
+              <svg viewBox="0 0 160 110" fill="none">
+                <g stroke="currentColor" stroke-width="1.3">
+                  <path d="M48 70 80 54l32 16-32 16-32-16Z" />
+                  <path d="M48 70v22l32 16 32-16V70" />
+                  <path d="M80 86v22" />
+                </g>
+                <path d="M80 54v32" stroke="#C2410C" stroke-width="1.2" stroke-dasharray="3 2" />
+                <rect x="112" y="24" width="30" height="18" rx="2" stroke="#C2410C" stroke-width="1.2" />
+                <text x="127" y="37" text-anchor="middle" fill="#C2410C" font-family="IBM Plex Mono, monospace" font-size="9">IFC</text>
+              </svg>
+            )}
+          </div>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </li>
+      ))
+    }
+  </ol>
+  <figcaption>
+    Five jobs between a walk-through and an IFC file. The research question is how much of each one a
+    quick mobile scan can carry.
+  </figcaption>
+</figure>

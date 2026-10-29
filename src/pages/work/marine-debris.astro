@@ -52,7 +52,7 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
     },
   ]}
   current="work"
-  description={`Case study: ${submissions.length} submissions took our marine debris detector from ${fmtScore(first, 3)} to ${fmtScore(best, 3)} mAP@0.5, finishing ${us.privateRank}th of ${facts.teamsEntered} teams.`}
+  description={`Case study: ${submissions.length} submissions took our marine debris detector from ${fmtScore(first, 3)} to ${fmtScore(best, 3)} mAP@0.5, finishing ${us.privateRank}th of ${facts.teamsEntered} teams in the preliminary round.`}
 >
   <div class="grid-paper">
     <div class="container page" style="padding-bottom: clamp(32px, 4vw, 56px)">
@@ -60,12 +60,12 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
         <p class="eyebrow"><a href={url('work/')} class="underline-link" style="color: inherit">Work</a></p>
         <h1 class="page-title" data-vt style="--vt: case-marine">Marine debris detection</h1>
         <p class="lede" style="max-width: 44rem">
-          {`In ${submissions.length} submissions our detector went from ${fmtScore(first, 3)} to ${fmtScore(best, 3)} mAP. It finished ${us.privateRank}th of ${facts.teamsEntered} teams, ${fmtScore(cutoff - us.privateScore, 4)} short of the top-${facts.finalists} final.`}
+          {`In ${submissions.length} submissions our detector went from ${fmtScore(first, 3)} to ${fmtScore(best, 3)} mAP. It finished ${us.privateRank}th of ${facts.teamsEntered} teams in the preliminary round, ${fmtScore(cutoff - us.privateScore, 4)} short of the top-${facts.finalists} final.`}
         </p>
       </div>
 
       <dl class="stats">
-        <div><dt>Final rank</dt><dd><span data-count={us.privateRank}>{us.privateRank}</span><span class="unit">th of {facts.teamsEntered}</span></dd></div>
+        <div><dt>Preliminary rank</dt><dd><span data-count={us.privateRank}>{us.privateRank}</span><span class="unit">th of {facts.teamsEntered}</span></dd></div>
         <div><dt>Private mAP@0.5</dt><dd><span data-count={us.privateScore} data-decimals="4">{fmtScore(us.privateScore, 4)}</span></dd></div>
         <div><dt>Submissions</dt><dd><span data-count={submissions.length}>{submissions.length}</span><span class="unit">in 18 days</span></dd></div>
         <div><dt>Gap to the final</dt><dd><span data-count={(cutoff - us.privateScore).toFixed(4)} data-decimals="4">{fmtScore(cutoff - us.privateScore, 4)}</span></dd></div>
@@ -114,7 +114,7 @@ const ourChange = us.privateScore - (us.publicScore ?? us.privateScore);
     </section>
 
     <section aria-labelledby="landed" class="case-section">
-      <SectionHead no={3} id="landed" title="Where it landed" meta="Private leaderboard" />
+      <SectionHead no={3} id="landed" title="Where it landed" meta="Preliminary round, private leaderboard" />
       <p class="case-lead">
         The top 15 finished within {fmtScore(spread15, 3)} mAP of each other. We were {fmtScore(cutoff - us.privateScore, 4)} below 10th place.
       </p>

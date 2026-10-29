@@ -1,0 +1,167 @@
+---
+import Base from '../../layouts/Base.astro';
+import Authors from '../../components/Authors.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import ScanPipeline from '../../components/figures/ScanPipeline.astro';
+import ResearchArt from '../../components/ResearchArt.astro';
+import { publications } from '../../data/publications';
+import { url } from '../../lib/url';
+import { personRef } from '../../lib/seo';
+
+const review = publications.find((p) => p.key === 'icccbe2026')!;
+const ar = publications.find((p) => p.key === 'i3ce2026')!;
+---
+
+<Base
+  title="Scan-to-BIM with mobile LiDAR"
+  og="scan-to-bim"
+  crumbs={[
+    { name: 'Work', path: 'work/' },
+    { name: 'Scan-to-BIM with mobile LiDAR', path: 'work/scan-to-bim/' },
+  ]}
+  schema={[
+    {
+      '@type': 'TechArticle',
+      headline: 'Scan-to-BIM with mobile LiDAR: how far a quick scan can go toward a usable IFC model',
+      author: personRef(Astro.site),
+      datePublished: '2026-10-29',
+      about: "Master's research on scan-to-BIM with mobile LiDAR at the NTU H-Team lab",
+      mainEntityOfPage: new URL(url('work/scan-to-bim/'), Astro.site).href,
+      image: new URL(url('og/scan-to-bim.png'), Astro.site).href,
+    },
+  ]}
+  current="work"
+  description="A working note on my master's research at NTU: how far a quick, low-cost mobile LiDAR scan can go toward an as-built IFC model an engineer can actually use."
+>
+  <div class="grid-paper">
+    <div class="container page" style="padding-bottom: clamp(32px, 4vw, 56px)">
+      <div class="page-head">
+        <p class="eyebrow"><a href={url('work/')} class="underline-link" style="color: inherit">Work</a> / Research note</p>
+        <h1 class="page-title" data-vt style="--vt: case-scan">Scan-to-BIM with mobile LiDAR</h1>
+        <p class="lede" style="max-width: 46rem">
+          Can a quick, low-cost scan of an existing building become an IFC model an engineer can actually
+          use? That is the question behind my master's research in the H-Team lab. This page is a working
+          note: what the pipeline has to do, and what the result has to answer.
+        </p>
+      </div>
+
+      <dl class="stats">
+        <div><dt>Input</dt><dd class="stats-text">Mobile LiDAR</dd></div>
+        <div><dt>Output</dt><dd class="stats-text">IFC</dd></div>
+        <div><dt>Focus</dt><dd class="stats-text">As-built</dd></div>
+        <div><dt>Status</dt><dd class="stats-text">In progress</dd></div>
+      </dl>
+
+      <p class="footnote" style="margin-top: 22px">
+        Working note, October 2026. The method and the open questions are here; results are not claimed yet.
+      </p>
+    </div>
+  </div>
+
+  <div class="container page" style="padding-top: 24px">
+    <section aria-labelledby="question">
+      <SectionHead no={1} id="question" title="The question" />
+      <div class="case-prose">
+        <p>
+          Most existing buildings have no model anyone can work from. Producing one means a survey: slow,
+          expensive, and usually outsourced. A mobile LiDAR capture is the opposite trade — one
+          walk-through, a point cloud in minutes, and no guarantee that what comes out is clean enough to
+          model.
+        </p>
+        <p>
+          The research sits between those two. Not "can a scan produce a model", but how much of a model a
+          quick scan can support before the cleanup costs more than the survey it replaced.
+        </p>
+      </div>
+    </section>
+
+    <section aria-labelledby="why" class="case-section">
+      <SectionHead no={2} id="why" title="Why it matters" />
+      <div class="case-prose">
+        <p>
+          Retrofit decisions depend on geometry: where the walls, slabs and openings actually are. My
+          ICCCBE 2026 review read scan-to-BIM through that lens — what a team upgrading an older building
+          needs from the model, not how dense the point cloud is.
+        </p>
+        <p>
+          The output has to be trustworthy enough to measure, not just impressive to look at. That is a
+          higher bar than a good-looking render, and it is the bar the work is aimed at.
+        </p>
+      </div>
+    </section>
+
+    <section aria-labelledby="pipeline" class="case-section">
+      <SectionHead no={3} id="pipeline" title="The pipeline, in five jobs" />
+      <p class="case-lead">
+        Every scan-to-BIM pipeline has to do the same five jobs. The research question is how much of each
+        one a quick mobile scan can carry.
+      </p>
+      <div class="case-figure" data-reveal>
+        <ScanPipeline />
+      </div>
+    </section>
+
+    <section aria-labelledby="answer" class="case-section">
+      <SectionHead no={4} id="answer" title="What the result has to answer" />
+      <ul class="takeaways">
+        <li>
+          <strong>Which elements survive the scan.</strong> Walls and slabs are the easy case. Openings,
+          thin partitions and services are where a model starts to guess.
+        </li>
+        <li>
+          <strong>How much manual cleanup is left.</strong> A model that takes two days to repair is not
+          faster than the survey it replaced.
+        </li>
+        <li>
+          <strong>Whether an engineer can trust it.</strong> The test is not a rendered image. It is
+          whether someone can open the IFC, measure it, and work from it.
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="hard" class="case-section">
+      <SectionHead no={5} id="hard" title="The hard cases" />
+      <div class="case-prose">
+        <p>
+          Some failures are predictable, and any honest evaluation has to include them: glass and
+          reflective surfaces that return weak or missing points; furniture and clutter that hide the
+          surfaces that matter; ceilings and services a standing scan never sees; thin elements that never
+          return a clean face.
+        </p>
+        <p>
+          A pipeline that only works on an empty, orthogonal room is not a result. Those rooms are the
+          exception, not the test.
+        </p>
+      </div>
+    </section>
+
+    <section aria-labelledby="papers" class="case-section">
+      <SectionHead no={6} id="papers" title="The papers" />
+      {
+        [review, ar].map((p) => (
+          <article class="paper" data-inview>
+            <div class="paper-thumb">
+              <ResearchArt id={p.key} />
+            </div>
+            <div class="paper-body">
+              <h3 class="pub-title">{p.title}</h3>
+              <Authors authors={p.authors} />
+              <p class="pub-venue">{p.venue ?? p.year}</p>
+              <p class="pub-summary">{p.summary}</p>
+              <div class="chip-row pub-links">
+                {p.links.map((l) => (
+                  <a class="link-chip" href={l.href}>
+                    {l.label} <span class="arrow arrow--ne" aria-hidden="true">↗</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+      <p style="margin-top: 32px">
+        <a href={url('research/')} class="underline-link"><span class="arrow" aria-hidden="true">←</span> All research</a>
+      </p>
+    </section>
+  </div>
+</Base>

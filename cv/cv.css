@@ -193,14 +193,14 @@ body.compact {
   margin-bottom: 8pt;
 }
 .compact section {
-  margin-top: 7pt;
+  margin-top: 6pt;
 }
 .compact h2 {
   margin-bottom: 3pt;
   padding-bottom: 3pt;
 }
 .compact .row {
-  padding: 2pt 0;
+  padding: 1.5pt 0;
 }
 .compact .row p,
 .compact .row ul {
@@ -210,7 +210,7 @@ body.compact {
   margin-top: 0;
 }
 .compact .skills .row {
-  padding: 1pt 0;
+  padding: 0.8pt 0;
 }
 .compact .skills .when {
   font-size: 9.2pt;

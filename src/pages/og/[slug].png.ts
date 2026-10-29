@@ -29,12 +29,17 @@ const cards: Record<string, { kicker: string; title: string; sub: string }> = {
   'marine-debris': {
     kicker: 'Case study',
     title: 'Marine debris detection',
-    sub: `${submissions.length} submissions from ${submissions[0].score.toFixed(3)} to ${best.toFixed(3)} mAP, finishing ${us.privateRank}th of ${facts.teamsEntered} teams.`,
+    sub: `${submissions.length} submissions from ${submissions[0].score.toFixed(3)} to ${best.toFixed(3)} mAP, finishing ${us.privateRank}th of ${facts.teamsEntered} teams in the preliminary round.`,
   },
   '2d-to-bim': {
     kicker: 'Research explainer',
     title: 'From 2D drawings to BIM',
     sub: isarcSentence,
+  },
+  'scan-to-bim': {
+    kicker: 'Research note',
+    title: 'Scan-to-BIM with mobile LiDAR',
+    sub: 'How far a quick, low-cost scan can go toward an IFC model an engineer can measure and trust.',
   },
 };
 

@@ -387,7 +387,7 @@ figcaption {
 /* ---------- Home: cards ---------- */
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
   margin-top: 32px;
 }
@@ -407,6 +407,33 @@ figcaption {
 .feature-card:hover {
   color: var(--graphite);
   border-color: var(--graphite);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -22px rgba(26, 29, 33, 0.55);
+}
+.feature-card--lead {
+  grid-column: 1 / -1;
+  flex-direction: row;
+}
+.feature-card--lead .feature-art {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  padding: 26px;
+  border-bottom: 0;
+  border-right: 1px solid var(--rule);
+  border-radius: var(--r-md) 0 0 var(--r-md);
+}
+.feature-card--lead .feature-body {
+  flex: 1;
+  justify-content: center;
+  padding: 34px 34px 32px;
+}
+.feature-card--lead h3 {
+  font-size: var(--fs-h2);
+}
+.feature-card--lead .feature-body .chip-row {
+  margin-top: 0;
+  padding-top: 4px;
 }
 .feature-art {
   background: var(--sunk);
@@ -444,9 +471,31 @@ figcaption {
   margin-top: auto;
   padding-top: 8px;
 }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .feature-card--lead {
+    grid-column: auto;
+  }
+}
+@media (max-width: 640px) {
   .feature-art {
     display: none;
+  }
+  .feature-card--lead {
+    flex-direction: column;
+  }
+  .feature-card--lead .feature-art {
+    display: flex;
+    flex: none;
+    padding: 18px;
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+    border-radius: var(--r-md) var(--r-md) 0 0;
+  }
+  .feature-card--lead .feature-body {
+    padding: 22px;
   }
 }
 
@@ -543,7 +592,7 @@ figcaption {
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  gap: var(--s-5);
+  gap: 20px;
   margin-top: var(--s-6);
 }
 .product-card {
@@ -592,7 +641,7 @@ figcaption {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: top;
   transition: transform var(--dur-slow) var(--ease);
@@ -601,7 +650,7 @@ figcaption {
   transform: scale(1.015);
 }
 .product-body {
-  padding: var(--s-5);
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
@@ -781,6 +830,9 @@ a.project-card:hover {
   font-size: var(--fs-small);
   font-weight: 500;
   padding-top: 6px;
+}
+.project-card:not(:has(.stack-row)) .cta {
+  margin-top: auto;
 }
 a.project-card:hover .cta {
   color: var(--accent);

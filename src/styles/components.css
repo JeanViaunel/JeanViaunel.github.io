@@ -370,6 +370,7 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  scroll-margin-top: var(--header-h);
   background: var(--graphite);
   color: var(--paper);
 }

@@ -39,8 +39,22 @@ export interface Project {
   shot?: { src: ImageMetadata; alt: string; url: string };
 }
 
-// Ordered by strength of outcome: published or ranked first, work in progress last.
+// Scan-to-BIM research leads: it is the niche the site is selling. Published
+// and ranked projects follow, work in progress last.
 export const projects: Project[] = [
+  {
+    id: 'scan-to-bim',
+    domain: 'Reality capture & BIM',
+    status: 'Research at NTU',
+    title: 'Scan-to-BIM with mobile LiDAR',
+    text: 'My research area: turning quick scans of existing buildings into IFC models engineers can work with.',
+    results: ['ICCCBE 2026'],
+    stack: [],
+    href: 'work/scan-to-bim/',
+    cta: 'Read the research note',
+    featured: 1,
+    vt: 'case-scan',
+  },
   {
     id: '2d-to-bim',
     domain: 'Reality capture & BIM',
@@ -59,9 +73,9 @@ export const projects: Project[] = [
     domain: 'Computer vision',
     status: 'Competition 2026',
     title: 'Marine debris detection',
-    text: `Finding ${marine.classes} kinds of ocean waste in photos for the National Academy of Marine Research’s international challenge, in a two-person team. Over 37 submissions our public score rose from 0.396 to 0.793 mAP. Most misses came from classes defined by what an object is not.`,
+    text: `Finding ${marine.classes} kinds of ocean waste in photos for the National Academy of Marine Research’s international challenge, in a two-person team. Over 37 submissions our public score rose from 0.396 to 0.793 mAP; the private score put us 15th of ${marine.teamsEntered} teams in the preliminary round. Most misses came from classes defined by what an object is not.`,
     short: `Finding ${marine.classes} kinds of ocean waste in photos, in a two-person team. Most misses came from classes defined by what an object is not.`,
-    results: [`15th of ${marine.teamsEntered} teams`, 'mAP@0.5 0.7917'],
+    results: [`15th of ${marine.teamsEntered}, prelims`, 'mAP@0.5 0.7917'],
     stack: [],
     href: 'work/marine-debris/',
     cta: 'Read the case study',
@@ -118,18 +132,6 @@ export const projects: Project[] = [
       alt: 'EasyTopup storefront in Kreyòl: search for a game, an announcement banner and available top-up products',
       url: 'easytopupht.com',
     },
-  },
-  {
-    id: 'scan-to-bim',
-    domain: 'Reality capture & BIM',
-    status: 'Research at NTU',
-    title: 'Scan-to-BIM with mobile LiDAR',
-    text: 'My research area: turning quick scans of existing buildings into IFC models engineers can work with.',
-    results: ['ISARC 2026', 'ICCCBE 2026'],
-    stack: [],
-    href: 'research/',
-    cta: 'See the research',
-    featured: 1,
   },
   {
     id: 'solar',

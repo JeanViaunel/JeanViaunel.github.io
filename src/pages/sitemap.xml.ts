@@ -7,6 +7,7 @@ const pages: [string, string][] = [
   ['', 'src/pages/index.astro'],
   ['work/', 'src/pages/work.astro'],
   ['work/marine-debris/', 'src/pages/work/marine-debris.astro'],
+  ['work/scan-to-bim/', 'src/pages/work/scan-to-bim.astro'],
   ['research/', 'src/pages/research.astro'],
   ['research/2d-to-bim/', 'src/pages/research/2d-to-bim.astro'],
   ['about/', 'src/pages/about.astro'],
